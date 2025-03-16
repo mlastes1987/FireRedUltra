@@ -306,8 +306,10 @@
 #define VAR_0x40FD                 0x40FD
 #define VAR_0x40FE                 0x40FE
 #define VAR_0x40FF                 0x40FF
+#define VAR_0x4100                 0x4100 // Dexnav Species
+#define VAR_0x4101                 0x4101 // Dexnav Steps
 
-#define VARS_END                   0x40FF
+#define VARS_END                   0x4101
 #define VARS_COUNT                 (VARS_END - VARS_START + 1)
 
 #define SPECIAL_VARS_START         0x8000
@@ -332,10 +334,9 @@
 #define VAR_MON_BOX_POS            0x8011
 #define VAR_TEXT_COLOR             0x8012
 #define VAR_PREV_TEXT_COLOR        0x8013
-#define VAR_0x8014                 0x8014 // Dexnav Species
-#define VAR_0x8015                 0x8015 // Dexnav Steps
+#define VAR_0x8014                 0x8014 // unused
 
-#define SPECIAL_VARS_END           0x8015
+#define SPECIAL_VARS_END           0x8014
 
 // Text color ids for VAR_TEXT_COLOR / VAR_PREV_TEXT_COLOR
 #define NPC_TEXT_COLOR_MALE      0 // Blue, for male NPCs
