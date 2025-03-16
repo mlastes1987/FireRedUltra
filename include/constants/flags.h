@@ -1229,9 +1229,9 @@
 
 // Unused hidden item flags
 #define FLAG_UNUSED_0x4A7               0x4A7 // EXP. All
-#define FLAG_UNUSED_0x4A8               0x4A8 // Unused Flag
-#define FLAG_UNUSED_0x4A9               0x4A9 // Unused Flag
-#define FLAG_UNUSED_0x4AA               0x4AA // Unused Flag
+#define FLAG_UNUSED_0x4A8               0x4A8 // Dexnav
+#define FLAG_UNUSED_0x4A9               0x4A9 // Dexnav 2
+#define FLAG_UNUSED_0x4AA               0x4AA // Dexnav 3
 #define FLAG_UNUSED_0x4AB               0x4AB // Unused Flag
 #define FLAG_UNUSED_0x4AC               0x4AC // Unused Flag
 #define FLAG_UNUSED_0x4AD               0x4AD // Unused Flag
