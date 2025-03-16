@@ -1122,7 +1122,7 @@ static void Task_DexNavSearch(u8 taskId)
     }
 
     if (sDexNavSearchDataPtr->hiddenSearch && !task->tRevealed &&
-        (JOY_NEW(R_BUTTON) || (sDexNavSearchDataPtr->proximity < CREEPING_PROXIMITY)))
+        (JOY_NEW(L_BUTTON) || (sDexNavSearchDataPtr->proximity < CREEPING_PROXIMITY)))
     {
         PlaySE(SE_DEX_SEARCH);
         ClearStdWindowAndFrameToTransparent(sDexNavSearchDataPtr->windowId, FALSE);
@@ -2450,7 +2450,7 @@ static void Task_DexNavMain(u8 taskId)
         PlaySE(SE_BAG_CURSOR);
         UpdateCursorPosition();
     }
-    else if (JOY_NEW(R_BUTTON))
+    else if (JOY_NEW(L_BUTTON))
     {
         // check selection is valid. Play sound if invalid
         species = DexNavGetSpecies();
