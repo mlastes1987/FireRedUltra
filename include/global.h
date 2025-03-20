@@ -19,6 +19,7 @@
 #include "constants/rgb.h"
 #include "constants/easy_chat.h"
 #include "constants/items.h"
+#include "config/save.h"
 
 // Prevent cross-jump optimization.
 #define BLOCK_CROSS_JUMP asm("");
@@ -391,7 +392,9 @@ struct SaveBlock2
     /*0x898*/ u16 mapView[0x100];
     /*0xA98*/ struct LinkBattleRecords linkBattleRecords;
     /*0xAF0*/ struct BerryCrush berryCrush;
+#if FREE_POKEMON_JUMP == FALSE
     /*0xB00*/ struct PokemonJumpRecords pokeJump;
+#endif //FREE_POKEMON_JUMP
     /*0xB10*/ struct BerryPickingResults berryPick;
     /*0x169C*/ struct BerryTree berryTrees[BERRY_TREES_COUNT]; // moved to SaveBlock2 due to QuestLogScene taking up SaveBlock1
     /*0x???*/ u8 filler_90[212];
@@ -841,15 +844,23 @@ struct SaveBlock1
     /*0x30A7*/ struct ExternalEventData externalEventData;
     /*0x30BB*/ struct ExternalEventFlags externalEventFlags;
     /*0x30D0*/ struct Roamer roamer;
+#if FREE_ENIGMA_BERRY == FALSE
     /*0x30EC*/ struct EnigmaBerry enigmaBerry;
+#endif //FREE_ENIGMA_BERRY
+#if FREE_MYSTERY_GIFT == FALSE
     /*0x3120*/ struct MysteryGiftSave mysteryGift;
+#endif //FREE_MYSTERY_GIFT
     /*0x????*/ u8 dexSeen[DEX_FLAGS_NO];
                u8 dexCaught[DEX_FLAGS_NO];
+#if FREE_MYSTERY_EVENT_BUFFERS == FALSE
     /*0x361C*/ struct RamScript ramScript;
+#endif //FREE_MYSTERY_EVENT_BUFFERS
     /*0x3A08*/ struct RecordMixingGift recordMixingGift; // unused
     /*0x3A4C*/ u8 rivalName[PLAYER_NAME_LENGTH + 1];
     /*0x3A54*/ struct FameCheckerSaveData fameChecker[NUM_FAMECHECKER_PERSONS];
+#if FREE_UNION_ROOM_CHAT == FALSE
     /*0x3AD4*/ u8 registeredTexts[UNION_ROOM_KB_ROW_COUNT][21];
+#endif //FREE_UNION_ROOM_CHAT
     /*0x3BA8*/ struct TrainerNameRecord trainerNameRecords[20];
     /*0x3C98*/ struct DaycareMon route5DayCareMon;
     /*0x3D34*/ u32 towerChallengeId;
