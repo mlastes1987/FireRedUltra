@@ -1489,7 +1489,7 @@ static u16 DexScreen_CountMonsInOrderedList(u8 orderIdx)
             }
         }
         break;
-    case DEX_ORDER_NUMERICAL_NATIONAL:
+    case DEX_ORDER_NUMERICAL_NATIONAL: ;
         u32 species;
         for (i = SPECIES_BULBASAUR; i < NUM_SPECIES; i++)
         {

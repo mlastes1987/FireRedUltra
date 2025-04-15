@@ -4154,7 +4154,7 @@ static void DebugAction_PCBag_Fill_PCItemStorage(u8 taskId)
 {
     u16 itemId;
 
-    for (itemId = 1; itemId < ITEMS_COUNT; itemId++)
+    for (itemId = 100; itemId < ITEMS_COUNT; itemId++)
     {
         if (!CheckPCHasItem(itemId, MAX_PC_ITEM_CAPACITY))
             AddPCItem(itemId, MAX_PC_ITEM_CAPACITY);
