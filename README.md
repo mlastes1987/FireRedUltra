@@ -24,7 +24,7 @@ Based on the pokefirered disassembly with Pokeemerald Expansion Updates from [**
 
 - **Gen 5 Map Area Popups** All Map Area Popups are switched to Gen 5 and include a 12hr clock displayed at the bottom.
 
-- **Gen 6 Exp. Share** From the beginning, you can add the Exp. Share from the Debug menu to share Experience points with your party.
+- **Gen 6 Exp. Share** From the beginning, you can add the Exp. Share from the Debug menu to share Experience points with your party and toggle on/off.  You can also make Flag 0x4A7 True to enable this without having to add the item.
 
 - **Running Indoors** This makes traversing all of Kanto much easier and faster, great for speed runs.
 
