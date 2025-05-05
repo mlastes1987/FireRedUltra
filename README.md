@@ -30,7 +30,7 @@ Based on the pokefirered disassembly with Pokeemerald Expansion Updates from [**
 
 - **Fast-Run** During wild battles you can hold B to run.
 
-- **Known Issues** The game is known to crash here and there during battle, this is most likely due to the codebase being under development still.  It's based on Emerald Expansion.  Save often.  Still testing this to find any crashes.  See [**Issue 1**](https://github.com/mlastes1987/FireRedUltra/issues/1)
+- **Known Issues** Any known or reported issues will be put here.
 
 # Thanks/Credit
 
