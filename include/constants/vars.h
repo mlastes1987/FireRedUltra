@@ -304,12 +304,10 @@
 #define VAR_0x40FB                 0x40FB
 #define VAR_0x40FC                 0x40FC
 #define VAR_0x40FD                 0x40FD
-#define VAR_0x40FE                 0x40FE
-#define VAR_0x40FF                 0x40FF
-#define VAR_0x4100                 0x4100 // Registered Dexnav Species
-#define VAR_0x4101                 0x4101 // Dexnav Steps for Hidden Mon
+#define VAR_0x40FE                 0x40FE // Dexnav registered species
+#define VAR_0x40FF                 0x40FF // Dexnav steps to find hidden mon
 
-#define VARS_END                   0x4101
+#define VARS_END                   0x40FF
 #define VARS_COUNT                 (VARS_END - VARS_START + 1)
 
 #define SPECIAL_VARS_START         0x8000
