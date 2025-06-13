@@ -6,6 +6,8 @@ Based on the pokefirered disassembly with Pokeemerald Expansion Updates from [**
 
 # Features
 
+- **Starters Changed** The starters have now been changed to Treecko, Cyndaquil and Sobble.  As a bonus, your rival will choose the weaker (type-wise) vanilla starter.
+
 - **Reusable TMs**
 
 - **Forgettable HMs** Without a Move Tutor.
