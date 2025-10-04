@@ -2620,6 +2620,7 @@ static const u16 sAlakazamTeachableLearnset[] = {
     MOVE_SUNNY_DAY,
     MOVE_TAUNT,
     MOVE_THIEF,
+    MOVE_THUNDERBOLT,
     MOVE_THUNDER_WAVE,
     MOVE_TORMENT,
     MOVE_TOXIC,
