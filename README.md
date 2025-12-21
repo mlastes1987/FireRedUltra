@@ -14,11 +14,11 @@ Based on the pokefirered disassembly with Pokeemerald Expansion Updates from [**
 
 - **HGSS Pokedex Plus** Backported from HeartGold SoulSilver, you get to enjoy the features of Pokedex Plus.
 
+- **ORAS Dexnav** Backported from Gen 6, you'll be able to see what's catchable.
+
 - **Follower Pokemon** Any Pokemon in the first party slot will follow you through the overworld.
 
 - **Trade Evolutions** All Trade Evolutions can evolve by using either a Linking Cable or their specific evolution items like Metal Coat or King's Rock, but can also evolve by trading between FR and LG out of the box.
-
-- **Debug Menu** By pressing R+Start you can open a special debug menu made by a few people. [**See here**](/include/config/debug.h) and it includes features like giving you items, pokemon, and other changes to the game.
 
 - **Double Battles** All double battles no longer require you to have two pokemon in your party and 25% of the time wild battles will be double.  This also means that you can battle two trainers at once.
 
