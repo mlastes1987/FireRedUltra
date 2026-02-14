@@ -806,12 +806,12 @@
 #define FLAG_RECEIVED_SILVER_SHIELD                      0x309
 #define FLAG_RECEIVED_GOLD_SHIELD                        0x30A
 #define FLAG_CHOSEN_MULTI_BATTLE_NPC_PARTNER             0x30B
-#define FLAG_0x30C               0x30C
-#define FLAG_0x30D               0x30D
-#define FLAG_0x30E               0x30E
-#define FLAG_0x30F               0x30F
-#define FLAG_0x310               0x310
-#define FLAG_0x311               0x311
+#define FLAG_0x30C               0x30C // Dexnav searching for mon
+#define FLAG_0x30D               0x30D // Dexnav shows in start menu
+#define FLAG_0x30E               0x30E // Dexnav allow player to find hidden mon
+#define FLAG_0x30F               0x30F // Pokerider
+#define FLAG_0x310               0x310 // Gen 6 Exp Share
+#define FLAG_0x311               0x311 // Dowsing Machine
 #define FLAG_0x312               0x312
 #define FLAG_0x313               0x313
 #define FLAG_0x314               0x314
