@@ -40,7 +40,10 @@ EWRAM_DATA static u16 sBattlerRecordSizes[MAX_BATTLERS_COUNT] = {0};
 EWRAM_DATA static u16 sBattlerPrevRecordSizes[MAX_BATTLERS_COUNT] = {0};
 EWRAM_DATA static u16 sBattlerSavedRecordSizes[MAX_BATTLERS_COUNT] = {0};
 EWRAM_DATA static u8 sRecordMode = 0;
+EWRAM_DATA static u8 sFrontierFacility = 0;
+EWRAM_DATA static u8 sFrontierBrainSymbol = 0;
 EWRAM_DATA u8 gRecordedBattleMultiplayerId = 0;
+EWRAM_DATA static u8 sFrontierPassFlag = 0;
 EWRAM_DATA static u8 sBattleScene = 0;
 EWRAM_DATA static u8 sTextSpeed = 0;
 EWRAM_DATA static u32 sBattleFlags = 0;
@@ -54,6 +57,7 @@ EWRAM_DATA static u8 sRecordMixFriendName[PLAYER_NAME_LENGTH + 1] = {0};
 EWRAM_DATA static u8 sRecordMixFriendClass = 0;
 EWRAM_DATA static u8 sApprenticeId = 0;
 EWRAM_DATA static u16 sEasyChatSpeech[EASY_CHAT_BATTLE_WORDS_COUNT] = {0};
+EWRAM_DATA static u8 sBattleOutcome = 0;
 
 static u8 sRecordMixFriendLanguage;
 static u8 sApprenticeLanguage;
@@ -304,6 +308,16 @@ void SetVariablesForRecordedBattle(struct RecordedBattleSave *src)
 
 #undef tFramesToWait
 
+u8 GetRecordedBattleFrontierFacility(void)
+{
+    return sFrontierFacility;
+}
+
+u8 GetRecordedBattleFronterBrainSymbol(void)
+{
+    return sFrontierBrainSymbol;
+}
+
 void RecordedBattle_SaveParties(void)
 {
     s32 i;
@@ -313,6 +327,22 @@ void RecordedBattle_SaveParties(void)
         sSavedPlayerParty[i] = gPlayerParty[i];
         sSavedOpponentParty[i] = gEnemyParty[i];
     }
+}
+
+void RecordedBattle_ClearFrontierPassFlag(void)
+{
+    sFrontierPassFlag = 0;
+}
+
+// Set sFrontierPassFlag to received state of FLAG_SYS_FRONTIER_PASS
+void RecordedBattle_SetFrontierPassFlagFromHword(u16 flags)
+{
+    sFrontierPassFlag |= (flags & (1 << 15)) >> 15;
+}
+
+u8 RecordedBattle_GetFrontierPassFlag(void)
+{
+    return sFrontierPassFlag;
 }
 
 u8 GetBattleSceneInRecordedBattle(void)
@@ -346,12 +376,12 @@ void RecordedBattle_CopyBattlerMoves(u32 battler)
 
 void RecordedBattle_CheckMovesetChanges(u8 mode)
 {
-    s32 battler, j, k;
+    s32 j, k;
 
     if (gBattleTypeFlags & (BATTLE_TYPE_LINK | BATTLE_TYPE_RECORDED_LINK))
         return;
 
-    for (battler = 0; battler < gBattlersCount; battler++)
+    for (enum BattlerId battler = 0; battler < gBattlersCount; battler++)
     {
         // Player's side only
         if (IsOnPlayerSide(battler))
@@ -423,12 +453,12 @@ void RecordedBattle_CheckMovesetChanges(u8 mode)
                     {
                         struct Pokemon *mon = GetBattlerMon(battler);
                         for (j = 0; j < MAX_MON_MOVES; j++)
-                            ppBonuses[j] = (GetMonData(mon, MON_DATA_PP_BONUSES, NULL) & ((3 << (j << 1)))) >> (j << 1);
+                            ppBonuses[j] = (GetMonData(mon, MON_DATA_PP_BONUSES) & ((3 << (j << 1)))) >> (j << 1);
 
                         for (j = 0; j < MAX_MON_MOVES; j++)
                         {
-                            movePp.moves[j] = GetMonData(mon, MON_DATA_MOVE1 + moveSlots[j], NULL);
-                            movePp.currentPp[j] = GetMonData(mon, MON_DATA_PP1 + moveSlots[j], NULL);
+                            movePp.moves[j] = GetMonData(mon, MON_DATA_MOVE1 + moveSlots[j]);
+                            movePp.currentPp[j] = GetMonData(mon, MON_DATA_PP1 + moveSlots[j]);
                             movePp.maxPp[j] = ppBonuses[moveSlots[j]];
                         }
                         for (j = 0; j < MAX_MON_MOVES; j++)
@@ -442,7 +472,7 @@ void RecordedBattle_CheckMovesetChanges(u8 mode)
 
                         SetMonData(mon, MON_DATA_PP_BONUSES, &ppBonusSet);
                     }
-                    gChosenMoveByBattler[battler] = GetChosenMoveFromPosition(battler);
+                    gChosenMoveByBattler[battler] = GetBattlerChosenMove(battler);
                 }
             }
         }
@@ -480,3 +510,44 @@ u8 GetBattlerLinkPlayerGender(u32 battler)
 
     return 0;
 }
+
+void GetRecordedBattleRecordMixFriendName(u8 *dst)
+{
+    s32 i;
+
+    for (i = 0; i < PLAYER_NAME_LENGTH + 1; i++)
+        dst[i] = sRecordMixFriendName[i];
+    dst[PLAYER_NAME_LENGTH] = EOS;
+    ConvertInternationalString(dst, sRecordMixFriendLanguage);
+}
+
+u8 GetRecordedBattleRecordMixFriendClass(void)
+{
+    return sRecordMixFriendClass;
+}
+
+u8 GetRecordedBattleApprenticeId(void)
+{
+    return sApprenticeId;
+}
+
+u8 GetRecordedBattleRecordMixFriendLanguage(void)
+{
+    return sRecordMixFriendLanguage;
+}
+
+u8 GetRecordedBattleApprenticeLanguage(void)
+{
+    return sApprenticeLanguage;
+}
+
+void RecordedBattle_SaveBattleOutcome(void)
+{
+    sBattleOutcome = gBattleOutcome;
+}
+
+u16 *GetRecordedBattleEasyChatSpeech(void)
+{
+    return sEasyChatSpeech;
+}
+

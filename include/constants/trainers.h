@@ -2,6 +2,7 @@
 #define GUARD_CONSTANTS_TRAINERS_H
 
 #include "constants/opponents.h"
+#include "constants/battle_frontier_trainers.h"
 
 #define TRAINER_ENCOUNTER_MUSIC_MALE         0 // standard male encounter music
 #define TRAINER_ENCOUNTER_MUSIC_FEMALE       1 // standard female encounter music
@@ -17,6 +18,26 @@
 #define TRAINER_ENCOUNTER_MUSIC_HIKER       11 // used for other trainer classes too
 #define TRAINER_ENCOUNTER_MUSIC_INTERVIEWER 12
 #define TRAINER_ENCOUNTER_MUSIC_RICH        13 // Rich Boys and Gentlemen
+
+// TODO: replace with actual trainer classes
+// placeholders
+#define FACILITY_CLASS_TUBER_M          FACILITY_CLASS_RUIN_MANIAC
+#define FACILITY_CLASS_PKMN_BREEDER_M   FACILITY_CLASS_RUIN_MANIAC
+
+#define FACILITY_CLASS_TUBER_F          FACILITY_CLASS_AROMA_LADY
+#define FACILITY_CLASS_PKMN_BREEDER_F   FACILITY_CLASS_AROMA_LADY
+
+#define TRAINER_CLASS_RIVAL         TRAINER_CLASS_RIVAL_LATE
+#define TRAINER_CLASS_TUBER_M       TRAINER_CLASS_RS_TUBER_M
+#define TRAINER_CLASS_TUBER_F       TRAINER_CLASS_RS_TUBER_F
+#define TRAINER_CLASS_SALON_MAIDEN  TRAINER_CLASS_TUBER
+#define TRAINER_CLASS_DOME_ACE      TRAINER_CLASS_PKMN_BREEDER
+#define TRAINER_CLASS_PALACE_MAVEN  TRAINER_CLASS_PKMN_RANGER
+#define TRAINER_CLASS_ARENA_TYCOON  TRAINER_CLASS_AROMA_LADY
+#define TRAINER_CLASS_FACTORY_HEAD  TRAINER_CLASS_RUIN_MANIAC
+#define TRAINER_CLASS_PIKE_QUEEN    TRAINER_CLASS_LADY
+#define TRAINER_CLASS_PYRAMID_KING  TRAINER_CLASS_PAINTER
+
 
 
 enum __attribute__((packed)) TrainerPicID
@@ -181,9 +202,14 @@ enum __attribute__((packed)) TrainerPicID
 #define TRAINER_BACK_PIC_STEVEN                 6
 
 // Special Trainer Ids.
-#define TRAINER_UNION_ROOM          0xC00
-#define TRAINER_LINK_OPPONENT       0x800
-#define TRAINER_SECRET_BASE         0x400
+#define TRAINER_RECORD_MIXING_FRIEND        FRONTIER_TRAINERS_COUNT
+#define TRAINER_RECORD_MIXING_APPRENTICE    1020
+#define TRAINER_EREADER                     1021
+#define TRAINER_FRONTIER_BRAIN              1022
+#define TRAINER_PLAYER                      1023
+#define TRAINER_UNION_ROOM                  0xC00
+#define TRAINER_LINK_OPPONENT               0x800
+#define TRAINER_SECRET_BASE                 0x400
 
 enum TrainerClassID
 {
