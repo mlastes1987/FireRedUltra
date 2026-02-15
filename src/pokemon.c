@@ -1068,7 +1068,7 @@ const u16 gUnionRoomFacilityClasses[NUM_UNION_ROOM_CLASSES * GENDER_COUNT] =
     FACILITY_CLASS_LASS,
     FACILITY_CLASS_PSYCHIC_F,
     FACILITY_CLASS_CRUSH_GIRL,
-    FACILITY_CLASS_PKMN_BREEDER,
+    FACILITY_CLASS_PKMN_BREEDER_F,
     FACILITY_CLASS_BEAUTY,
 };
 
@@ -6176,20 +6176,25 @@ u16 GetBattleBGM(void)
     {
         switch (GetMonData(&gEnemyParty[0], MON_DATA_SPECIES))
         {
+        case SPECIES_RAYQUAZA:
+            return MUS_VS_RAYQUAZA;
+        case SPECIES_KYOGRE:
+        case SPECIES_GROUDON:
+            return MUS_VS_KYOGRE_GROUDON;
         case SPECIES_REGIROCK:
         case SPECIES_REGICE:
         case SPECIES_REGISTEEL:
         case SPECIES_REGIGIGAS:
         case SPECIES_REGIELEKI:
         case SPECIES_REGIDRAGO:
-            return MUS_RS_VS_TRAINER;
+            return MUS_VS_REGI;
         default:
-            return MUS_VS_WILD;
+            return MUS_VS_LEGEND;
         }
     }
     else if (gBattleTypeFlags & (BATTLE_TYPE_LINK | BATTLE_TYPE_RECORDED_LINK))
     {
-        return MUS_RS_VS_TRAINER;
+        return MUS_RSE_VS_TRAINER;
     }
     else if (gBattleTypeFlags & BATTLE_TYPE_TRAINER)
     {
@@ -6202,11 +6207,22 @@ u16 GetBattleBGM(void)
 
         switch (trainerClass)
         {
-        case TRAINER_CLASS_CHAMPION:
-            return MUS_VS_CHAMPION;
-        case TRAINER_CLASS_LEADER:
-        case TRAINER_CLASS_ELITE_FOUR:
-            return MUS_VS_GYM_LEADER;
+        case TRAINER_CLASS_AQUA_LEADER:
+        case TRAINER_CLASS_MAGMA_LEADER:
+            return MUS_VS_AQUA_MAGMA_LEADER;
+        case TRAINER_CLASS_TEAM_AQUA:
+        case TRAINER_CLASS_TEAM_MAGMA:
+        case TRAINER_CLASS_AQUA_ADMIN:
+        case TRAINER_CLASS_MAGMA_ADMIN:
+            return MUS_VS_AQUA_MAGMA;
+        case TRAINER_CLASS_RS_CHAMPION:
+            return MUS_RSE_VS_CHAMPION;
+        case TRAINER_CLASS_RIVAL:
+            return MUS_RSE_VS_RIVAL;
+        case TRAINER_CLASS_RS_ELITE_FOUR:
+            return MUS_RSE_VS_ELITE_FOUR;
+        case TRAINER_CLASS_RS_LEADER:
+            return MUS_RSE_VS_GYM_LEADER;
         case TRAINER_CLASS_SALON_MAIDEN:
         case TRAINER_CLASS_DOME_ACE:
         case TRAINER_CLASS_PALACE_MAVEN:
@@ -6215,6 +6231,11 @@ u16 GetBattleBGM(void)
         case TRAINER_CLASS_PIKE_QUEEN:
         case TRAINER_CLASS_PYRAMID_KING:
             return MUS_VS_FRONTIER_BRAIN;
+        case TRAINER_CLASS_CHAMPION:
+            return MUS_VS_CHAMPION;
+        case TRAINER_CLASS_LEADER:
+        case TRAINER_CLASS_ELITE_FOUR:
+            return MUS_VS_GYM_LEADER;
         case TRAINER_CLASS_BOSS:
         case TRAINER_CLASS_TEAM_ROCKET:
         case TRAINER_CLASS_COOLTRAINER:
