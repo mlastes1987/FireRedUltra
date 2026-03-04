@@ -4558,10 +4558,10 @@ static void PokeSum_DestroyMonPicSprite(void)
 
 static void CreateBallIconObj(void)
 {
-    u8 ballId = ItemIdToBallId(GetMonData(&sMonSummaryScreen->currentMon, MON_DATA_POKEBALL));
+    enum PokeBall ball = ItemIdToBallId(GetMonData(&sMonSummaryScreen->currentMon, MON_DATA_POKEBALL));
 
-    LoadBallGfx(ballId);
-    sMonSummaryScreen->ballIconSpriteId = CreateSprite(&gBallSpriteTemplates[ballId], 106, 88, 0);
+    LoadBallGfx(ball);
+    sMonSummaryScreen->ballIconSpriteId = CreateSprite(&gPokeBalls[ball].spriteTemplate, 106, 88, 0);
     gSprites[sMonSummaryScreen->ballIconSpriteId].callback = SpriteCallbackDummy;
     gSprites[sMonSummaryScreen->ballIconSpriteId].oam.priority = 0;
 
