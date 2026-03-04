@@ -53,6 +53,13 @@
 #include "constants/weather.h"
 #include "constants/pokemon.h"
 
+enum SafariAction
+{
+    SAFARI_ACTION_WATCHES_CAREFULLY,
+    SAFARI_ACTION_THROW_ROCK,
+    SAFARI_ACTION_THROW_BAIT,
+};
+
 static bool32 TryRemoveScreens(enum BattlerId battler);
 static bool32 IsUnnerveAbilityOnOpposingSide(enum BattlerId battler);
 static u32 GetFlingPowerFromItemId(enum Item itemId);
@@ -72,7 +79,12 @@ ARM_FUNC NOINLINE static uq4_12_t PercentToUQ4_12_Floored(u32 percent);
 
 extern const u8 *const gBattlescriptsForRunningByItem[];
 extern const u8 *const gBattlescriptsForUsingItem[];
-extern const u8 *const gBattlescriptsForSafariActions[];
+static const u8 *const gBattlescriptsForSafariActions[] =
+{
+    [SAFARI_ACTION_WATCHES_CAREFULLY]   = BattleScript_WatchesCarefully,
+    [SAFARI_ACTION_THROW_ROCK]          = BattleScript_ThrowRock,
+    [SAFARI_ACTION_THROW_BAIT]          = BattleScript_ThrowBait,
+};
 
 static const u8 sGoNearCounterToCatchFactor[] = {4, 3, 2, 1};
 static const u8 sGoNearCounterToEscapeFactor[] = {4, 4, 4, 4};
@@ -703,7 +715,7 @@ void HandleAction_WatchesCarefully(void)
             gBattleCommunication[MULTISTRING_CHOOSER] = B_MSG_MON_WATCHING;
         }
     }
-    gBattlescriptCurrInstr = gBattlescriptsForSafariActions[0];
+    gBattlescriptCurrInstr = gBattlescriptsForSafariActions[SAFARI_ACTION_WATCHES_CAREFULLY];
     gCurrentActionFuncId = B_ACTION_EXEC_SCRIPT;
 }
 
@@ -746,7 +758,7 @@ void HandleAction_ThrowBait(void)
     if (gBattleStruct->safariCatchFactor <= 2)
         gBattleStruct->safariCatchFactor = 3;
 
-    gBattlescriptCurrInstr = gBattlescriptsForSafariActions[2];
+    gBattlescriptCurrInstr = gBattlescriptsForSafariActions[SAFARI_ACTION_THROW_BAIT];
     gCurrentActionFuncId = B_ACTION_EXEC_SCRIPT;
 }
 
@@ -766,7 +778,7 @@ void HandleAction_ThrowRock(void)
     if (gBattleStruct->safariCatchFactor > 20)
         gBattleStruct->safariCatchFactor = 20;
 
-    gBattlescriptCurrInstr = gBattlescriptsForSafariActions[1];
+    gBattlescriptCurrInstr = gBattlescriptsForSafariActions[SAFARI_ACTION_THROW_ROCK];
     gCurrentActionFuncId = B_ACTION_EXEC_SCRIPT;
 }
 
@@ -776,19 +788,6 @@ void HandleAction_SafariZoneRun(void)
     PlaySE(SE_FLEE);
     gCurrentTurnActionNumber = gBattlersCount;
     gBattleOutcome = B_OUTCOME_RAN;
-}
-
-void HandleAction_OldManBallThrow(void)
-{
-    gBattlerAttacker = gBattlerByTurnOrder[gCurrentTurnActionNumber];
-    gBattle_BG0_X = 0;
-    gBattle_BG0_Y = 0;
-
-    PREPARE_MON_NICK_BUFFER(gBattleTextBuff1, gBattlerAttacker, gBattlerPartyIndexes[gBattlerAttacker])
-
-    gBattlescriptCurrInstr = gBattlescriptsForSafariActions[3];
-    gCurrentActionFuncId = B_ACTION_EXEC_SCRIPT;
-    gActionsByTurnOrder[1] = B_ACTION_FINISHED;
 }
 
 void HandleAction_TryFinish(void)

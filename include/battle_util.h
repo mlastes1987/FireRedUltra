@@ -191,7 +191,6 @@ void HandleAction_SafariZoneBallThrow(void);
 void HandleAction_ThrowBait(void);
 void HandleAction_ThrowRock(void);
 void HandleAction_SafariZoneRun(void);
-void HandleAction_OldManBallThrow(void);
 void HandleAction_TryFinish(void);
 void HandleAction_NothingIsFainted(void);
 void HandleAction_ActionFinished(void);

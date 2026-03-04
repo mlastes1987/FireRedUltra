@@ -429,7 +429,6 @@ static void (*const sTurnActionsFuncsTable[])(void) =
     [B_ACTION_SAFARI_BAIT]            = HandleAction_ThrowBait,
     [B_ACTION_SAFARI_GO_NEAR]         = HandleAction_ThrowRock,
     [B_ACTION_SAFARI_RUN]             = HandleAction_SafariZoneRun,
-    [B_ACTION_OLDMAN_THROW]           = HandleAction_OldManBallThrow,
     [B_ACTION_EXEC_SCRIPT]            = HandleAction_RunBattleScript,
     [B_ACTION_TRY_FINISH]             = HandleAction_TryFinish,
     [B_ACTION_FINISHED]               = HandleAction_ActionFinished,
@@ -4586,9 +4585,6 @@ static void HandleTurnActionSelectionState(void)
                     break;
                 case B_ACTION_SAFARI_RUN:
                     gHitMarker |= HITMARKER_RUN;
-                    gBattleCommunication[battler]++;
-                    break;
-                case B_ACTION_OLDMAN_THROW:
                     gBattleCommunication[battler]++;
                     break;
                 case B_ACTION_DEBUG:

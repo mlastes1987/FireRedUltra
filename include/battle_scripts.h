@@ -805,5 +805,8 @@ extern const u8 BattleScript_SilphScopeUnveiled[];
 // pokefirered
 extern const u8 BattleScript_TrainerTowerTrainerBattleWon[];
 extern const u8 BattleScript_OldMan_Pokedude_CaughtMessage[];
+extern const u8 BattleScript_WatchesCarefully[];
+extern const u8 BattleScript_ThrowRock[];
+extern const u8 BattleScript_ThrowBait[];
 
 #endif // GUARD_BATTLE_SCRIPTS_H
