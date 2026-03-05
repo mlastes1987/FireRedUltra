@@ -1,5 +1,5 @@
-#ifndef GUARD_BATTLE_STRING_IDS_H
-#define GUARD_BATTLE_STRING_IDS_H
+#ifndef GUARD_CONSTANTS_BATTLE_STRING_IDS_H
+#define GUARD_CONSTANTS_BATTLE_STRING_IDS_H
 
 enum StringID
 {
@@ -350,9 +350,7 @@ enum StringID
     STRINGID_QUESTIONFORFEITMATCH,
     STRINGID_FORFEITEDMATCH,
     STRINGID_PKMNTRANSFERREDSOMEONESPC,
-    STRINGID_PKMNTRANSFERREDLANETTESPC,
     STRINGID_PKMNBOXSOMEONESPCFULL,
-    STRINGID_PKMNBOXLANETTESPCFULL,
     STRINGID_TRAINER1WINTEXT,
     STRINGID_TRAINER2WINTEXT,
     STRINGID_ENDUREDSTURDY,
@@ -735,9 +733,6 @@ enum MissStringID
     B_MSG_MISSED,
     B_MSG_PROTECTED,
     B_MSG_AVOIDED_ATK,
-    // Ability-related messages need to be below this comment
-    B_MSG_AVOIDED_DMG,
-    B_MSG_GROUND_MISS,
 };
 
 // gAbsorbDrainStringIds
@@ -832,7 +827,6 @@ enum ProtectLikeUsedStringID
 {
     B_MSG_PROTECTED_ITSELF,
     B_MSG_BRACED_ITSELF,
-    B_MSG_PROTECT_FAILED,
     B_MSG_PROTECTED_TEAM,
 };
 
@@ -964,15 +958,8 @@ enum InobedientStringID
 // Skips the one used for Battle Palace
 #define NUM_LOAF_STRINGS (B_MSG_PRETEND_NOT_NOTICE + 1)
 
-// gSafariGetNearStringIds
-enum SafariGetNearStringID
-{
-    B_MSG_CREPT_CLOSER,
-    B_MSG_CANT_GET_CLOSER,
-};
-
-// gSafariPokeblockResultStringIds
-enum SafariPokeblockResultStringID
+// gSafariReactionStringIds
+enum SafariReactionStringID
 {
     B_MSG_MON_WATCHING,
     B_MSG_MON_ANGRY,
@@ -1129,8 +1116,7 @@ enum StartingStatusStringID
 };
 
 // gWrappedStringIds
-// These correspond in order to sTrappingMoves!
-enum WrappedStringID
+enum __attribute__((packed)) WrappedStringID
 {
     B_MSG_WRAPPED_BIND,
     B_MSG_WRAPPED_WRAP,
@@ -1193,4 +1179,4 @@ enum ZenModeStringID
     B_MSG_ZEN_MODE_ENDED,
 };
 
-#endif // GUARD_BATTLE_STRING_IDS_H
+#endif // GUARD_CONSTANTS_BATTLE_STRING_IDS_H
