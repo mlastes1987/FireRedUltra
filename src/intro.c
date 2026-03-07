@@ -248,12 +248,12 @@ extern const u32 gMultiBootProgram_PokemonColosseum_End[];
 
 static const u16 sCopyright_Pal[] = INCBIN_U16("graphics/intro/copyright.gbapal");
 static const u32 sCopyright_Gfx[]  = INCBIN_U32( "graphics/intro/copyright.4bpp.smol");
-static const u32 sCopyright_Map[]  = INCBIN_U32( "graphics/intro/copyright.bin.smol");
+static const u32 sCopyright_Map[]  = INCBIN_U32( "graphics/intro/copyright.bin.smolTM");
 
 // Game Freak
 static const u16 sGameFreakBg_Pal[]   = INCBIN_U16("graphics/intro/game_freak/bg.gbapal");
 static const u8 sGameFreakBg_Gfx[]    = INCBIN_U8( "graphics/intro/game_freak/bg.4bpp.smol");
-static const u8 sGameFreakBg_Map[]    = INCBIN_U8( "graphics/intro/game_freak/bg.bin.smol");
+static const u8 sGameFreakBg_Map[]    = INCBIN_U8( "graphics/intro/game_freak/bg.bin.smolTM");
 static const u16 sGameFreakLogo_Pal[] = INCBIN_U16("graphics/intro/game_freak/logo.gbapal");
 static const u32 sGameFreakText_Gfx[] = INCBIN_U32( "graphics/intro/game_freak/game_freak.4bpp.smol");
 static const u32 sGameFreakLogo_Gfx[] = INCBIN_U32("graphics/intro/game_freak/logo.4bpp.smol");
@@ -267,29 +267,29 @@ static const u32 sPresents_Gfx[]      = INCBIN_U32("graphics/intro/game_freak/pr
 // Scene 1 (Grass close up)
 static const u16 sScene1_Grass_Pal[] = INCBIN_U16("graphics/intro/scene_1/grass.gbapal");
 static const u8 sScene1_Grass_Gfx[]  = INCBIN_U8( "graphics/intro/scene_1/grass.4bpp.smol");
-static const u8 sScene1_Grass_Map[]  = INCBIN_U8( "graphics/intro/scene_1/grass.bin.smol");
+static const u8 sScene1_Grass_Map[]  = INCBIN_U8( "graphics/intro/scene_1/grass.bin.smolTM");
 static const u16 sScene1_Bg_Pal[]    = INCBIN_U16("graphics/intro/scene_1/bg.gbapal");
 static const u8 sScene1_Bg_Gfx[]     = INCBIN_U8( "graphics/intro/scene_1/bg.4bpp.smol");
-static const u8 sScene1_Bg_Map[]     = INCBIN_U8( "graphics/intro/scene_1/bg.bin.smol");
+static const u8 sScene1_Bg_Map[]     = INCBIN_U8( "graphics/intro/scene_1/bg.bin.smolTM");
 
 // Scenes 2 and 3 (Gengar and Nidorino)
 static const u16 sScene2_Bg_Pal[]            = INCBIN_U16("graphics/intro/scene_2/bg.gbapal");
 static const u8 sScene2_Bg_Gfx[]             = INCBIN_U8( "graphics/intro/scene_2/bg.4bpp.smol");
-static const u8 sScene2_Bg_Map[]             = INCBIN_U8( "graphics/intro/scene_2/bg.bin.smol");
+static const u8 sScene2_Bg_Map[]             = INCBIN_U8( "graphics/intro/scene_2/bg.bin.smolTM");
 static const u16 sScene2_Plants_Pal[]        = INCBIN_U16("graphics/intro/scene_2/plants.gbapal"); // Unused
 static const u8 sScene2_Plants_Gfx[]         = INCBIN_U8( "graphics/intro/scene_2/plants.4bpp.smol");
-static const u8 sScene2_Plants_Map[]         = INCBIN_U8( "graphics/intro/scene_2/plants.bin.smol");
+static const u8 sScene2_Plants_Map[]         = INCBIN_U8( "graphics/intro/scene_2/plants.bin.smolTM");
 static const u16 sGengar_Pal[]               = INCBIN_U16("graphics/intro/gengar.gbapal"); // Used by multiple scenes
 static const u8 sScene2_GengarClose_Gfx[]    = INCBIN_U8( "graphics/intro/scene_2/gengar_close.4bpp.smol");
-static const u8 sScene2_GengarClose_Map[]    = INCBIN_U8( "graphics/intro/scene_2/gengar_close.bin.smol");
+static const u8 sScene2_GengarClose_Map[]    = INCBIN_U8( "graphics/intro/scene_2/gengar_close.bin.smolTM");
 static const u16 sScene2_NidorinoClose_Pal[] = INCBIN_U16("graphics/intro/scene_2/nidorino_close.gbapal");
 static const u8 sScene2_NidorinoClose_Gfx[]  = INCBIN_U8( "graphics/intro/scene_2/nidorino_close.4bpp.smol");
-static const u8 sScene2_NidorinoClose_Map[]  = INCBIN_U8( "graphics/intro/scene_2/nidorino_close.bin.smol");
+static const u8 sScene2_NidorinoClose_Map[]  = INCBIN_U8( "graphics/intro/scene_2/nidorino_close.bin.smolTM");
 static const u16 sScene3_Bg_Pal[]            = INCBIN_U16("graphics/intro/scene_3/bg.gbapal");
 static const u8 sScene3_Bg_Gfx[]             = INCBIN_U8( "graphics/intro/scene_3/bg.4bpp.smol");
-static const u8 sScene3_Bg_Map[]             = INCBIN_U8( "graphics/intro/scene_3/bg.bin.smol");
+static const u8 sScene3_Bg_Map[]             = INCBIN_U8( "graphics/intro/scene_3/bg.bin.smolTM");
 static const u8 sScene3_GengarAnim_Gfx[]     = INCBIN_U8( "graphics/intro/scene_3/gengar_anim.4bpp.smol");
-static const u8 sScene3_GengarAnim_Map[]     = INCBIN_U8( "graphics/intro/scene_3/gengar_anim.bin.smol");
+static const u8 sScene3_GengarAnim_Map[]     = INCBIN_U8( "graphics/intro/scene_3/gengar_anim.bin.smolTM");
 static const u32 sScene2_Gengar_Gfx[]        = INCBIN_U32("graphics/intro/scene_2/gengar.4bpp.smol");
 static const u16 sNidorino_Pal[]             = INCBIN_U16("graphics/intro/nidorino.gbapal"); // Used by multiple scenes
 static const u32 sScene2_Nidorino_Gfx[]      = INCBIN_U32("graphics/intro/scene_2/nidorino.4bpp.smol");

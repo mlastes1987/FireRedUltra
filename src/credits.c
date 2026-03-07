@@ -339,7 +339,7 @@ static const struct WindowTemplate sWindowTemplates_Pikachu[] = {
 
 static const u16 sCreditsMonCircle_Pal[] = INCBIN_U16("graphics/credits/white_circle.gbapal");
 static const u32 sCreditsMonCircle_Tiles[] = INCBIN_U32("graphics/credits/white_circle.8bpp.smol");
-static const u32 sCreditsMonCircle_Tilemap[] = INCBIN_U32("graphics/credits/white_circle.bin.smol");
+static const u32 sCreditsMonCircle_Tilemap[] = INCBIN_U32("graphics/credits/white_circle.bin.smolTM");
 
 static const u32 sCharizard1_Tiles[] = INCBIN_U32("graphics/credits/charizard_1.4bpp.smol");
 static const u32 sCharizard2_Tiles[] = INCBIN_U32("graphics/credits/charizard_2.4bpp.smol");
@@ -358,7 +358,7 @@ static const u32 sUnused = 0xF0;
 
 static const u16 sTheEnd_Pal[] = INCBIN_U16("graphics/credits/the_end.gbapal");
 static const u8 sTheEnd_Tiles[] = INCBIN_U8("graphics/credits/the_end.4bpp.smol");
-static const u8 sTheEnd_Tilemap[] = INCBIN_U8("graphics/credits/the_end.bin.smol");
+static const u8 sTheEnd_Tilemap[] = INCBIN_U8("graphics/credits/the_end.bin.smolTM");
 
 static const struct CompressedGraphicsHeader sCopyrightOrTheEndGfxHeaders[] = {
     {
