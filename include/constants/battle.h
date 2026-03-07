@@ -662,6 +662,7 @@ enum BattleEnvironments
 
 #define B_WIN_TYPE_NORMAL         0
 #define B_WIN_TYPE_ARENA          1
+#define B_WIN_TYPE_KANTO_TUTORIAL 2
 
 // Window Ids for sStandardBattleWindowTemplates / sBattleArenaWindowTemplates
 #define B_WIN_MSG                 0
