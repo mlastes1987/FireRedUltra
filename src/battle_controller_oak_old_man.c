@@ -431,7 +431,7 @@ static void PrintOakText_ForPetesSake(enum BattlerId battler)
     case 3:
         if (!IsTextPrinterActiveOnWindow(B_WIN_OAK_OLD_MAN))
         {
-            mask = (gBitTable[gBattleStruct->simulatedInputState[1]] | gBitTable[gBattleStruct->simulatedInputState[3]]) << 16;
+            mask = ((1 << gBattleStruct->simulatedInputState[1]) | (1 << gBattleStruct->simulatedInputState[3])) << 16;
             BeginNormalPaletteFade(mask,
                                    4,
                                    8,

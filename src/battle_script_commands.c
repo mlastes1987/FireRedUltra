@@ -14955,7 +14955,7 @@ void BS_GetBattlersForRecall(void)
     for (u32 i = 0; battler < MAX_BATTLERS_COUNT; battler += 2)
     {
         if (battler < gBattlersCount && gBattleMons[battler].hp != 0)
-            gBattleCommunication[MULTISTRING_CHOOSER] |= gBitTable[i];
+            gBattleCommunication[MULTISTRING_CHOOSER] |= (1u << i);
         i++;
     }
 
