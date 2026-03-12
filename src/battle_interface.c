@@ -187,47 +187,52 @@ static void SpriteCB_LastUsedBall(struct Sprite *);
 static void SpriteCB_LastUsedBallWin(struct Sprite *);
 static void SpriteCB_MoveInfoWin(struct Sprite *sprite);
 
-static const struct OamData sOamData_Healthbox = {
+static const struct OamData sOamData_64x32 =
+{
+    .y = 0,
+    .affineMode = ST_OAM_AFFINE_OFF,
+    .objMode = ST_OAM_OBJ_NORMAL,
+    .mosaic = FALSE,
+    .bpp = ST_OAM_4BPP,
     .shape = SPRITE_SHAPE(64x32),
+    .x = 0,
+    .matrixNum = 0,
     .size = SPRITE_SIZE(64x32),
-    .priority = 1
+    .tileNum = 0,
+    .priority = 1,
+    .paletteNum = 0,
+    .affineParam = 0,
 };
 
-static const struct SpriteTemplate sHealthboxPlayerSpriteTemplates[] = {
-    [B_POSITION_PLAYER_LEFT / 2] = {
+static const struct SpriteTemplate sHealthboxPlayerSpriteTemplates[] =
+{
+    [B_POSITION_PLAYER_LEFT / 2] =
+    {
         .tileTag = TAG_HEALTHBOX_PLAYER1_TILE,
         .paletteTag = TAG_HEALTHBOX_PAL,
-        .oam = &sOamData_Healthbox,
-        .anims = gDummySpriteAnimTable,
-        .affineAnims = gDummySpriteAffineAnimTable,
-        .callback = SpriteCallbackDummy
+        .oam = &sOamData_64x32,
     },
-    [B_POSITION_PLAYER_RIGHT / 2] = {
+    [B_POSITION_PLAYER_RIGHT / 2] =
+    {
         .tileTag = TAG_HEALTHBOX_PLAYER2_TILE,
         .paletteTag = TAG_HEALTHBOX_PAL,
-        .oam = &sOamData_Healthbox,
-        .anims = gDummySpriteAnimTable,
-        .affineAnims = gDummySpriteAffineAnimTable,
-        .callback = SpriteCallbackDummy
+        .oam = &sOamData_64x32,
     }
 };
 
-static const struct SpriteTemplate sHealthboxOpponentSpriteTemplates[] = {
-    [B_POSITION_OPPONENT_LEFT / 2] = {
+static const struct SpriteTemplate sHealthboxOpponentSpriteTemplates[] =
+{
+    [B_POSITION_OPPONENT_LEFT / 2] =
+    {
         .tileTag = TAG_HEALTHBOX_OPPONENT1_TILE,
         .paletteTag = TAG_HEALTHBOX_PAL,
-        .oam = &sOamData_Healthbox,
-        .anims = gDummySpriteAnimTable,
-        .affineAnims = gDummySpriteAffineAnimTable,
-        .callback = SpriteCallbackDummy
+        .oam = &sOamData_64x32,
     },
-    [B_POSITION_OPPONENT_RIGHT / 2] = {
+    [B_POSITION_OPPONENT_RIGHT / 2] =
+    {
         .tileTag = TAG_HEALTHBOX_OPPONENT2_TILE,
         .paletteTag = TAG_HEALTHBOX_PAL,
-        .oam = &sOamData_Healthbox,
-        .anims = gDummySpriteAnimTable,
-        .affineAnims = gDummySpriteAffineAnimTable,
-        .callback = SpriteCallbackDummy
+        .oam = &sOamData_64x32,
     }
 };
 
@@ -235,80 +240,63 @@ static const struct SpriteTemplate sHealthboxSafariSpriteTemplate =
 {
     .tileTag = TAG_HEALTHBOX_SAFARI_TILE,
     .paletteTag = TAG_HEALTHBOX_PAL,
-    .oam = &sOamData_Healthbox,
-    .anims = gDummySpriteAnimTable,
-    .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = SpriteCallbackDummy
+    .oam = &sOamData_64x32,
 };
 
-static const struct OamData sOamData_Healthbar = {
+static const struct OamData sOamData_Healthbar =
+{
+    .y = 0,
+    .affineMode = ST_OAM_AFFINE_OFF,
+    .objMode = ST_OAM_OBJ_NORMAL,
+    .mosaic = FALSE,
+    .bpp = ST_OAM_4BPP,
     .shape = SPRITE_SHAPE(32x8),
+    .x = 0,
+    .matrixNum = 0,
     .size = SPRITE_SIZE(32x8),
-    .priority = 1
+    .tileNum = 0,
+    .priority = 1,
+    .paletteNum = 0,
+    .affineParam = 0,
 };
 
-static const struct SpriteTemplate sHealthbarSpriteTemplates[] = {
-    [B_POSITION_PLAYER_LEFT] = {
+static const struct SpriteTemplate sHealthbarSpriteTemplates[] =
+{
+    [B_POSITION_PLAYER_LEFT] =
+    {
         .tileTag = TAG_HEALTHBAR_PLAYER1_TILE,
         .paletteTag = TAG_HEALTHBAR_PAL,
         .oam = &sOamData_Healthbar,
-        .anims = gDummySpriteAnimTable,
-        .affineAnims = gDummySpriteAffineAnimTable,
         .callback = SpriteCB_HealthBar
     },
-    [B_POSITION_OPPONENT_LEFT] = {
+    [B_POSITION_OPPONENT_LEFT] =
+    {
         .tileTag = TAG_HEALTHBAR_OPPONENT1_TILE,
         .paletteTag = TAG_HEALTHBAR_PAL,
         .oam = &sOamData_Healthbar,
-        .anims = gDummySpriteAnimTable,
-        .affineAnims = gDummySpriteAffineAnimTable,
         .callback = SpriteCB_HealthBar
     },
-    [B_POSITION_PLAYER_RIGHT] = {
+    [B_POSITION_PLAYER_RIGHT] =
+    {
         .tileTag = TAG_HEALTHBAR_PLAYER2_TILE,
         .paletteTag = TAG_HEALTHBAR_PAL,
         .oam = &sOamData_Healthbar,
-        .anims = gDummySpriteAnimTable,
-        .affineAnims = gDummySpriteAffineAnimTable,
         .callback = SpriteCB_HealthBar
     },
-    [B_POSITION_OPPONENT_RIGHT] = {
+    [B_POSITION_OPPONENT_RIGHT] =
+    {
         .tileTag = TAG_HEALTHBAR_OPPONENT2_TILE,
         .paletteTag = TAG_HEALTHBAR_PAL,
         .oam = &sOamData_Healthbar,
-        .anims = gDummySpriteAnimTable,
-        .affineAnims = gDummySpriteAffineAnimTable,
         .callback = SpriteCB_HealthBar
     }
 };
 
-static const struct Subsprite sUnused_Subsprites_0[] = {
-    { -16, 0, SPRITE_SHAPE(64x32), SPRITE_SIZE(64x32), 0, 1 },
-    { 48, 0, SPRITE_SHAPE(32x32), SPRITE_SIZE(32x32), 32, 1 },
-    { -16, 32, SPRITE_SHAPE(32x8), SPRITE_SIZE(32x8), 48, 1 },
-    { 16, 32, SPRITE_SHAPE(32x8), SPRITE_SIZE(32x8), 52, 1 },
-    { 48, 32, SPRITE_SHAPE(32x8), SPRITE_SIZE(32x8), 56, 1 }
-};
-
-static const struct Subsprite sUnused_Subsprites_2[] = {
-    { -16, 0, SPRITE_SHAPE(64x32), SPRITE_SIZE(64x32), 64, 1 },
-    { 48, 0, SPRITE_SHAPE(32x32), SPRITE_SIZE(32x32), 96, 1 },
-    { -16, 32, SPRITE_SHAPE(32x8), SPRITE_SIZE(32x8), 112, 1 },
-    { 16, 32, SPRITE_SHAPE(32x8), SPRITE_SIZE(32x8), 116, 1 },
-    { 48, 32, SPRITE_SHAPE(32x8), SPRITE_SIZE(32x8), 120, 1 }
-};
-
-static const struct Subsprite sUnused_Subsprites_1[] = {
-    { -16, 0, SPRITE_SHAPE(64x32), SPRITE_SIZE(64x32), 0, 1 },
-    { 48, 0, SPRITE_SHAPE(32x32), SPRITE_SIZE(32x32), 32, 1 }
-};
-
-static const struct Subsprite sUnused_Subsprites_3[] = {
-    { -16, 0, SPRITE_SHAPE(64x32), SPRITE_SIZE(64x32), 0, 1 },
-    { 48, 0, SPRITE_SHAPE(32x32), SPRITE_SIZE(32x32), 32, 1 }
-};
-
-static const struct Subsprite sHealthBar_Subsprites_Player[] = {
+/*  v-- Origin
+[0  +  ][1     ]   64x8
+*/
+static const struct Subsprite sHealthBar_Subsprites_Player[] =
+{
     {
         .x = -16,
         .y = 0,
@@ -327,7 +315,12 @@ static const struct Subsprite sHealthBar_Subsprites_Player[] = {
     }
 };
 
-static const struct Subsprite sHealthBar_Subsprites_Opponent[] = {
+/*       v-- Origin
+[]  [0  +  ][1     ]   8x8 + 64x8
+2^ ^--- Note 8px space
+*/
+static const struct Subsprite sHealthBar_Subsprites_Opponent[] =
+{
     {
         .x = -16,
         .y = 0,
@@ -351,23 +344,20 @@ static const struct Subsprite sHealthBar_Subsprites_Opponent[] = {
         .size = SPRITE_SIZE(8x8),
         .tileOffset = 8,
         .priority = 1
-    },
+    }
 };
 
-// Unused
-static const struct SubspriteTable sUnused_SubspriteTable[] = {
-    {ARRAY_COUNT(sUnused_Subsprites_0), sUnused_Subsprites_0},
-    {ARRAY_COUNT(sUnused_Subsprites_1), sUnused_Subsprites_1},
-    {ARRAY_COUNT(sUnused_Subsprites_2), sUnused_Subsprites_2},
-    {ARRAY_COUNT(sUnused_Subsprites_3), sUnused_Subsprites_3}
-};
-
-static const struct SubspriteTable sHealthBar_SubspriteTable[] = {
+static const struct SubspriteTable sHealthBar_SubspriteTable[] =
+{
     [B_SIDE_PLAYER]   = {ARRAY_COUNT(sHealthBar_Subsprites_Player), sHealthBar_Subsprites_Player},
     [B_SIDE_OPPONENT] = {ARRAY_COUNT(sHealthBar_Subsprites_Opponent), sHealthBar_Subsprites_Opponent},
 };
 
-static const struct Subsprite sStatusSummaryBar_Subsprites_Enter[] = {
+/*                      v-- Origin
+[0     ][1     ][2     ][3     ]   128x8
+*/
+static const struct Subsprite sStatusSummaryBar_Subsprites_Enter[] =
+{
     {
         .x = -96,
         .y = 0,
@@ -402,7 +392,8 @@ static const struct Subsprite sStatusSummaryBar_Subsprites_Enter[] = {
     }
 };
 
-static const struct Subsprite sStatusSummaryBar_Subsprites_Exit[] = {
+static const struct Subsprite sStatusSummaryBar_Subsprites_Exit[] =
+{
     {
         .x = -96,
         .y = 0,
@@ -453,87 +444,83 @@ static const struct Subsprite sStatusSummaryBar_Subsprites_Exit[] = {
     }
 };
 
-static const struct SubspriteTable sStatusSummaryBar_SubspriteTable_Enter[] = {
+static const struct SubspriteTable sStatusSummaryBar_SubspriteTable_Enter[] =
+{
     {ARRAY_COUNT(sStatusSummaryBar_Subsprites_Enter), sStatusSummaryBar_Subsprites_Enter}
 };
 
-static const struct SubspriteTable sStatusSummaryBar_SubspriteTable_Exit[] = {
+static const struct SubspriteTable sStatusSummaryBar_SubspriteTable_Exit[] =
+{
     {ARRAY_COUNT(sStatusSummaryBar_Subsprites_Exit), sStatusSummaryBar_Subsprites_Exit}
 };
-
-static const u16 sBattleInterface_Unused[] = INCBIN_U16("graphics/battle_interface/unused.4bpp");
 
 static const struct CompressedSpriteSheet sStatusSummaryBarSpriteSheet =
 {
     .data = gBattleInterface_PartySummaryBar_Gfx,
     .size = 16 * TILE_SIZE_4BPP,
-    .tag = TAG_PARTY_SUMMARY_BAR_TILE,
+    .tag = TAG_STATUS_SUMMARY_BAR_TILE,
 };
 
-static const struct SpritePalette sPartySummaryBarSpritePals =
+static const struct SpritePalette sStatusSummaryBarSpritePal =
 {
     .data = gBattleInterface_Healthbox_Pal,
-    .tag = TAG_PARTY_SUMMARY_BAR_PAL,
+    .tag = TAG_STATUS_SUMMARY_BAR_PAL,
 };
 
-static const struct SpritePalette sPartySummaryBallSpritePals =
+static const struct SpritePalette sStatusSummaryBallsSpritePal =
 {
     .data = gBattleInterface_Healthbar_Pal,
-    .tag = TAG_PARTY_SUMMARY_BALL_PAL,
+    .tag = TAG_STATUS_SUMMARY_BALLS_PAL,
 };
 
-static const struct SpriteSheet sPartySummaryBallSpriteSheets =
+static const struct SpriteSheet sStatusSummaryBallsSpriteSheet =
 {
     .data = &gHealthboxElementsGfxTable[B_INTERFACE_GFX_BALL_PARTY_SUMMARY],
     .size = 4 * TILE_SIZE_4BPP,
-    .tag = TAG_PARTY_SUMMARY_BALL_TILE,
+    .tag = TAG_STATUS_SUMMARY_BALLS_TILE,
 };
 
-// Unused
-static const struct OamData sOamData_Healthbox2 = {
-    .shape = SPRITE_SHAPE(64x32),
-    .size = SPRITE_SIZE(64x32),
-    .priority = 1
-};
-
-static const struct OamData sOamData_PartySummaryBall = {
+static const struct OamData sOamData_StatusSummaryBalls =
+{
+    .y = 0,
+    .affineMode = ST_OAM_AFFINE_OFF,
+    .objMode = ST_OAM_OBJ_NORMAL,
+    .mosaic = FALSE,
+    .bpp = ST_OAM_4BPP,
     .shape = SPRITE_SHAPE(8x8),
+    .x = 0,
+    .matrixNum = 0,
     .size = SPRITE_SIZE(8x8),
-    .priority = 1
+    .tileNum = 0,
+    .priority = 1,
+    .paletteNum = 0,
+    .affineParam = 0,
 };
 
-static const struct SpriteTemplate sPartySummaryBarSpriteTemplates[] = {
+static const struct SpriteTemplate sStatusSummaryBarSpriteTemplates[] = {
     {
-        .tileTag = TAG_PARTY_SUMMARY_BAR_TILE,
-        .paletteTag = TAG_PARTY_SUMMARY_BAR_PAL,
-        .oam = &sOamData_Healthbox,
-        .anims = gDummySpriteAnimTable,
-        .affineAnims = gDummySpriteAffineAnimTable,
+        .tileTag = TAG_STATUS_SUMMARY_BAR_TILE,
+        .paletteTag = TAG_STATUS_SUMMARY_BAR_PAL,
+        .oam = &sOamData_64x32,
         .callback = SpriteCB_PartySummaryBar
     }, {
-        .tileTag = TAG_PARTY_SUMMARY_BAR_TILE,
-        .paletteTag = TAG_PARTY_SUMMARY_BAR_PAL,
-        .oam = &sOamData_Healthbox,
-        .anims = gDummySpriteAnimTable,
-        .affineAnims = gDummySpriteAffineAnimTable,
+        .tileTag = TAG_STATUS_SUMMARY_BAR_TILE,
+        .paletteTag = TAG_STATUS_SUMMARY_BAR_PAL,
+        .oam = &sOamData_64x32,
         .callback = SpriteCB_PartySummaryBar
     }
 };
 
-static const struct SpriteTemplate sPartySummaryBallSpriteTemplates[] = {
+static const struct SpriteTemplate sStatusSummaryBallsSpriteTemplates[] = {
     {
-        .tileTag = TAG_PARTY_SUMMARY_BALL_TILE,
-        .paletteTag = TAG_PARTY_SUMMARY_BALL_PAL,
-        .oam = &sOamData_PartySummaryBall,
-        .anims = gDummySpriteAnimTable,
-        .affineAnims = gDummySpriteAffineAnimTable,
+        .tileTag = TAG_STATUS_SUMMARY_BALLS_TILE,
+        .paletteTag = TAG_STATUS_SUMMARY_BALLS_PAL,
+        .oam = &sOamData_StatusSummaryBalls,
         .callback = SpriteCB_PartySummaryBall_OnBattleStart
     }, {
-        .tileTag = TAG_PARTY_SUMMARY_BALL_TILE,
-        .paletteTag = TAG_PARTY_SUMMARY_BALL_PAL,
-        .oam = &sOamData_PartySummaryBall,
-        .anims = gDummySpriteAnimTable,
-        .affineAnims = gDummySpriteAffineAnimTable,
+        .tileTag = TAG_STATUS_SUMMARY_BALLS_TILE,
+        .paletteTag = TAG_STATUS_SUMMARY_BALLS_PAL,
+        .oam = &sOamData_StatusSummaryBalls,
         .callback = SpriteCB_PartySummaryBall_OnBattleStart
     }
 };
@@ -1219,11 +1206,11 @@ u8 CreatePartyStatusSummarySprites(enum BattlerId battler, struct HpAndStatus *p
     }
 
     LoadCompressedSpriteSheetUsingHeap(&sStatusSummaryBarSpriteSheet);
-    LoadSpriteSheet(&sPartySummaryBallSpriteSheets);
-    LoadSpritePalette(&sPartySummaryBarSpritePals);
-    LoadSpritePalette(&sPartySummaryBallSpritePals);
+    LoadSpriteSheet(&sStatusSummaryBallsSpriteSheet);
+    LoadSpritePalette(&sStatusSummaryBarSpritePal);
+    LoadSpritePalette(&sStatusSummaryBallsSpritePal);
 
-    summaryBarSpriteId = CreateSprite(&sPartySummaryBarSpriteTemplates[isOpponent], bar_X, bar_Y, 10);
+    summaryBarSpriteId = CreateSprite(&sStatusSummaryBarSpriteTemplates[isOpponent], bar_X, bar_Y, 10);
     SetSubspriteTables(&gSprites[summaryBarSpriteId], sStatusSummaryBar_SubspriteTable_Enter);
     gSprites[summaryBarSpriteId].x2 = bar_pos2_X;
     gSprites[summaryBarSpriteId].sEnterSpeed = bar_data0;
@@ -1240,7 +1227,7 @@ u8 CreatePartyStatusSummarySprites(enum BattlerId battler, struct HpAndStatus *p
 
     for (i = 0; i < PARTY_SIZE; i++)
     {
-        ballIconSpritesIds[i] = CreateSpriteAtEnd(&sPartySummaryBallSpriteTemplates[isOpponent], bar_X, bar_Y - 4, 9);
+        ballIconSpritesIds[i] = CreateSpriteAtEnd(&sStatusSummaryBallsSpriteTemplates[isOpponent], bar_X, bar_Y - 4, 9);
 
         if (!isBattleStart)
             gSprites[ballIconSpritesIds[i]].callback = SpriteCB_PartySummaryBall_OnSwitchout;

@@ -46,15 +46,15 @@ enum
 #define TAG_HEALTHBOX_PALS_1                    55049
 #define TAG_HEALTHBOX_PALS_2                    55050
 #define TAG_HEALTHBOX_SAFARI_TILE               55051
-#define TAG_PARTY_SUMMARY_BAR_TILE              55052
+#define TAG_STATUS_SUMMARY_BAR_TILE             55052
 
-#define TAG_PARTY_SUMMARY_BAR_PAL               55056
-#define TAG_PARTY_SUMMARY_BALL_PAL              55058
-#define TAG_PARTY_SUMMARY_BALL_TILE             55060
+#define TAG_STATUS_SUMMARY_BAR_PAL              55056
+#define TAG_STATUS_SUMMARY_BALLS_PAL            55058
+#define TAG_STATUS_SUMMARY_BALLS_TILE           55060
 
 #define TAG_HEALTHBOX_PAL                       TAG_HEALTHBOX_PLAYER1_TILE
 #define TAG_HEALTHBAR_PAL                       TAG_HEALTHBAR_PLAYER1_TILE
-#define TAG_SHADOW_PAL                  TAG_HEALTHBOX_PLAYER1_TILE
+#define TAG_SHADOW_PAL                          TAG_HEALTHBOX_PLAYER1_TILE
 
 #define TAG_SHADOW_TILE                 0xD759
 
