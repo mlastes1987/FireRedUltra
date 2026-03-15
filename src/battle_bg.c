@@ -967,7 +967,7 @@ void BattleInitBgsAndWindows(void)
         SetBgTilemapBuffer(1, gBattleAnimBgTilemapBuffer);
         SetBgTilemapBuffer(2, gBattleAnimBgTilemapBuffer);
     }
-    else if (gBattleTypeFlags & (BATTLE_TYPE_FIRST_BATTLE | BATTLE_TYPE_CATCH_TUTORIAL))
+    else if (gBattleTypeFlags & (BATTLE_TYPE_FIRST_BATTLE | BATTLE_TYPE_CATCH_TUTORIAL | BATTLE_TYPE_POKEDUDE))
     {
         gBattleScripting.windowsType = B_WIN_TYPE_KANTO_TUTORIAL;
     }

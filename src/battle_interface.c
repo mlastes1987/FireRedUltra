@@ -1731,7 +1731,7 @@ void TryAddPokeballIconToHealthbox(u8 healthboxSpriteId, bool8 noStatus)
     enum BattlerId battler;
     u8 healthBarSpriteId;
 
-    if (gBattleTypeFlags & BATTLE_TYPE_CATCH_TUTORIAL)
+    if (gBattleTypeFlags & (BATTLE_TYPE_FIRST_BATTLE | BATTLE_TYPE_CATCH_TUTORIAL | BATTLE_TYPE_POKEDUDE))
         return;
     if (gBattleTypeFlags & BATTLE_TYPE_TRAINER)
         return;

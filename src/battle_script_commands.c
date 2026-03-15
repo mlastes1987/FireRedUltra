@@ -4215,7 +4215,7 @@ static void Cmd_getexp(void)
             else
             {
                 // Music change in a wild battle after fainting opposing pokemon.
-                if (!(gBattleTypeFlags & BATTLE_TYPE_TRAINER)
+                if (!(gBattleTypeFlags & (BATTLE_TYPE_TRAINER | BATTLE_TYPE_POKEDUDE))
                     && (gBattleMons[0].hp || (IsDoubleBattle() && gBattleMons[2].hp))
                     && !IsBattlerAlive(GetBattlerAtPosition(B_POSITION_OPPONENT_LEFT))
                     && (!IsDoubleBattle() || !IsBattlerAlive(GetBattlerAtPosition(B_POSITION_OPPONENT_RIGHT)))
@@ -4253,7 +4253,7 @@ static void Cmd_getexp(void)
                             gBattleStruct->battlerExpReward = gExperienceTables[growthRate][levelCap] - currentExp;
                     }
 
-                    if (IsTradedMon(&gPlayerParty[*expMonId]))
+                    if (IsTradedMon(&gPlayerParty[*expMonId]) && !(gBattleTypeFlags & BATTLE_TYPE_POKEDUDE))
                     {
                         // check if the Pokémon doesn't belong to the player
                         if (gBattleTypeFlags & BATTLE_TYPE_INGAME_PARTNER && *expMonId >= 3)
@@ -10867,7 +10867,7 @@ static void Cmd_handleballthrow(void)
         MarkBattlerForControllerExec(gBattlerAttacker);
         gBattlescriptCurrInstr = BattleScript_TrainerBallBlock;
     }
-    else if (gBattleTypeFlags & BATTLE_TYPE_CATCH_TUTORIAL)
+    else if (gBattleTypeFlags & (BATTLE_TYPE_POKEDUDE | BATTLE_TYPE_CATCH_TUTORIAL))
     {
         BtlController_EmitBallThrowAnim(gBattlerAttacker, B_COMM_TO_CONTROLLER, BALL_3_SHAKES_SUCCESS);
         MarkBattlerForControllerExec(gBattlerAttacker);
@@ -11841,7 +11841,7 @@ void ApplyExperienceMultipliers(s32 *expAmount, u8 expGetterMonId, u8 faintedBat
 {
     enum HoldEffect holdEffect = GetMonHoldEffect(&gPlayerParty[expGetterMonId]);
 
-    if (IsTradedMon(&gPlayerParty[expGetterMonId]))
+    if (IsTradedMon(&gPlayerParty[expGetterMonId]) && !(gBattleTypeFlags & BATTLE_TYPE_POKEDUDE))
         *expAmount = (*expAmount * 150) / 100;
     if (holdEffect == HOLD_EFFECT_LUCKY_EGG)
         *expAmount = (*expAmount * 150) / 100;
