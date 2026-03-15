@@ -52,6 +52,12 @@ enum FollowerTransformTypes
     TRANSFORM_TYPE_WEATHER,
 };
 
+// Sprite data for the CameraObject functions
+#define sCamera_FollowSpriteId data[0]
+#define sCamera_State          data[1]
+#define sCamera_MoveX          data[2]
+#define sCamera_MoveY          data[3]
+
 struct StepAnimTable
 {
     const union AnimCmd *const *anims;
@@ -146,8 +152,8 @@ u8 CreateObjectGraphicsSprite(u16 graphicsId, SpriteCallback callback, s16 x, s1
 u8 TrySpawnObjectEvent(u8 localId, u8 mapNum, u8 mapGroup);
 u32 SpawnSpecialObjectEventParameterized(u16 graphicsId, u8 movementBehavior, u8 localId, s16 x, s16 y, u8 elevation);
 u8 SpawnSpecialObjectEvent(struct ObjectEventTemplate *);
-void CameraObjectReset1(void);
-void CameraObjectReset2(void);
+void CameraObjectReset(void);
+void CameraObjectFreeze(void);
 u8 UpdateSpritePaletteByTemplate(const struct SpriteTemplate *template, struct Sprite *sprite);
 void ObjectEventSetGraphicsId(struct ObjectEvent *objectEvent, u16 graphicsId);
 void ObjectEventTurn(struct ObjectEvent *, u8);

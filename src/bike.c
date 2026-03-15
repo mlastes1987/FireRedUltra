@@ -176,7 +176,7 @@ static void BikeTransition_TurnDirection(u8 direction)
 static void BikeTransition_MoveDirection(u8 direction)
 {
     struct ObjectEvent *playerObjEvent;
-    
+
     playerObjEvent = &gObjectEvents[gPlayerAvatar.objectEventId];
     if (!CanBikeFaceDirectionOnRail(direction, playerObjEvent->currentMetatileBehavior))
     {
@@ -198,7 +198,7 @@ static void BikeTransition_MoveDirection(u8 direction)
         }
         else
         {
-            
+
             if (collision == COLLISION_COUNT)
                 PlayerWalkFast(direction);
             else if (ObjectMovingOnRockStairs(playerObjEvent, direction))
@@ -324,7 +324,6 @@ bool8 IsPlayerNotUsingAcroBikeOnBumpySlope(void)
 
 void GetOnOffBike(u8 flags)
 {
-    gBikeCameraAheadPanback = FALSE;
     if (gPlayerAvatar.flags & (PLAYER_AVATAR_FLAG_MACH_BIKE | PLAYER_AVATAR_FLAG_ACRO_BIKE))
     {
         SetPlayerAvatarTransitionFlags(PLAYER_AVATAR_FLAG_ON_FOOT);

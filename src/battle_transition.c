@@ -4397,7 +4397,7 @@ static bool8 TransitionIntro_FadeFromGray(struct Task *task)
 static void InitTransitionData(void)
 {
     memset(sTransitionData, 0, sizeof(*sTransitionData));
-    FieldCameraGetPixelOffsetAtGround(&sTransitionData->cameraX, &sTransitionData->cameraY);
+    GetCameraOffsetWithPan(&sTransitionData->cameraX, &sTransitionData->cameraY);
 }
 
 static void VBlankCB_BattleTransition(void)

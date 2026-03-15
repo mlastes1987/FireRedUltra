@@ -1689,7 +1689,7 @@ static void Task_TeleportWarpOutPlayerAnim(u8 taskId)
         tDeltaY = 1;
         tYdeflection = (u16)(sprite->y + sprite->y2) * 16;
         sprite->y2 = 0;
-        CameraObjectReset2();
+        CameraObjectFreeze();
         object->fixedPriority = TRUE;
         sprite->oam.priority = 0;
         sprite->subpriority = 0;
@@ -1740,7 +1740,7 @@ static void Task_TeleportWarpInPlayerAnim(u8 taskId)
         tSubpriority = sprite->subpriority;
         tYdeflection = -((u16)sprite->y2 + 32) * 16;
         sprite->y2 = 0;
-        CameraObjectReset2();
+        CameraObjectFreeze();
         object->fixedPriority = TRUE;
         sprite->oam.priority = 1;
         sprite->subpriority = 0;
@@ -1776,7 +1776,7 @@ static void Task_TeleportWarpInPlayerAnim(u8 taskId)
             object->fixedPriority = 0;
             sprite->oam.priority = tPriority;
             sprite->subpriority = tSubpriority;
-            CameraObjectReset1();
+            CameraObjectReset();
             DestroyTask(taskId);
         }
         break;

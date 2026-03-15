@@ -514,7 +514,7 @@ void SetObjEventTemplateMovementType(u8 localId, u8 movementType)
 
 static void InitMapView(void)
 {
-    move_tilemap_camera_to_upper_left_corner();
+    ResetFieldCamera();
     CopyMapTilesetsToVram(gMapHeader.mapLayout);
     LoadMapTilesetPalettes(gMapHeader.mapLayout);
     DrawWholeMapView();
@@ -2012,7 +2012,7 @@ static bool32 LoadMapInStepsLink(u8 *state)
         (*state)++;
         break;
     case 5:
-        move_tilemap_camera_to_upper_left_corner();
+        ResetFieldCamera();
         (*state)++;
         break;
     case 6:
@@ -2098,7 +2098,7 @@ static bool32 LoadMapInStepsLocal(u8 *state, bool32 inLink)
         (*state)++;
         break;
     case 6:
-        move_tilemap_camera_to_upper_left_corner();
+        ResetFieldCamera();
         (*state)++;
         break;
     case 7:
@@ -2208,7 +2208,7 @@ static bool32 ReturnToFieldLink(u8 *state)
         (*state)++;
         break;
     case 4:
-        move_tilemap_camera_to_upper_left_corner();
+        ResetFieldCamera();
         (*state)++;
         break;
     case 5:
@@ -2501,7 +2501,7 @@ static bool32 LoadMap_QLPlayback(u8 *state)
         (*state)++;
         break;
     case 5:
-        move_tilemap_camera_to_upper_left_corner();
+        ResetFieldCamera();
         (*state)++;
         break;
     case 6:
@@ -2670,7 +2670,7 @@ static bool8 MapLdr_Credits(void)
         (*state)++;
         break;
     case 3:
-        move_tilemap_camera_to_upper_left_corner();
+        ResetFieldCamera();
         (*state)++;
         break;
     case 4:
