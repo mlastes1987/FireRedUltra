@@ -4635,12 +4635,12 @@ extern const u32 gHealthboxDoublesPlayerGfx[];
 extern const u32 gHealthboxDoublesOpponentGfx[];
 extern const u32 gHealthboxSafariGfx[];
 extern const u32 gBlankGfxCompressed[];
-extern const u32 gInterfaceGfx_HPNumbers[];
+extern const u32 gBattleInterfaceGfx_BattleBar[];
 extern const u32 gGhostFrontPic[];
 extern const u16 gGhostPalette[];
-extern const u32 gSubstituteDollFrontGfx[];
-extern const u32 gSubstituteDollBackGfx[];
-extern const u16 gSubstituteDollPal[];
+extern const u32 gBattleAnimSpriteGfx_Substitute[];
+extern const u32 gBattleAnimSpriteGfx_SubstituteBack[];
+extern const u16 gBattleAnimSpritePal_Substitute[];
 
 // ice
 extern const u8 gWeatherFogHorizontalTiles[];
