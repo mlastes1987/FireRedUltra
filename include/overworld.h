@@ -58,9 +58,9 @@ enum {
 extern struct WarpData gLastUsedWarp;
 extern struct LinkPlayerObjectEvent gLinkPlayerObjectEvents[4];
 
-extern u16 *gBGTilemapBuffers1;
-extern u16 *gBGTilemapBuffers2;
-extern u16 *gBGTilemapBuffers3;
+extern u16 *gOverworldTilemapBuffer_Bg2;
+extern u16 *gOverworldTilemapBuffer_Bg1;
+extern u16 *gOverworldTilemapBuffer_Bg3;
 extern u16 gHeldKeyCodeToSend;
 extern MainCallback gFieldCallback;
 extern bool8 (* gFieldCallback2)(void);

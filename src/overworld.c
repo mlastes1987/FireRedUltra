@@ -119,9 +119,9 @@ static EWRAM_DATA s16 sCreditsOverworld_CmdIndex = 0;
 
 EWRAM_DATA struct LinkPlayerObjectEvent gLinkPlayerObjectEvents[4] = {};
 
-COMMON_DATA u16 *gBGTilemapBuffers1 = NULL;
-COMMON_DATA u16 *gBGTilemapBuffers2 = NULL;
-COMMON_DATA u16 *gBGTilemapBuffers3 = NULL;
+COMMON_DATA u16 *gOverworldTilemapBuffer_Bg2 = NULL;
+COMMON_DATA u16 *gOverworldTilemapBuffer_Bg1 = NULL;
+COMMON_DATA u16 *gOverworldTilemapBuffer_Bg3 = NULL;
 COMMON_DATA void (*gFieldCallback)(void) = NULL;
 COMMON_DATA bool8 (*gFieldCallback2)(void) = NULL;
 COMMON_DATA u16 gHeldKeyCodeToSend = 0;
@@ -1377,12 +1377,12 @@ static void InitOverworldBgs(void)
     SetBgAttribute(1, BG_ATTR_MOSAIC, TRUE);
     SetBgAttribute(2, BG_ATTR_MOSAIC, TRUE);
     SetBgAttribute(3, BG_ATTR_MOSAIC, TRUE);
-    gBGTilemapBuffers2 = AllocZeroed(BG_SCREEN_SIZE);
-    gBGTilemapBuffers1 = AllocZeroed(BG_SCREEN_SIZE);
-    gBGTilemapBuffers3 = AllocZeroed(BG_SCREEN_SIZE);
-    SetBgTilemapBuffer(1, gBGTilemapBuffers2);
-    SetBgTilemapBuffer(2, gBGTilemapBuffers1);
-    SetBgTilemapBuffer(3, gBGTilemapBuffers3);
+    gOverworldTilemapBuffer_Bg1 = AllocZeroed(BG_SCREEN_SIZE);
+    gOverworldTilemapBuffer_Bg2 = AllocZeroed(BG_SCREEN_SIZE);
+    gOverworldTilemapBuffer_Bg3 = AllocZeroed(BG_SCREEN_SIZE);
+    SetBgTilemapBuffer(1, gOverworldTilemapBuffer_Bg1);
+    SetBgTilemapBuffer(2, gOverworldTilemapBuffer_Bg2);
+    SetBgTilemapBuffer(3, gOverworldTilemapBuffer_Bg3);
     InitStandardTextBoxWindows();
     InitTextBoxGfxAndPrinters();
     InitFieldMessageBox();
@@ -1395,12 +1395,12 @@ static void InitOverworldBgs_NoResetHeap(void)
     SetBgAttribute(1, BG_ATTR_MOSAIC, TRUE);
     SetBgAttribute(2, BG_ATTR_MOSAIC, TRUE);
     SetBgAttribute(3, BG_ATTR_MOSAIC, TRUE);
-    gBGTilemapBuffers2 = AllocZeroed(BG_SCREEN_SIZE);
-    gBGTilemapBuffers1 = AllocZeroed(BG_SCREEN_SIZE);
-    gBGTilemapBuffers3 = AllocZeroed(BG_SCREEN_SIZE);
-    SetBgTilemapBuffer(1, gBGTilemapBuffers2);
-    SetBgTilemapBuffer(2, gBGTilemapBuffers1);
-    SetBgTilemapBuffer(3, gBGTilemapBuffers3);
+    gOverworldTilemapBuffer_Bg1 = AllocZeroed(BG_SCREEN_SIZE);
+    gOverworldTilemapBuffer_Bg2 = AllocZeroed(BG_SCREEN_SIZE);
+    gOverworldTilemapBuffer_Bg3 = AllocZeroed(BG_SCREEN_SIZE);
+    SetBgTilemapBuffer(1, gOverworldTilemapBuffer_Bg1);
+    SetBgTilemapBuffer(2, gOverworldTilemapBuffer_Bg2);
+    SetBgTilemapBuffer(3, gOverworldTilemapBuffer_Bg3);
     InitStandardTextBoxWindows();
     InitTextBoxGfxAndPrinters();
     InitFieldMessageBox();
@@ -1409,9 +1409,9 @@ static void InitOverworldBgs_NoResetHeap(void)
 void CleanupOverworldWindowsAndTilemaps(void)
 {
     FreeAllOverworldWindowBuffers();
-    Free(gBGTilemapBuffers3);
-    Free(gBGTilemapBuffers1);
-    Free(gBGTilemapBuffers2);
+    Free(gOverworldTilemapBuffer_Bg3);
+    Free(gOverworldTilemapBuffer_Bg2);
+    Free(gOverworldTilemapBuffer_Bg1);
 }
 
 static void ResetSafariZoneFlag_(void)
