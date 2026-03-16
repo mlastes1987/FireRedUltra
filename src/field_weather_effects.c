@@ -5,6 +5,7 @@
 #include "fieldmap.h"
 #include "field_weather.h"
 #include "field_weather_effects.h"
+#include "map_preview_screen.h"
 #include "overworld.h"
 #include "random.h"
 #include "script.h"
@@ -2255,6 +2256,8 @@ void Shade_InitVars(void)
     gWeatherPtr->initStep = 0;
     gWeatherPtr->targetColorMapIndex = 3;
     gWeatherPtr->colorMapStepDelay = 20;
+    if (!ForestMapPreviewScreenIsRunning())
+        Weather_SetBlendCoeffs(8, BASE_SHADOW_INTENSITY); // preserve shadow darkness
     gWeatherPtr->noShadows = FALSE;
 }
 

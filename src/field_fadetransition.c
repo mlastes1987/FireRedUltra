@@ -527,7 +527,7 @@ static bool32 WaitWarpFadeOutScreen(void)
 
 bool32 FieldFadeTransitionBackgroundEffectIsFinished(void)
 {
-    if (IsWeatherNotFadingIn() == TRUE && ForestMapPreviewScreenIsRunning())
+    if (IsWeatherNotFadingIn() == TRUE && !ForestMapPreviewScreenIsRunning())
         return TRUE;
     else
         return FALSE;
