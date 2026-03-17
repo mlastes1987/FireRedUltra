@@ -76,15 +76,20 @@
 #define PLAYER_LINK_STATE_READY 0x82
 #define PLAYER_LINK_STATE_EXITING_ROOM 0x83
 
-#define FACING_NONE 0
-#define FACING_UP 1
-#define FACING_DOWN 2
-#define FACING_LEFT 3
-#define FACING_RIGHT 4
-#define FACING_FORCED_UP 7
-#define FACING_FORCED_DOWN 8
-#define FACING_FORCED_LEFT 9
-#define FACING_FORCED_RIGHT 10
+enum FacingDirection
+{
+    FACING_NONE = 0,
+    FACING_UP = 1,
+    FACING_DOWN = 2,
+    FACING_LEFT = 3,
+    FACING_RIGHT = 4,
+    FACING_NONE_2 = 5,
+    FACING_NONE_3 = 6,
+    FACING_FORCED_UP = 7,
+    FACING_FORCED_DOWN = 8,
+    FACING_FORCED_LEFT = 9,
+    FACING_FORCED_RIGHT = 10,
+};
 
 typedef u16 (*KeyInterCB)(u32 key);
 
@@ -2779,21 +2784,17 @@ static u8 (*const sLinkPlayerMovementModes[])(struct LinkPlayerObjectEvent *, st
 // These handlers return TRUE if the movement was scripted and successful, and FALSE otherwise.
 static bool8 (*const sLinkPlayerFacingHandlers[])(struct LinkPlayerObjectEvent *, struct ObjectEvent *, u8) =
 {
-    [DIR_NONE]  = FacingHandler_DoNothing,
-    [DIR_SOUTH] = FacingHandler_DpadMovement,
-    [DIR_NORTH] = FacingHandler_DpadMovement,
-    [DIR_WEST]  = FacingHandler_DpadMovement,
-    [DIR_EAST]  = FacingHandler_DpadMovement,
-};
-
-static bool8 (*const sUnusedLinkPlayerFacingHandlers[])(struct LinkPlayerObjectEvent *, struct ObjectEvent *, u8) =
-{
-    FacingHandler_DoNothing,
-    FacingHandler_DoNothing,
-    FacingHandler_ForcedFacingChange,
-    FacingHandler_ForcedFacingChange,
-    FacingHandler_ForcedFacingChange,
-    FacingHandler_ForcedFacingChange,
+    [FACING_NONE]  = FacingHandler_DoNothing,
+    [FACING_UP] = FacingHandler_DpadMovement,
+    [FACING_DOWN] = FacingHandler_DpadMovement,
+    [FACING_LEFT]  = FacingHandler_DpadMovement,
+    [FACING_RIGHT]  = FacingHandler_DpadMovement,
+    [FACING_NONE_2] = FacingHandler_DoNothing,
+    [FACING_NONE_3] = FacingHandler_DoNothing,
+    [FACING_FORCED_UP] = FacingHandler_ForcedFacingChange,
+    [FACING_FORCED_DOWN] = FacingHandler_ForcedFacingChange,
+    [FACING_FORCED_LEFT] = FacingHandler_ForcedFacingChange,
+    [FACING_FORCED_RIGHT] = FacingHandler_ForcedFacingChange,
 };
 
 // These handlers are run after an attempted movement.
@@ -3005,6 +3006,7 @@ static void UpdateAllLinkPlayers(u16 *keys, s32 selfId)
         HandleLinkPlayerKeyInput(i, key, &player, &setFacing);
         if (sPlayerLinkStates[i] == PLAYER_LINK_STATE_IDLE)
             setFacing = GetDirectionForDpadKey(key);
+
         SetPlayerFacingDirection(i, setFacing);
     }
 }
@@ -3493,7 +3495,7 @@ static void ZeroObjectEvent(struct ObjectEvent *objEvent)
 // conflict with the usual Event Object struct, thus the definitions.
 #define linkGender(obj) obj->singleMovementActive
 // not even one can reference *byte* aligned bitfield members...
-#define linkDirection(obj) ((u8 *)obj)[offsetof(typeof(*obj), fieldEffectSpriteId) - 1] // -> rangeX
+#define linkDirection(obj) ((u8 *)obj)[offsetof(typeof(*obj), range)] // -> rangeX
 
 static void SpawnLinkPlayerObjectEvent(u8 linkPlayerId, s16 x, s16 y, u8 gender)
 {
