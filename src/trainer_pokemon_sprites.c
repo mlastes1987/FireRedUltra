@@ -63,7 +63,7 @@ static void LoadMonPicPaletteByTagOrSlot(u16 species, bool32 isShiny, u32 person
 
 void LoadMonFrontPicInWindow(u16 species, bool32 isShiny, u32 personality, u8 paletteSlot, u8 windowId)
 {
-    u8 *framePics = Alloc(TRAINER_PIC_SIZE * MAX_TRAINER_PIC_FRAMES);
+    u8 *framePics = Alloc(MON_PIC_SIZE * MAX_MON_PIC_FRAMES);
 
     if (!framePics)
         return;
@@ -76,7 +76,7 @@ void LoadMonFrontPicInWindow(u16 species, bool32 isShiny, u32 personality, u8 pa
 
 void LoadTrainerFrontPicInWindow(enum TrainerPicID trainerPicId, u16 destX, u16 destY, u8 paletteSlot, u8 windowId)
 {
-    u8 *framePics = Alloc(TRAINER_PIC_SIZE * MAX_TRAINER_PIC_FRAMES);
+    u8 *framePics = Alloc(TRAINER_PIC_SIZE);
 
     if (!framePics)
         return;
@@ -225,7 +225,6 @@ u16 CreateTrainerFrontPicSprite(enum TrainerPicID trainerPicId, s16 x, s16 y, u8
     u8 i;
     u8 *framePics;
     struct SpriteFrameImage *images;
-    int j;
     u8 spriteId;
 
     for (i = 0; i < PICS_COUNT; i ++)
@@ -236,11 +235,11 @@ u16 CreateTrainerFrontPicSprite(enum TrainerPicID trainerPicId, s16 x, s16 y, u8
     if (i == PICS_COUNT)
         return 0xFFFF;
 
-    framePics = Alloc(TRAINER_PIC_SIZE * MAX_TRAINER_PIC_FRAMES);
+    framePics = Alloc(TRAINER_PIC_SIZE);
     if (!framePics)
         return 0xFFFF;
 
-    images = Alloc(sizeof(struct SpriteFrameImage) * MAX_TRAINER_PIC_FRAMES);
+    images = Alloc(sizeof(struct SpriteFrameImage));
     if (!images)
     {
         Free(framePics);
@@ -248,11 +247,8 @@ u16 CreateTrainerFrontPicSprite(enum TrainerPicID trainerPicId, s16 x, s16 y, u8
     }
     DecompressDataWithHeaderWram(GetTrainerFrontPicData(trainerPicId), framePics);
 
-    for (j = 0; j < MAX_TRAINER_PIC_FRAMES; j ++)
-    {
-        images[j].data = framePics + TRAINER_PIC_SIZE * j;
-        images[j].size = TRAINER_PIC_SIZE;
-    }
+    images->data = framePics;
+    images->size = TRAINER_PIC_SIZE;
 
     sCreatingSpriteTemplate.tileTag = TAG_NONE;
     sCreatingSpriteTemplate.oam = &sOamData_Normal;
