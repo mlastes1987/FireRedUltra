@@ -6780,7 +6780,7 @@ static bool8 HasPartySlotAlreadyBeenSelected(u8 slot)
 {
     u8 i;
 
-    for (i = 0; i < NELEMS(gSelectedOrderFromParty); ++i)
+    for (i = 0; i < ARRAY_COUNT(gSelectedOrderFromParty); ++i)
         if (gSelectedOrderFromParty[i] == slot)
             return TRUE;
     return FALSE;
@@ -7109,7 +7109,7 @@ static void BufferBattlePartyOrder(u8 *partyBattleOrder, u8 flankId)
             }
         }
     }
-    for (i = 0; i < (s32)NELEMS(gBattlePartyCurrentOrder); ++i)
+    for (i = 0; i < (s32)ARRAY_COUNT(gBattlePartyCurrentOrder); ++i)
         partyBattleOrder[i] = (partyIds[0 + (i * 2)] << 4) | partyIds[1 + (i * 2)];
 }
 
@@ -7256,7 +7256,7 @@ u8 GetPartyIdFromBattlePartyId(u8 battlePartyId)
 {
     u8 i, j;
 
-    for (j = i = 0; i < (s32)NELEMS(gBattlePartyCurrentOrder); ++j, ++i)
+    for (j = i = 0; i < (s32)ARRAY_COUNT(gBattlePartyCurrentOrder); ++j, ++i)
     {
         if ((gBattlePartyCurrentOrder[i] >> 4) != battlePartyId)
         {

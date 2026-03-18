@@ -1247,7 +1247,7 @@ bool32 InitSaveWindowAfterLinkBattle(u8 *state)
         break;
     case 2:
         ResetBgsAndClearDma3BusyFlags(FALSE);
-        InitBgsFromTemplates(0, sBGTemplates_AfterLinkSaveMessage, NELEMS(sBGTemplates_AfterLinkSaveMessage));
+        InitBgsFromTemplates(0, sBGTemplates_AfterLinkSaveMessage, ARRAY_COUNT(sBGTemplates_AfterLinkSaveMessage));
         InitWindows(sWindowTemplates_AfterLinkSaveMessage);
         LoadStdWindowGfx(0, 0x008, BG_PLTT_ID(15));
         break;

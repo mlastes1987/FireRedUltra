@@ -900,7 +900,7 @@ static void BagMenu_InitBGs(void)
     ResetVramOamAndBgCntRegs();
     memset(gBagMenu->tilemapBuffer, 0, sizeof(gBagMenu->tilemapBuffer));
     ResetBgsAndClearDma3BusyFlags(FALSE);
-    InitBgsFromTemplates(0, sBgTemplates_ItemMenu, NELEMS(sBgTemplates_ItemMenu));
+    InitBgsFromTemplates(0, sBgTemplates_ItemMenu, ARRAY_COUNT(sBgTemplates_ItemMenu));
     SetBgTilemapBuffer(1, gBagMenu->tilemapBuffer);
     ResetAllBgsCoordinates();
     ScheduleBgCopyTilemapToVram(1);
@@ -2832,24 +2832,24 @@ static void AddBagSortSubMenu(void)
     {
     case POCKET_KEY_ITEMS:
         gBagMenu->contextMenuItemsPtr = sBagMenuSortKeyItems;
-        memcpy(&gBagMenu->contextMenuItemsBuffer, &sBagMenuSortKeyItems, NELEMS(sBagMenuSortKeyItems));
-        gBagMenu->contextMenuNumItems = NELEMS(sBagMenuSortKeyItems);
+        memcpy(&gBagMenu->contextMenuItemsBuffer, &sBagMenuSortKeyItems, ARRAY_COUNT(sBagMenuSortKeyItems));
+        gBagMenu->contextMenuNumItems = ARRAY_COUNT(sBagMenuSortKeyItems);
         break;
     case POCKET_POKE_BALLS:
         gBagMenu->contextMenuItemsPtr = sBagMenuSortPokeBalls;
-        memcpy(&gBagMenu->contextMenuItemsBuffer, &sBagMenuSortPokeBalls, NELEMS(sBagMenuSortPokeBalls));
-        gBagMenu->contextMenuNumItems = NELEMS(sBagMenuSortPokeBalls);
+        memcpy(&gBagMenu->contextMenuItemsBuffer, &sBagMenuSortPokeBalls, ARRAY_COUNT(sBagMenuSortPokeBalls));
+        gBagMenu->contextMenuNumItems = ARRAY_COUNT(sBagMenuSortPokeBalls);
         break;
     case POCKET_BERRIES:
     case POCKET_TM_HM:
         gBagMenu->contextMenuItemsPtr = sBagMenuSortBerriesTMsHMs;
-        memcpy(&gBagMenu->contextMenuItemsBuffer, &sBagMenuSortBerriesTMsHMs, NELEMS(sBagMenuSortBerriesTMsHMs));
-        gBagMenu->contextMenuNumItems = NELEMS(sBagMenuSortBerriesTMsHMs);
+        memcpy(&gBagMenu->contextMenuItemsBuffer, &sBagMenuSortBerriesTMsHMs, ARRAY_COUNT(sBagMenuSortBerriesTMsHMs));
+        gBagMenu->contextMenuNumItems = ARRAY_COUNT(sBagMenuSortBerriesTMsHMs);
         break;
     default:
         gBagMenu->contextMenuItemsPtr = sBagMenuSortItems;
-        memcpy(&gBagMenu->contextMenuItemsBuffer, &sBagMenuSortItems, NELEMS(sBagMenuSortItems));
-        gBagMenu->contextMenuNumItems = NELEMS(sBagMenuSortItems);
+        memcpy(&gBagMenu->contextMenuItemsBuffer, &sBagMenuSortItems, ARRAY_COUNT(sBagMenuSortItems));
+        gBagMenu->contextMenuNumItems = ARRAY_COUNT(sBagMenuSortItems);
         break;
     }
 

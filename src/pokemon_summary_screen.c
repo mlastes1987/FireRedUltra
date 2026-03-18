@@ -2750,7 +2750,7 @@ static void PokeSum_Setup_InitGpu(void)
     SetGpuReg(REG_OFFSET_DISPCNT, 0);
 
     ResetBgsAndClearDma3BusyFlags(0);
-    InitBgsFromTemplates(0, sBgTempaltes, NELEMS(sBgTempaltes));
+    InitBgsFromTemplates(0, sBgTempaltes, ARRAY_COUNT(sBgTempaltes));
 
     ChangeBgX(0, 0, 0);
     ChangeBgY(0, 0, 0);
@@ -4395,20 +4395,20 @@ static void SpriteCB_PokeSum_MonPicSprite(struct Sprite *sprite)
         {
         case 0:
             sprite->y += sMonPicBounceYDelta_Under60[sMonPicBounceState->animFrame++];
-            arrayLen = NELEMS(sMonPicBounceYDelta_Under60);
+            arrayLen = ARRAY_COUNT(sMonPicBounceYDelta_Under60);
             break;
         case 1:
             sprite->y += sMonPicBounceYDelta_60to80[sMonPicBounceState->animFrame++];
-            arrayLen = NELEMS(sMonPicBounceYDelta_60to80);
+            arrayLen = ARRAY_COUNT(sMonPicBounceYDelta_60to80);
             break;
         case 2:
             sprite->y += sMonPicBounceYDelta_80to99[sMonPicBounceState->animFrame++];
-            arrayLen = NELEMS(sMonPicBounceYDelta_80to99);
+            arrayLen = ARRAY_COUNT(sMonPicBounceYDelta_80to99);
             break;
         case 3:
         default:
             sprite->y += sMonPicBounceYDelta_Full[sMonPicBounceState->animFrame++];
-            arrayLen = NELEMS(sMonPicBounceYDelta_Full);
+            arrayLen = ARRAY_COUNT(sMonPicBounceYDelta_Full);
             break;
         }
 
@@ -4434,7 +4434,7 @@ static void SpriteCB_PokeSum_EggPicShake(struct Sprite *sprite)
         if (sMonPicBounceState->initDelay++ >= 120)
         {
             sprite->x += sEggPicShakeXDelta_ItWillTakeSomeTime[sMonPicBounceState->animFrame];
-            if (++sMonPicBounceState->animFrame >= NELEMS(sEggPicShakeXDelta_ItWillTakeSomeTime))
+            if (++sMonPicBounceState->animFrame >= ARRAY_COUNT(sEggPicShakeXDelta_ItWillTakeSomeTime))
             {
                 sMonPicBounceState->animFrame = 0;
                 sMonPicBounceState->initDelay = 0;
@@ -4446,7 +4446,7 @@ static void SpriteCB_PokeSum_EggPicShake(struct Sprite *sprite)
         if (sMonPicBounceState->initDelay++ >= 90)
         {
             sprite->x += sEggPicShakeXDelta_OccasionallyMoves[sMonPicBounceState->animFrame];
-            if (++sMonPicBounceState->animFrame >= NELEMS(sEggPicShakeXDelta_OccasionallyMoves))
+            if (++sMonPicBounceState->animFrame >= ARRAY_COUNT(sEggPicShakeXDelta_OccasionallyMoves))
             {
                 sMonPicBounceState->animFrame = 0;
                 sMonPicBounceState->initDelay = 0;
@@ -4458,7 +4458,7 @@ static void SpriteCB_PokeSum_EggPicShake(struct Sprite *sprite)
         if (sMonPicBounceState->initDelay++ >= 60)
         {
             sprite->x += sEggPicShakeXDelta_AlmostReadyToHatch[sMonPicBounceState->animFrame];
-            if (++sMonPicBounceState->animFrame >= NELEMS(sEggPicShakeXDelta_AlmostReadyToHatch))
+            if (++sMonPicBounceState->animFrame >= ARRAY_COUNT(sEggPicShakeXDelta_AlmostReadyToHatch))
             {
                 sMonPicBounceState->animFrame = 0;
                 sMonPicBounceState->initDelay = 0;

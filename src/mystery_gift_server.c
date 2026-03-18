@@ -19,7 +19,7 @@
 #define ASSERT_PTR_EMPTY(lineNum)       AGB_ASSERT_EX(cmd->parameter == NULL,                       FILE, (lineNum));
 #define ASSERT_PARAM_EMPTY(lineNum)     AGB_ASSERT_EX(cmd->flag == FALSE,                           FILE, (lineNum));
 #define ASSERT_PTR_PARAM_EMPTY(lineNum) AGB_ASSERT_EX(cmd->flag == FALSE && cmd->parameter == NULL, FILE, (lineNum));
-#define ASSERT_VALID_FUNC(lineNum)      AGB_ASSERT_EX(svr->mainseqno < NELEMS(func_tbl),            FILE, (lineNum));
+#define ASSERT_VALID_FUNC(lineNum)      AGB_ASSERT_EX(svr->mainseqno < ARRAY_COUNT(func_tbl),       FILE, (lineNum));
 #define ASSERT_SIZE_OK(lineNum)         AGB_ASSERT_EX(size <= ME_SEND_BUF_SIZE,                     FILE, (lineNum));
 
 enum {

@@ -398,7 +398,7 @@ void InitEasyChatPhrases(void)
     for (i = 0; i < 64; i++)
         gSaveBlock1Ptr->additionalPhrases[i] = 0;
 #else
-    for (i = 0; i < NELEMS(gSaveBlock1Ptr->additionalPhrases); i++)
+    for (i = 0; i < ARRAY_COUNT(gSaveBlock1Ptr->additionalPhrases); i++)
         gSaveBlock1Ptr->additionalPhrases[i] = 0;
 #endif
 }
@@ -626,7 +626,7 @@ static bool8 UnlockedECMonOrMove(u16 wordIndex, u8 groupId)
 static bool32 EC_IsDeoxys(u16 species)
 {
     u32 i;
-    for (i = 0; i < NELEMS(sDeoxysValue); i++)
+    for (i = 0; i < ARRAY_COUNT(sDeoxysValue); i++)
     {
         if (sDeoxysValue[i] == species)
             return TRUE;

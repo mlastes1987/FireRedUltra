@@ -661,7 +661,7 @@ static void LoadWallClockGraphics(void)
     LoadPalette(GetTextWindowPalette(2), 0xC0, 0x20);
     LoadPalette(sTextPrompt_Pal, 0xc0, 8);
     ResetBgsAndClearDma3BusyFlags(0);
-    InitBgsFromTemplates(0, sBgTemplates, NELEMS(sBgTemplates));
+    InitBgsFromTemplates(0, sBgTemplates, ARRAY_COUNT(sBgTemplates));
     InitWindows(sWindowTemplates);
     DeactivateAllTextPrinters();
     LoadUserWindowBorderGfx_(0, 0x250, 0xd0);

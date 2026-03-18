@@ -475,7 +475,7 @@ static const u8 sSlotMachineIndices[] = {
 
 u8 GetRandomSlotMachineId(void)
 {
-    u16 rval = Random() % NELEMS(sSlotMachineIndices);
+    u16 rval = Random() % ARRAY_COUNT(sSlotMachineIndices);
     return sSlotMachineIndices[rval];
 }
 
@@ -793,7 +793,7 @@ static u16 SampleResortGorgeousReward(void)
     if ((Random() % 100) >= 30)
         return ITEM_LUXURY_BALL;
     else
-        return sResortGorgeousDeluxeRewards[Random() % NELEMS(sResortGorgeousDeluxeRewards)];
+        return sResortGorgeousDeluxeRewards[Random() % ARRAY_COUNT(sResortGorgeousDeluxeRewards)];
 }
 
 bool8 CheckAddCoins(void)
@@ -1798,7 +1798,7 @@ static const u16 sStarterSpecies[] = {
 
 static u16 GetStarterSpeciesById(u16 idx)
 {
-    if (idx >= NELEMS(sStarterSpecies))
+    if (idx >= ARRAY_COUNT(sStarterSpecies))
         idx = 0;
     return sStarterSpecies[idx];
 }
@@ -2091,7 +2091,7 @@ static const u8 sMartMaps[][3] = {
 u8 GetMartClerkObjectId(void)
 {
     u8 i;
-    for (i = 0; i < NELEMS(sMartMaps); i++)
+    for (i = 0; i < ARRAY_COUNT(sMartMaps); i++)
     {
         if (gSaveBlock1Ptr->location.mapGroup == sMartMaps[i][0] && gSaveBlock1Ptr->location.mapNum == sMartMaps[i][1])
             return sMartMaps[i][2];
@@ -2166,7 +2166,7 @@ static const struct {
 void QuestLog_CheckDepartingIndoorsMap(void)
 {
     u8 i;
-    for (i = 0; i < NELEMS(sInsideOutsidePairs); i++)
+    for (i = 0; i < ARRAY_COUNT(sInsideOutsidePairs); i++)
     {
         if (gSaveBlock1Ptr->location.mapGroup == sInsideOutsidePairs[i].inside_grp && gSaveBlock1Ptr->location.mapNum == sInsideOutsidePairs[i].inside_num)
         {

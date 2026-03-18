@@ -1118,7 +1118,7 @@ static bool32 DoCreditsMonScene(void)
         ResetSpriteData();
         ResetTasks();
         ResetBgsAndClearDma3BusyFlags(1);
-        InitBgsFromTemplates(1, sBgTemplates_MonSceneOrTheEnd, NELEMS(sBgTemplates_MonSceneOrTheEnd));
+        InitBgsFromTemplates(1, sBgTemplates_MonSceneOrTheEnd, ARRAY_COUNT(sBgTemplates_MonSceneOrTheEnd));
         SetBgTilemapBuffer(0, Alloc(BG_SCREEN_SIZE));
         ChangeBgX(0, 0, BG_COORD_SET);
         ChangeBgY(0, 0, BG_COORD_SET);

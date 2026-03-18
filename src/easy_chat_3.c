@@ -583,7 +583,7 @@ bool8 LoadEasyChatGraphics(void)
     {
     case 0:
         ResetBgsAndClearDma3BusyFlags(0);
-        InitBgsFromTemplates(0, sEasyChatBgTemplates, NELEMS(sEasyChatBgTemplates));
+        InitBgsFromTemplates(0, sEasyChatBgTemplates, ARRAY_COUNT(sEasyChatBgTemplates));
         SetBgTilemapBuffer(3, sEasyChatGraphicsResources->bg3TilemapBuffer);
         SetBgTilemapBuffer(1, sEasyChatGraphicsResources->bg1TilemapBuffer);
         InitWindows(sEasyChatWindowTemplates);
@@ -1948,7 +1948,7 @@ static void LoadSpriteGfx(void)
 
     LoadSpriteSheets(sEasyChatSpriteSheets);
     LoadSpritePalettes(sEasyChatSpritePalettes);
-    for (i = 0; i < NELEMS(sEasyChatCompressedSpriteSheets); i++)
+    for (i = 0; i < ARRAY_COUNT(sEasyChatCompressedSpriteSheets); i++)
         LoadCompressedSpriteSheet(&sEasyChatCompressedSpriteSheets[i]);
 }
 

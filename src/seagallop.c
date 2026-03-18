@@ -203,7 +203,7 @@ static void CB2_SetUpSeagallopScene(void)
         ptr = &sBg3TilemapBuffer;
         *ptr = AllocZeroed(0x800);
         ResetBgsAndClearDma3BusyFlags(0);
-        InitBgsFromTemplates(0, sBGTemplates, NELEMS(sBGTemplates));
+        InitBgsFromTemplates(0, sBGTemplates, ARRAY_COUNT(sBGTemplates));
         SetBgTilemapBuffer(3, *ptr);
         ResetBGPos();
         gMain.state++;
@@ -313,7 +313,7 @@ static void Task_Seagallop_3(void)
 {
     const s8 * warpInfo;
 
-    if (gSpecialVar_0x8006 >= NELEMS(sSeag))
+    if (gSpecialVar_0x8006 >= ARRAY_COUNT(sSeag))
         gSpecialVar_0x8006 = 0;
 
     warpInfo = sSeag[gSpecialVar_0x8006];
@@ -450,7 +450,7 @@ static void SpriteCB_Wake(struct Sprite *sprite)
 
 static bool8 GetDirectionOfTravel(void)
 {
-    if (gSpecialVar_0x8004 >= NELEMS(sTravelDirectionMatrix))
+    if (gSpecialVar_0x8004 >= ARRAY_COUNT(sTravelDirectionMatrix))
     {
         return DIRN_EASTBOUND;
     }

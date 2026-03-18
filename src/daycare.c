@@ -2050,7 +2050,7 @@ static void CB2_EggHatch_0(void)
 
         ResetTempTileDataBuffers();
         ResetBgsAndClearDma3BusyFlags(0);
-        InitBgsFromTemplates(0, sBgTemplates_EggHatch, NELEMS(sBgTemplates_EggHatch));
+        InitBgsFromTemplates(0, sBgTemplates_EggHatch, ARRAY_COUNT(sBgTemplates_EggHatch));
 
         ChangeBgX(1, 0, 0);
         ChangeBgY(1, 0, 0);

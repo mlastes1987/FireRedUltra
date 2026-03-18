@@ -969,7 +969,7 @@ static void TintMapEdgesPalette(void)
 {
     u16 mapEdgesPal[16];
     CpuCopy16(&sRegionMap_Pal[0x20], mapEdgesPal, sizeof(mapEdgesPal));
-    RegionMap_DarkenPalette(mapEdgesPal, NELEMS(mapEdgesPal), 95);
+    RegionMap_DarkenPalette(mapEdgesPal, ARRAY_COUNT(mapEdgesPal), 95);
     LoadPalette(mapEdgesPal, BG_PLTT_ID(2), sizeof(mapEdgesPal));
     LoadPalette(&sRegionMap_Pal[0x2F], BG_PLTT_ID(2) + 15, PLTT_SIZEOF(1));
 }
@@ -1213,8 +1213,8 @@ static void Task_RegionMap(u8 taskId)
             ClearOrDrawTopBar(FALSE);
             SetPlayerIconInvisibility(FALSE);
             SetMapCursorInvisibility(FALSE);
-            SetFlyIconInvisibility(GetSelectedRegionMap(), NELEMS(sMapIcons->flyIcons), FALSE);
-            SetDungeonIconInvisibility(GetSelectedRegionMap(), NELEMS(sMapIcons->dungeonIcons), FALSE);
+            SetFlyIconInvisibility(GetSelectedRegionMap(), ARRAY_COUNT(sMapIcons->flyIcons), FALSE);
+            SetDungeonIconInvisibility(GetSelectedRegionMap(), ARRAY_COUNT(sMapIcons->dungeonIcons), FALSE);
         }
         sRegionMap->mainState++;
         break;
@@ -1375,7 +1375,7 @@ static void InitRegionMapBgs(void)
     DmaFill16Defvars(3, 0, (void *)PLTT, PLTT_SIZE);
     SetGpuReg(REG_OFFSET_DISPCNT, 0);
     ResetBgsAndClearDma3BusyFlags(FALSE);
-    InitBgsFromTemplates(0, sRegionMapBgTemplates, NELEMS(sRegionMapBgTemplates));
+    InitBgsFromTemplates(0, sRegionMapBgTemplates, ARRAY_COUNT(sRegionMapBgTemplates));
     ChangeBgX(0, 0, 0);
     ChangeBgY(0, 0, 0);
     ChangeBgX(1, 0, 0);
@@ -1677,8 +1677,8 @@ static void Task_SwitchMapMenu(u8 taskId)
             if (GetRegionMapPlayerIsOn() == sSwitchMapMenu->currentSelection)
             {
                 SetPlayerIconInvisibility(FALSE);
-                SetFlyIconInvisibility(sSwitchMapMenu->currentSelection, NELEMS(sMapIcons->flyIcons), FALSE);
-                SetDungeonIconInvisibility(sSwitchMapMenu->currentSelection, NELEMS(sMapIcons->dungeonIcons), FALSE);
+                SetFlyIconInvisibility(sSwitchMapMenu->currentSelection, ARRAY_COUNT(sMapIcons->flyIcons), FALSE);
+                SetDungeonIconInvisibility(sSwitchMapMenu->currentSelection, ARRAY_COUNT(sMapIcons->dungeonIcons), FALSE);
             }
             sSwitchMapMenu->mainState++;
         }
@@ -1811,8 +1811,8 @@ static bool8 HandleSwitchMapInput(void)
         sSwitchMapMenu->currentSelection = sSwitchMapMenu->chosenRegion;
         BufferRegionMapBg(0, sRegionMap->layouts[sSwitchMapMenu->currentSelection]);
         CopyBgTilemapBufferToVram(0);
-        SetFlyIconInvisibility(0xFF, NELEMS(sMapIcons->flyIcons), TRUE);
-        SetDungeonIconInvisibility(0xFF, NELEMS(sMapIcons->dungeonIcons), TRUE);
+        SetFlyIconInvisibility(0xFF, ARRAY_COUNT(sMapIcons->flyIcons), TRUE);
+        SetDungeonIconInvisibility(0xFF, ARRAY_COUNT(sMapIcons->dungeonIcons), TRUE);
         return TRUE;
     }
     if (changedSelection)
@@ -1821,10 +1821,10 @@ static bool8 HandleSwitchMapInput(void)
         PrintTopBarTextRight(gText_RegionMap_AButtonOK);
         CopyBgTilemapBufferToVram(0);
         CopyBgTilemapBufferToVram(3);
-        SetFlyIconInvisibility(0xFF, NELEMS(sMapIcons->flyIcons), TRUE);
-        SetDungeonIconInvisibility(0xFF, NELEMS(sMapIcons->dungeonIcons), TRUE);
-        SetFlyIconInvisibility(sSwitchMapMenu->currentSelection, NELEMS(sMapIcons->flyIcons), FALSE);
-        SetDungeonIconInvisibility(sSwitchMapMenu->currentSelection, NELEMS(sMapIcons->dungeonIcons), FALSE);
+        SetFlyIconInvisibility(0xFF, ARRAY_COUNT(sMapIcons->flyIcons), TRUE);
+        SetDungeonIconInvisibility(0xFF, ARRAY_COUNT(sMapIcons->dungeonIcons), TRUE);
+        SetFlyIconInvisibility(sSwitchMapMenu->currentSelection, ARRAY_COUNT(sMapIcons->flyIcons), FALSE);
+        SetDungeonIconInvisibility(sSwitchMapMenu->currentSelection, ARRAY_COUNT(sMapIcons->dungeonIcons), FALSE);
     }
     if (sSwitchMapMenu->currentSelection != GetRegionMapPlayerIsOn())
         SetPlayerIconInvisibility(TRUE);
@@ -1902,7 +1902,7 @@ static void CreateSwitchMapCursorSubsprite_(u8 whichSprite, u16 tileTag, u16 pal
 static void FreeSwitchMapCursor(void)
 {
     u8 i;
-    for (i = 0; i < NELEMS(sSwitchMapMenu->cursorSubsprite); i++)
+    for (i = 0; i < ARRAY_COUNT(sSwitchMapMenu->cursorSubsprite); i++)
     {
         if (sSwitchMapMenu->cursorSubsprite[i].sprite != NULL)
         {
@@ -1916,7 +1916,7 @@ static void FreeSwitchMapCursor(void)
 static const u8 *GetDungeonFlavorText(u16 mapsec)
 {
     u8 i;
-    for (i = 0; i < NELEMS(sDungeonInfo); i++)
+    for (i = 0; i < ARRAY_COUNT(sDungeonInfo); i++)
     {
         if (sDungeonInfo[i].id == mapsec)
             return sDungeonInfo[i].desc;
@@ -1927,7 +1927,7 @@ static const u8 *GetDungeonFlavorText(u16 mapsec)
 static const u8 *GetDungeonName(u16 mapsec)
 {
     u8 i;
-    for (i = 0; i < NELEMS(sDungeonInfo); i++)
+    for (i = 0; i < ARRAY_COUNT(sDungeonInfo); i++)
     {
         if (sDungeonInfo[i].id == mapsec)
             return sDungeonInfo[i].name;
@@ -2216,7 +2216,7 @@ static void InitMapOpenAnim(u8 taskId, TaskFunc taskFunc)
     u8 i;
 
     sMapOpenCloseAnim = AllocZeroed(sizeof(struct MapOpenCloseAnim));
-    for (i = 0; i < NELEMS(sMapOpenCloseAnim->mapEdges); i++)
+    for (i = 0; i < ARRAY_COUNT(sMapOpenCloseAnim->mapEdges); i++)
     {
         sMapOpenCloseAnim->mapEdges[i] = AllocZeroed(sizeof(struct MapEdge));
         sMapOpenCloseAnim->mapEdges[i]->x = 32 * (i / 3) + 104;
@@ -2233,9 +2233,9 @@ static void InitMapOpenAnim(u8 taskId, TaskFunc taskFunc)
 static void SetMapEdgeInvisibility(u8 mapEdgeNum, bool8 invisible)
 {
     u8 i;
-    if (mapEdgeNum == NELEMS(sMapOpenCloseAnim->mapEdges))
+    if (mapEdgeNum == ARRAY_COUNT(sMapOpenCloseAnim->mapEdges))
     {
-        for (i = 0; i < NELEMS(sMapOpenCloseAnim->mapEdges); i++)
+        for (i = 0; i < ARRAY_COUNT(sMapOpenCloseAnim->mapEdges); i++)
         {
             sMapOpenCloseAnim->mapEdges[i]->sprite->invisible = invisible;
         }
@@ -2325,7 +2325,7 @@ static void FreeMapOpenCloseAnim(void)
 {
     u8 i;
     FreeMapEdgeSprites();
-    for (i = 0; i < NELEMS(sMapOpenCloseAnim->mapEdges); i++)
+    for (i = 0; i < ARRAY_COUNT(sMapOpenCloseAnim->mapEdges); i++)
     {
         FREE_IF_NOT_NULL(sMapOpenCloseAnim->mapEdges[i]);
     }
@@ -2335,7 +2335,7 @@ static void FreeMapOpenCloseAnim(void)
 static void FreeMapEdgeSprites(void)
 {
     u8 i;
-    for (i = 0; i < NELEMS(sMapOpenCloseAnim->mapEdges); i++)
+    for (i = 0; i < ARRAY_COUNT(sMapOpenCloseAnim->mapEdges); i++)
     {
         sMapOpenCloseAnim->mapEdges[i]->x = sMapOpenCloseAnim->mapEdges[i]->sprite->x;
         sMapOpenCloseAnim->mapEdges[i]->y = sMapOpenCloseAnim->mapEdges[i]->sprite->y;
@@ -2375,7 +2375,7 @@ static void Task_MapOpenAnim(u8 taskId)
         ShowBg(0);
         ShowBg(3);
         ShowBg(1);
-        SetMapEdgeInvisibility(NELEMS(sMapOpenCloseAnim->mapEdges), FALSE);
+        SetMapEdgeInvisibility(ARRAY_COUNT(sMapOpenCloseAnim->mapEdges), FALSE);
         SetGpuWindowDimsToMapEdges();
         sMapOpenCloseAnim->openState++;
         break;
@@ -2399,8 +2399,8 @@ static void Task_MapOpenAnim(u8 taskId)
         sMapOpenCloseAnim->blendY = 15;
         SetGpuRegsToFadeMapToWhite();
         SetBg0andBg3Hidden(FALSE);
-        SetFlyIconInvisibility(GetSelectedRegionMap(), NELEMS(sMapIcons->flyIcons), FALSE);
-        SetDungeonIconInvisibility(GetSelectedRegionMap(), NELEMS(sMapIcons->dungeonIcons), FALSE);
+        SetFlyIconInvisibility(GetSelectedRegionMap(), ARRAY_COUNT(sMapIcons->flyIcons), FALSE);
+        SetDungeonIconInvisibility(GetSelectedRegionMap(), ARRAY_COUNT(sMapIcons->dungeonIcons), FALSE);
         sMapOpenCloseAnim->openState++;
         break;
     case 9:
@@ -2434,7 +2434,7 @@ static void Task_MapOpenAnim(u8 taskId)
     case 12:
         if (sMapOpenCloseAnim->blendY == 2)
         {
-            SetMapEdgeInvisibility(NELEMS(sMapOpenCloseAnim->mapEdges), TRUE);
+            SetMapEdgeInvisibility(ARRAY_COUNT(sMapOpenCloseAnim->mapEdges), TRUE);
             sMapOpenCloseAnim->openState++;
             SetBldY(0);
         }
@@ -2570,11 +2570,11 @@ static void Task_MapCloseAnim(u8 taskId)
         sMapOpenCloseAnim->closeState++;
         break;
     case 3:
-        SetMapEdgeInvisibility(NELEMS(sMapOpenCloseAnim->mapEdges), FALSE);
+        SetMapEdgeInvisibility(ARRAY_COUNT(sMapOpenCloseAnim->mapEdges), FALSE);
         SetPlayerIconInvisibility(TRUE);
         SetMapCursorInvisibility(TRUE);
-        SetDungeonIconInvisibility(0xFF, NELEMS(sMapIcons->dungeonIcons), TRUE);
-        SetFlyIconInvisibility(0xFF, NELEMS(sMapIcons->flyIcons), TRUE);
+        SetDungeonIconInvisibility(0xFF, ARRAY_COUNT(sMapIcons->dungeonIcons), TRUE);
+        SetFlyIconInvisibility(0xFF, ARRAY_COUNT(sMapIcons->flyIcons), TRUE);
         sMapOpenCloseAnim->moveState = 0;
         sMapOpenCloseAnim->blendY = 0;
         sMapOpenCloseAnim->closeState++;
@@ -3607,10 +3607,10 @@ static void CreateDungeonIcons(void)
 static void SetFlyIconInvisibility(u8 whichMap, u8 iconNum, bool8 invisible)
 {
     u8 i;
-    if (iconNum == NELEMS(sMapIcons->flyIcons))
+    if (iconNum == ARRAY_COUNT(sMapIcons->flyIcons))
     {
         // Set for all fly icons
-        for (i = 0; i < NELEMS(sMapIcons->flyIcons); i++)
+        for (i = 0; i < ARRAY_COUNT(sMapIcons->flyIcons); i++)
         {
             if (sMapIcons->flyIcons[i].region == whichMap || whichMap == 0xFF)
                 sMapIcons->flyIcons[i].sprite->invisible = invisible;
@@ -3626,10 +3626,10 @@ static void SetFlyIconInvisibility(u8 whichMap, u8 iconNum, bool8 invisible)
 static void SetDungeonIconInvisibility(u8 whichMap, u8 iconNum, bool8 invisible)
 {
     u8 i;
-    if (iconNum == NELEMS(sMapIcons->dungeonIcons))
+    if (iconNum == ARRAY_COUNT(sMapIcons->dungeonIcons))
     {
         // Set for all dungeon icons
-        for (i = 0; i < NELEMS(sMapIcons->dungeonIcons); i++)
+        for (i = 0; i < ARRAY_COUNT(sMapIcons->dungeonIcons); i++)
         {
             if (sMapIcons->dungeonIcons[i].region == whichMap || whichMap == 0xFF)
                 sMapIcons->dungeonIcons[i].sprite->invisible = invisible;
@@ -3645,7 +3645,7 @@ static void SetDungeonIconInvisibility(u8 whichMap, u8 iconNum, bool8 invisible)
 static void FreeMapIcons(void)
 {
     u8 i;
-    for (i = 0; i < NELEMS(sMapIcons->flyIcons); i++)
+    for (i = 0; i < ARRAY_COUNT(sMapIcons->flyIcons); i++)
     {
         if (sMapIcons->flyIcons[i].sprite != NULL)
         {
@@ -3654,7 +3654,7 @@ static void FreeMapIcons(void)
             FreeSpritePaletteByTag(sMapIcons->flyIcons[i].palTag);
         }
     }
-    for (i = 0; i < NELEMS(sMapIcons->dungeonIcons); i++)
+    for (i = 0; i < ARRAY_COUNT(sMapIcons->dungeonIcons); i++)
     {
         if (sMapIcons->dungeonIcons[i].sprite != NULL)
         {
@@ -3703,7 +3703,7 @@ static bool8 SetRegionMapGpuRegs(u8 idx)
 static void FreeRegionMapGpuRegs(void)
 {
     u8 i;
-    for (i = 0; i < NELEMS(sRegionMapGpuRegs); i++)
+    for (i = 0; i < ARRAY_COUNT(sRegionMapGpuRegs); i++)
         FREE_IF_NOT_NULL(sRegionMapGpuRegs[i]);
 }
 
@@ -3899,8 +3899,8 @@ static void Task_FlyMap(u8 taskId)
             ShowBg(3);
             ShowBg(1);
             PrintTopBarTextLeft(gText_RegionMap_DPadMove);
-            SetFlyIconInvisibility(GetSelectedRegionMap(), NELEMS(sMapIcons->flyIcons), FALSE);
-            SetDungeonIconInvisibility(GetSelectedRegionMap(), NELEMS(sMapIcons->dungeonIcons), FALSE);
+            SetFlyIconInvisibility(GetSelectedRegionMap(), ARRAY_COUNT(sMapIcons->flyIcons), FALSE);
+            SetDungeonIconInvisibility(GetSelectedRegionMap(), ARRAY_COUNT(sMapIcons->dungeonIcons), FALSE);
         }
         sFlyMap->state++;
         break;

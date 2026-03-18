@@ -189,7 +189,7 @@ static bool32 MainMenuGpuInit(u8 a0)
     FreeAllSpritePalettes();
     ResetPaletteFade();
     ResetBgsAndClearDma3BusyFlags(FALSE);
-    InitBgsFromTemplates(0, sBgTemplate, NELEMS(sBgTemplate));
+    InitBgsFromTemplates(0, sBgTemplate, ARRAY_COUNT(sBgTemplate));
     ChangeBgX(0, 0, 0);
     ChangeBgY(0, 0, 0);
     ChangeBgX(1, 0, 0);

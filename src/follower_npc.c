@@ -249,22 +249,22 @@ static u32 GetFollowerNPCSprite(void)
     switch (GetFollowerNPCData(FNPC_DATA_CURRENT_SPRITE))
     {
     case FOLLOWER_NPC_SPRITE_INDEX_MACH_BIKE:
-        for (i = 0; i < NELEMS(gFollowerNPCAlternateSprites); i++)
+        for (i = 0; i < ARRAY_COUNT(gFollowerNPCAlternateSprites); i++)
             if (gFollowerNPCAlternateSprites[i].normalId == GetFollowerNPCData(FNPC_DATA_GFX_ID))
                 return gFollowerNPCAlternateSprites[i].machBikeId;
         break;
     case FOLLOWER_NPC_SPRITE_INDEX_ACRO_BIKE:
-        for (i = 0; i < NELEMS(gFollowerNPCAlternateSprites); i++)
+        for (i = 0; i < ARRAY_COUNT(gFollowerNPCAlternateSprites); i++)
             if (gFollowerNPCAlternateSprites[i].normalId == GetFollowerNPCData(FNPC_DATA_GFX_ID))
                 return gFollowerNPCAlternateSprites[i].acroBikeId;
         break;
     case FOLLOWER_NPC_SPRITE_INDEX_SURF:
-        for (i = 0; i < NELEMS(gFollowerNPCAlternateSprites); i++)
+        for (i = 0; i < ARRAY_COUNT(gFollowerNPCAlternateSprites); i++)
             if (gFollowerNPCAlternateSprites[i].normalId == GetFollowerNPCData(FNPC_DATA_GFX_ID))
                 return gFollowerNPCAlternateSprites[i].surfId;
         break;
     case FOLLOWER_NPC_SPRITE_INDEX_UNDERWATER:
-        for (i = 0; i < NELEMS(gFollowerNPCAlternateSprites); i++)
+        for (i = 0; i < ARRAY_COUNT(gFollowerNPCAlternateSprites); i++)
             if (gFollowerNPCAlternateSprites[i].normalId == GetFollowerNPCData(FNPC_DATA_GFX_ID))
                 return gFollowerNPCAlternateSprites[i].underwaterId;
         break;
@@ -275,7 +275,7 @@ static u32 GetFollowerNPCSprite(void)
 
 static bool32 FollowerNPCHasRunningFrames(void)
 {
-    for (u32 i = 0; i < NELEMS(gFollowerNPCAlternateSprites); i++)
+    for (u32 i = 0; i < ARRAY_COUNT(gFollowerNPCAlternateSprites); i++)
     {
         if (gFollowerNPCAlternateSprites[i].normalId == GetFollowerNPCData(FNPC_DATA_GFX_ID)
          && gFollowerNPCAlternateSprites[i].hasRunningFrames == TRUE)

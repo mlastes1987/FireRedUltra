@@ -384,7 +384,7 @@ bool32 MapHasPreviewScreen_HandleQLState2(u8 mapsec, u8 type)
 
 void MapPreview_InitBgs(void)
 {
-    InitBgsFromTemplates(0, sMapPreviewBgTemplate, NELEMS(sMapPreviewBgTemplate));
+    InitBgsFromTemplates(0, sMapPreviewBgTemplate, ARRAY_COUNT(sMapPreviewBgTemplate));
     ShowBg(0);
 }
 

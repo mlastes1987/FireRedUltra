@@ -7076,7 +7076,7 @@ void InitNpcForMovement(struct ObjectEvent *objectEvent, struct Sprite *sprite, 
 
 void InitMovementNormal(struct ObjectEvent *objectEvent, struct Sprite *sprite, u8 direction, u8 speed)
 {
-    u8 (*functions[NELEMS(sDirectionAnimFuncsBySpeed)])(u8);
+    u8 (*functions[ARRAY_COUNT(sDirectionAnimFuncsBySpeed)])(u8);
     memcpy(functions, sDirectionAnimFuncsBySpeed, sizeof sDirectionAnimFuncsBySpeed);
     InitNpcForMovement(objectEvent, sprite, direction, speed);
     SetStepAnimHandleAlternation(objectEvent, sprite, functions[speed](objectEvent->facingDirection));
@@ -7528,7 +7528,7 @@ void InitJumpRegular(struct ObjectEvent *objectEvent, struct Sprite *sprite, u8 
 
 u8 UpdateJumpAnim(struct ObjectEvent *objectEvent, struct Sprite *sprite, u8 callback(struct Sprite *))
 {
-    s16 displacements[NELEMS(sJumpDisplacements)];
+    s16 displacements[ARRAY_COUNT(sJumpDisplacements)];
     s16 x;
     s16 y;
     u8 result;
@@ -10310,7 +10310,7 @@ static void GetGroundEffectFlags_JumpLanding(struct ObjectEvent *objEvent, u32 *
     {
         u8 i;
 
-        for (i = 0; i < NELEMS(metatileFuncs); i++)
+        for (i = 0; i < ARRAY_COUNT(metatileFuncs); i++)
         {
             if (metatileFuncs[i](objEvent->currentMetatileBehavior))
             {
@@ -10891,7 +10891,7 @@ static void DoFlaggedGroundEffects(struct ObjectEvent *objEvent, struct Sprite *
     if (objEvent->localId == LOCALID_CAMERA && objEvent->invisible)
         return;
 
-    for (i = 0; i < NELEMS(sGroundEffectFuncs); i++, flags >>= 1)
+    for (i = 0; i < ARRAY_COUNT(sGroundEffectFuncs); i++, flags >>= 1)
         if (flags & 1)
             sGroundEffectFuncs[i](objEvent, sprite);
     if (!OW_OBJECT_VANILLA_SHADOWS && CurrentMapHasShadows() && !(gWeatherPtr->noShadows || objEvent->inHotSprings || objEvent->inSandPile || MetatileBehavior_IsPuddle(objEvent->currentMetatileBehavior)))
@@ -11156,11 +11156,11 @@ static const SpriteStepFunc *const sNpcStepFuncTables[] = {
 };
 
 static const s16 sStepTimes[] = {
-    [MOVE_SPEED_NORMAL]  = NELEMS(sSpeedNormalStepFuncs),
-    [MOVE_SPEED_FAST_1]  = NELEMS(sSpeedFast1StepFuncs),
-    [MOVE_SPEED_FAST_2]  = NELEMS(sSpeedFast2StepFuncs),
-    [MOVE_SPEED_FASTER]  = NELEMS(sSpeedFasterStepFuncs),
-    [MOVE_SPEED_FASTEST] = NELEMS(sSpeedFastestStepFuncs),
+    [MOVE_SPEED_NORMAL]  = ARRAY_COUNT(sSpeedNormalStepFuncs),
+    [MOVE_SPEED_FAST_1]  = ARRAY_COUNT(sSpeedFast1StepFuncs),
+    [MOVE_SPEED_FAST_2]  = ARRAY_COUNT(sSpeedFast2StepFuncs),
+    [MOVE_SPEED_FASTER]  = ARRAY_COUNT(sSpeedFasterStepFuncs),
+    [MOVE_SPEED_FASTEST] = ARRAY_COUNT(sSpeedFastestStepFuncs),
 };
 
 bool8 NpcTakeStep(struct Sprite *sprite)

@@ -7509,7 +7509,7 @@ void AnimTask_TwinkleTackleLaunchStep(u8 taskId)
             ++task->tTimer;
         return;
     }
-    else if ((u16) task->tTimer < NELEMS(sHomerunEnemyHorizontalMovement))
+    else if ((u16) task->tTimer < ARRAY_COUNT(sHomerunEnemyHorizontalMovement))
     {
         s8 movement = sHomerunEnemyHorizontalMovement[task->tTimer];
         if (task->tSide == B_SIDE_PLAYER)

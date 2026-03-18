@@ -1071,7 +1071,7 @@ static void InitBgsAndWindows(void)
     ResetSpriteData();
     ResetPaletteFade();
     ResetBgsAndClearDma3BusyFlags(0);
-    InitBgsFromTemplates(0, sTrainerCardBgTemplates, NELEMS(sTrainerCardBgTemplates));
+    InitBgsFromTemplates(0, sTrainerCardBgTemplates, ARRAY_COUNT(sTrainerCardBgTemplates));
     ChangeBgX(0, 0, 0);
     ChangeBgY(0, 0, 0);
     ChangeBgX(1, 0, 0);
@@ -1468,7 +1468,7 @@ static void LoadMonIconGfx(void)
 {
     u8 i;
 
-    CpuCopy16(gMonIconPalettes, sTrainerCardDataPtr->monIconPals, 2 * NELEMS(sTrainerCardDataPtr->monIconPals));
+    CpuCopy16(gMonIconPalettes, sTrainerCardDataPtr->monIconPals, 2 * ARRAY_COUNT(sTrainerCardDataPtr->monIconPals));
     switch (sTrainerCardDataPtr->trainerCard.monIconTint)
     {
     case MON_ICON_TINT_NORMAL:
@@ -1528,7 +1528,7 @@ static bool8 SetTrainerCardBgsAndPals(void)
     switch (sTrainerCardDataPtr->bgPalLoadState)
     {
     case 0:
-        LoadBgTiles(3, sTrainerCardDataPtr->badgeTiles, NELEMS(sTrainerCardDataPtr->badgeTiles), 0);
+        LoadBgTiles(3, sTrainerCardDataPtr->badgeTiles, ARRAY_COUNT(sTrainerCardDataPtr->badgeTiles), 0);
         break;
     case 1:
         LoadBgTiles(0, sTrainerCardDataPtr->cardTiles, 0x1800, 0);

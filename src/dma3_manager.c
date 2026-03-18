@@ -21,7 +21,7 @@ void ClearDma3Requests(void)
     gDma3ManagerLocked = TRUE;
     gDma3RequestCursor = 0;
 
-    for(i = 0; i < (u8)NELEMS(gDma3Requests); i++)
+    for(i = 0; i < (u8)ARRAY_COUNT(gDma3Requests); i++)
     {
         gDma3Requests[i].size = 0;
         gDma3Requests[i].src = 0;

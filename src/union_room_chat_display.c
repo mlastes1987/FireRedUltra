@@ -424,7 +424,7 @@ void UnionRoomChat_StartDisplaySubtask(u16 arg0, u8 arg1)
     int i;
 
     sWork->subtasks[arg1].callback = DisplaySubtaskDummy;
-    for (i = 0; i < NELEMS(sSubtaskInfo); i++)
+    for (i = 0; i < ARRAY_COUNT(sSubtaskInfo); i++)
     {
         if (sSubtaskInfo[i].idx == arg0)
         {

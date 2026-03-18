@@ -898,7 +898,7 @@ static void LoadBattleEnvironmentGfx(u16 environment)
 // This can be the grass moving on the screen at the start of a wild encounter in tall grass.
 static void LoadBattleEnvironmentEntryGfx(u16 environment)
 {
-    if (environment >= NELEMS(gBattleEnvironmentInfo))
+    if (environment >= ARRAY_COUNT(gBattleEnvironmentInfo))
         environment = BATTLE_ENVIRONMENT_PLAIN;
     // Copy to bg1
     DecompressDataWithHeaderVram(gBattleEnvironmentInfo[environment].entry.tileset, (void *)BG_CHAR_ADDR(1));

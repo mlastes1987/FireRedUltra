@@ -126,7 +126,7 @@ static const struct BattlePyramidRequirement sBattlePyramidRequirementsByRound[]
     {
         .type = TYPE_MYSTERY, // no type limitation
         .moves = sParalyzingMoves,
-        .nMoves = NELEMS(sParalyzingMoves),
+        .nMoves = ARRAY_COUNT(sParalyzingMoves),
         .abilities = { ABILITY_STATIC },
         .nAbilities = 1,
     },
@@ -134,14 +134,14 @@ static const struct BattlePyramidRequirement sBattlePyramidRequirementsByRound[]
     {
         .type = TYPE_MYSTERY,
         .moves = sPoisoningMoves,
-        .nMoves = NELEMS(sPoisoningMoves),
+        .nMoves = ARRAY_COUNT(sPoisoningMoves),
         .abilities = { ABILITY_POISON_POINT },
     },
     [2] = /* Pokemon with moves that burn */
     {
         .type = TYPE_MYSTERY,
         .moves = sBurningMoves,
-        .nMoves = NELEMS(sBurningMoves),
+        .nMoves = ARRAY_COUNT(sBurningMoves),
         .abilities = { ABILITY_FLAME_BODY },
         .nAbilities = 1,
     },
@@ -149,7 +149,7 @@ static const struct BattlePyramidRequirement sBattlePyramidRequirementsByRound[]
     {
         .type = TYPE_MYSTERY,
         .moves = sPPReducingMoves,
-        .nMoves = NELEMS(sPPReducingMoves),
+        .nMoves = ARRAY_COUNT(sPPReducingMoves),
         .abilities = { ABILITY_PRESSURE },
         .nAbilities = 1,
     },
@@ -174,7 +174,7 @@ static const struct BattlePyramidRequirement sBattlePyramidRequirementsByRound[]
     {
         .type = TYPE_MYSTERY,
         .moves = sExplosionMoves,
-        .nMoves = NELEMS(sExplosionMoves),
+        .nMoves = ARRAY_COUNT(sExplosionMoves),
     },
     [8] = /* psychic types */
     {
@@ -192,7 +192,7 @@ static const struct BattlePyramidRequirement sBattlePyramidRequirementsByRound[]
     {
         .type = TYPE_MYSTERY,
         .moves = sWeatherChangingMoves,
-        .nMoves = NELEMS(sWeatherChangingMoves),
+        .nMoves = ARRAY_COUNT(sWeatherChangingMoves),
         .abilities = { ABILITY_SAND_SPIT, ABILITY_DRIZZLE, ABILITY_SNOW_WARNING, ABILITY_DROUGHT, ABILITY_SAND_STREAM },
         .nAbilities = 5,
     },
@@ -230,7 +230,7 @@ static const struct BattlePyramidRequirement sBattlePyramidRequirementsByRound[]
     {
         .type = TYPE_NORMAL,
         .moves = sPowerfulNormalMoves,
-        .nMoves = NELEMS(sPowerfulNormalMoves),
+        .nMoves = ARRAY_COUNT(sPowerfulNormalMoves),
     },
 };
 

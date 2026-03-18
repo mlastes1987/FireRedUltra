@@ -485,7 +485,7 @@ static bool32 SavedMapViewIsEmpty(void)
     for (i = 0; i < 0x200; i++)
         marker |= gSaveBlock2Ptr->mapView[i];
 #else
-    for (i = 0; i < NELEMS(gSaveBlock2Ptr->mapView); i++)
+    for (i = 0; i < ARRAY_COUNT(gSaveBlock2Ptr->mapView); i++)
         marker |= gSaveBlock2Ptr->mapView[i];
 #endif
 

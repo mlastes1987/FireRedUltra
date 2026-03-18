@@ -104,7 +104,7 @@ void HandleIntroSlide(u8 environment)
     }
     else
     {
-        if (environment >= NELEMS(gBattleEnvironmentInfo)
+        if (environment >= ARRAY_COUNT(gBattleEnvironmentInfo)
          || gBattleEnvironmentInfo[environment].battleIntroSlide == NULL)
             environment = BATTLE_ENVIRONMENT_PLAIN;
         taskId = CreateTask(gBattleEnvironmentInfo[environment].battleIntroSlide, 0);

@@ -308,7 +308,7 @@ static u8 CountBadgesForOverworldWhiteOutLossCalculation(void)
 {
     int i;
     u8 nbadges = 0;
-    for (i = 0; i < NELEMS(sWhiteOutMoneyLossBadgeFlagIDs); i++)
+    for (i = 0; i < ARRAY_COUNT(sWhiteOutMoneyLossBadgeFlagIDs); i++)
     {
         if (FlagGet(sWhiteOutMoneyLossBadgeFlagIDs[i]))
             nbadges++;
@@ -1383,7 +1383,7 @@ static void InitOverworldBgs(void)
     MoveSaveBlocks_ResetHeap_();
     ResetScreenForMapLoad();
     ResetBgsAndClearDma3BusyFlags(FALSE);
-    InitBgsFromTemplates(0, sOverworldBgTemplates, NELEMS(sOverworldBgTemplates));
+    InitBgsFromTemplates(0, sOverworldBgTemplates, ARRAY_COUNT(sOverworldBgTemplates));
     SetBgAttribute(1, BG_ATTR_MOSAIC, TRUE);
     SetBgAttribute(2, BG_ATTR_MOSAIC, TRUE);
     SetBgAttribute(3, BG_ATTR_MOSAIC, TRUE);
@@ -1401,7 +1401,7 @@ static void InitOverworldBgs(void)
 static void InitOverworldBgs_NoResetHeap(void)
 {
     ResetBgsAndClearDma3BusyFlags(FALSE);
-    InitBgsFromTemplates(0, sOverworldBgTemplates, NELEMS(sOverworldBgTemplates));
+    InitBgsFromTemplates(0, sOverworldBgTemplates, ARRAY_COUNT(sOverworldBgTemplates));
     SetBgAttribute(1, BG_ATTR_MOSAIC, TRUE);
     SetBgAttribute(2, BG_ATTR_MOSAIC, TRUE);
     SetBgAttribute(3, BG_ATTR_MOSAIC, TRUE);

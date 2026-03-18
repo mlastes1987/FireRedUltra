@@ -1152,7 +1152,7 @@ static void RunOrScheduleCommand(u16 command, u8 runMode, u8 *args)
 {
     struct BerryCrushGame * game = GetBerryCrushGame();
 
-    if (command >= NELEMS(sBerryCrushCommands))
+    if (command >= ARRAY_COUNT(sBerryCrushCommands))
         command = CMD_NONE;
     switch (runMode)
     {
@@ -1160,7 +1160,7 @@ static void RunOrScheduleCommand(u16 command, u8 runMode, u8 *args)
         // Call now and set followup to game->nextCmd
         if (command != CMD_NONE)
             sBerryCrushCommands[command](game, args);
-        if (game->nextCmd >= NELEMS(sBerryCrushCommands))
+        if (game->nextCmd >= ARRAY_COUNT(sBerryCrushCommands))
             game->nextCmd = CMD_NONE;
         game->cmdCallback = sBerryCrushCommands[game->nextCmd];
         break;
@@ -2511,7 +2511,7 @@ static s32 ShowGameDisplay(void)
         break;
     case 3:
         ResetBgsAndClearDma3BusyFlags(FALSE);
-        InitBgsFromTemplates(0, sBgTemplates, NELEMS(sBgTemplates));
+        InitBgsFromTemplates(0, sBgTemplates, ARRAY_COUNT(sBgTemplates));
         SetBgTilemapBuffer(1, game->gfx.bgBuffers[0]);
         SetBgTilemapBuffer(2, game->gfx.bgBuffers[2]);
         SetBgTilemapBuffer(3, game->gfx.bgBuffers[3]);
@@ -2800,8 +2800,8 @@ static void UpdateInputEffects(struct BerryCrushGame * game, struct BerryCrushGa
 
             gfx->impactSprites[i]->invisible = FALSE;
             gfx->impactSprites[i]->animPaused = FALSE;
-            gfx->impactSprites[i]->x2 = sImpactCoords[(flags % (NELEMS(sImpactCoords) + 1)) - 1][0];
-            gfx->impactSprites[i]->y2 = sImpactCoords[(flags % (NELEMS(sImpactCoords) + 1)) - 1][1];
+            gfx->impactSprites[i]->x2 = sImpactCoords[(flags % (ARRAY_COUNT(sImpactCoords) + 1)) - 1][0];
+            gfx->impactSprites[i]->y2 = sImpactCoords[(flags % (ARRAY_COUNT(sImpactCoords) + 1)) - 1][1];
 #undef flags
         }
     }
@@ -2863,7 +2863,7 @@ static bool32 AreEffectsFinished(struct BerryCrushGame * game, struct BerryCrush
             return FALSE;
     }
 
-    for (i = 0; i < NELEMS(gfx->sparkleSprites); i++)
+    for (i = 0; i < ARRAY_COUNT(gfx->sparkleSprites); i++)
     {
         if (!gfx->sparkleSprites[i]->invisible)
             return FALSE;
@@ -3298,7 +3298,7 @@ static void CreateGameSprites(struct BerryCrushGame * game)
     game->vibration = 0;
     gSpriteCoordOffsetX = 0;
     gSpriteCoordOffsetY = CRUSHER_START_Y;
-    for (i = 0; i < NELEMS(sSpriteSheets) - 1; ++i)
+    for (i = 0; i < ARRAY_COUNT(sSpriteSheets) - 1; ++i)
         LoadCompressedSpriteSheet(&sSpriteSheets[i]);
     LoadSpritePalettes(sSpritePals);
 
@@ -3326,7 +3326,7 @@ static void CreateGameSprites(struct BerryCrushGame * game)
     }
 
     // Create sprites for sparkle effect
-    for (i = 0; i < NELEMS(game->gfx.sparkleSprites); ++i)
+    for (i = 0; i < ARRAY_COUNT(game->gfx.sparkleSprites); ++i)
     {
         spriteId = CreateSprite(
             &sSpriteTemplate_BerryCrushPowderSparkles,
@@ -3342,7 +3342,7 @@ static void CreateGameSprites(struct BerryCrushGame * game)
     }
 
     // Create sprites for timer
-    for (i = 0; i < NELEMS(game->gfx.timerSprites); ++i)
+    for (i = 0; i < ARRAY_COUNT(game->gfx.timerSprites); ++i)
     {
         spriteId = CreateSprite(
             &sSpriteTemplate_BerryCrushTimer,
@@ -3374,12 +3374,12 @@ static void DestroyGameSprites(struct BerryCrushGame * game)
     FreeSpritePaletteByTag(TAG_TIMER_DIGITS);
     FreeSpritePaletteByTag(PALTAG_EFFECT);
     FreeSpritePaletteByTag(TAG_CRUSHER_BASE);
-    for (; i < NELEMS(game->gfx.timerSprites); ++i)
+    for (; i < ARRAY_COUNT(game->gfx.timerSprites); ++i)
         DestroySprite(game->gfx.timerSprites[i]);
     DigitObjUtil_DeletePrinter(2);
     DigitObjUtil_DeletePrinter(1);
     DigitObjUtil_DeletePrinter(0);
-    for (i = 0; i < NELEMS(game->gfx.sparkleSprites); ++i)
+    for (i = 0; i < ARRAY_COUNT(game->gfx.sparkleSprites); ++i)
         DestroySprite(game->gfx.sparkleSprites[i]);
     for (i = 0; i < game->playerCount; ++i)
         DestroySprite(game->gfx.impactSprites[i]);
@@ -3401,7 +3401,7 @@ static void SpriteCB_Sparkle_End(struct Sprite *sprite)
     u8 r1 = 0;
     SpriteCallback r5 = SpriteCallbackDummy;
 
-    for (; r1 < NELEMS(sprite->data); ++r1)
+    for (; r1 < ARRAY_COUNT(sprite->data); ++r1)
         sprite->data[r1] = 0;
     sprite->x2 = 0;
     sprite->y2 = 0;

@@ -855,7 +855,7 @@ static const u16 sDexCategory_RarePkmn_Page8[] = {
     SPECIES_MEW,
 };
 
-#define DEX_CATEGORY(name){sDexCategory_##name, NELEMS(sDexCategory_##name)}
+#define DEX_CATEGORY(name){sDexCategory_##name, ARRAY_COUNT(sDexCategory_##name)}
 
 static const struct PokedexCategoryPage sDexCategory_GrasslandPkmn[] = {
     DEX_CATEGORY(GrasslandPkmn_Page1),

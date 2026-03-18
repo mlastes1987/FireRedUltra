@@ -36,7 +36,7 @@ static void (*const sQLGfxTransitions[])(void) = {
 
 void QuestLogUpdatePlayerSprite(u8 state)
 {
-    if (state < NELEMS(sQLGfxTransitions))
+    if (state < ARRAY_COUNT(sQLGfxTransitions))
         sQLGfxTransitions[state]();
 }
 

@@ -655,7 +655,7 @@ static void MainCB2_LoadFameChecker(void)
             sBg1TilemapBuffer = AllocZeroed(BG_SCREEN_SIZE * 2); // 512x256
             sBg2TilemapBuffer = AllocZeroed(BG_SCREEN_SIZE);     // 256x256
             ResetBgsAndClearDma3BusyFlags(0);
-            InitBgsFromTemplates(0, sUIBgTemplates, NELEMS(sUIBgTemplates));
+            InitBgsFromTemplates(0, sUIBgTemplates, ARRAY_COUNT(sUIBgTemplates));
             SetBgTilemapBuffer(3, sBg3TilemapBuffer);
             SetBgTilemapBuffer(2, sBg2TilemapBuffer);
             SetBgTilemapBuffer(1, sBg1TilemapBuffer);

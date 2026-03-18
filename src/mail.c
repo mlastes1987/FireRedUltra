@@ -534,7 +534,7 @@ static bool8 DoInitMailView(void)
         break;
     case 6:
         ResetBgsAndClearDma3BusyFlags(FALSE);
-        InitBgsFromTemplates(0, sBgTemplates, NELEMS(sBgTemplates));
+        InitBgsFromTemplates(0, sBgTemplates, ARRAY_COUNT(sBgTemplates));
         SetBgTilemapBuffer(1, sMailViewResources->bg1TilemapBuffer);
         SetBgTilemapBuffer(2, sMailViewResources->bg2TilemapBuffer);
         break;

@@ -1165,7 +1165,7 @@ static void HofInit_ResetGpuBuffersAndLoadConfettiGfx(void)
 static void Hof_InitBgs(void)
 {
     ResetBgsAndClearDma3BusyFlags(0);
-    InitBgsFromTemplates(0, sHof_BgTemplates, NELEMS(sHof_BgTemplates));
+    InitBgsFromTemplates(0, sHof_BgTemplates, ARRAY_COUNT(sHof_BgTemplates));
     SetBgTilemapBuffer(1, sHofGfxPtr->tilemap1);
     SetBgTilemapBuffer(3, sHofGfxPtr->tilemap2);
     ChangeBgX(0, 0, 0);

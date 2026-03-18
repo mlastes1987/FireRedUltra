@@ -354,7 +354,7 @@ static const struct ListMenuTemplate sListMenuTemplate_KantoDexModeSelect = {
     .items = sListMenuItems_KantoDexModeSelect,
     .moveCursorFunc = MoveCursorFunc_DexModeSelect,
     .itemPrintFunc = ItemPrintFunc_DexModeSelect,
-    .totalItems = NELEMS(sListMenuItems_KantoDexModeSelect),
+    .totalItems = ARRAY_COUNT(sListMenuItems_KantoDexModeSelect),
     .maxShowed = 9,
     .windowId = 0,
     .header_X = 0,
@@ -398,7 +398,7 @@ static const struct ListMenuTemplate sListMenuTemplate_NatDexModeSelect = {
     .items = sListMenuItems_NatDexModeSelect,
     .moveCursorFunc = MoveCursorFunc_DexModeSelect,
     .itemPrintFunc = ItemPrintFunc_DexModeSelect,
-    .totalItems = NELEMS(sListMenuItems_NatDexModeSelect),
+    .totalItems = ARRAY_COUNT(sListMenuItems_NatDexModeSelect),
     .maxShowed = 9,
     .windowId = 0,
     .header_X = 0,
@@ -915,7 +915,7 @@ void DexScreen_LoadResources(void)
     ResetTasks();
     ScanlineEffect_Stop();
     ResetBgsAndClearDma3BusyFlags(TRUE);
-    InitBgsFromTemplates(0, sBgTemplates, NELEMS(sBgTemplates));
+    InitBgsFromTemplates(0, sBgTemplates, ARRAY_COUNT(sBgTemplates));
     SetBgTilemapBuffer(3, (u16 *)Alloc(BG_SCREEN_SIZE));
     SetBgTilemapBuffer(2, (u16 *)Alloc(BG_SCREEN_SIZE));
     SetBgTilemapBuffer(1, (u16 *)Alloc(BG_SCREEN_SIZE));
@@ -3452,7 +3452,7 @@ static u8 DexScreen_LookUpCategoryBySpecies(u16 species)
     int i, j, k, categoryCount, categoryPageCount, posInPage;
     u16 dexSpecies;
 
-    for (i = 0; i < NELEMS(gDexCategories); i++)
+    for (i = 0; i < ARRAY_COUNT(gDexCategories); i++)
     {
         categoryCount = gDexCategories[i].count;
         for (j = 0; j < categoryCount; j++)

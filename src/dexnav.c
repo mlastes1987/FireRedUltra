@@ -566,7 +566,7 @@ static void RemoveDexNavWindowAndGfx(void)
     if (sDexNavSearchDataPtr->exclamationSpriteId != MAX_SPRITES)
         DestroySprite(&gSprites[sDexNavSearchDataPtr->exclamationSpriteId]);
 
-    for (i = 0; i < NELEMS(sDexNavSearchDataPtr->starSpriteIds); i++)
+    for (i = 0; i < ARRAY_COUNT(sDexNavSearchDataPtr->starSpriteIds); i++)
     {
         if (sDexNavSearchDataPtr->starSpriteIds[i] != MAX_SPRITES)
             DestroySprite(&gSprites[sDexNavSearchDataPtr->starSpriteIds[i]]);
@@ -917,7 +917,7 @@ static void DexNavDrawPotentialStars(u8 potential, u8* dst)
     u8 spriteId;
     u32 i;
 
-    for (i = 0; i < NELEMS(sDexNavSearchDataPtr->starSpriteIds); i++)
+    for (i = 0; i < ARRAY_COUNT(sDexNavSearchDataPtr->starSpriteIds); i++)
     {
         spriteId = MAX_SPRITES;
         if (potential > i)
@@ -1634,7 +1634,7 @@ static bool8 DexNav_InitBgs(void)
 
     memset(sBg1TilemapBuffer, 0, 0x800);
     ResetBgsAndClearDma3BusyFlags(0);
-    InitBgsFromTemplates(0, sDexNavMenuBgTemplates, NELEMS(sDexNavMenuBgTemplates));
+    InitBgsFromTemplates(0, sDexNavMenuBgTemplates, ARRAY_COUNT(sDexNavMenuBgTemplates));
     SetBgTilemapBuffer(1, sBg1TilemapBuffer);
     ScheduleBgCopyTilemapToVram(1);
     SetGpuReg(REG_OFFSET_DISPCNT, DISPCNT_OBJ_1D_MAP | DISPCNT_OBJ_ON);

@@ -513,7 +513,7 @@ const u8 *GetExpandedPlaceholder(u32 id)
         [PLACEHOLDER_ID_KYOGRE]       = ExpandPlaceholder_Kyogre,
     };
 
-    if (id >= NELEMS(funcs))
+    if (id >= ARRAY_COUNT(funcs))
         return gExpandedPlaceholder_Empty;
     else
         return funcs[id]();
@@ -669,7 +669,7 @@ u8 GetExtCtrlCodeLength(u8 code)
     };
 
     u8 length = 0;
-    if (code < NELEMS(lengths))
+    if (code < ARRAY_COUNT(lengths))
         length = lengths[code];
     return length;
 }

@@ -192,7 +192,7 @@ static const struct SpriteTemplate sSpriteTemplate_UnionRoomChatIcons = {
 bool32 UnionRoomChat_TryAllocSpriteWork(void)
 {
     int i;
-    for (i = 0; i < NELEMS(sSpriteSheets); i++)
+    for (i = 0; i < ARRAY_COUNT(sSpriteSheets); i++)
         LoadCompressedSpriteSheet(&sSpriteSheets[i]);
 
     LoadSpritePalette(&sSpritePalette);

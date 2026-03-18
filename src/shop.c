@@ -592,7 +592,7 @@ static bool8 InitShopData(void)
 static void BuyMenuInitBgs(void)
 {
     ResetBgsAndClearDma3BusyFlags(0);
-    InitBgsFromTemplates(0, sShopBuyMenuBgTemplates, NELEMS(sShopBuyMenuBgTemplates));
+    InitBgsFromTemplates(0, sShopBuyMenuBgTemplates, ARRAY_COUNT(sShopBuyMenuBgTemplates));
     SetBgTilemapBuffer(1, gShopTilemapBuffer2);
     SetBgTilemapBuffer(2, gShopTilemapBuffer4);
     SetBgTilemapBuffer(3, gShopTilemapBuffer3);

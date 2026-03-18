@@ -298,7 +298,7 @@ static const u16 sECPhrase_MysteryEventIsExciting[] = {
 
 static void CompareProfileResponseWithPassphrase(void)
 {
-    gSpecialVar_0x8004 = IsPhraseDifferentThanPlayerInput(sECPhrase_MysteryEventIsExciting, NELEMS(sECPhrase_MysteryEventIsExciting));
+    gSpecialVar_0x8004 = IsPhraseDifferentThanPlayerInput(sECPhrase_MysteryEventIsExciting, ARRAY_COUNT(sECPhrase_MysteryEventIsExciting));
 }
 
 static const u16 sECPhrase_LinkTogetherWithAll[] = {
@@ -310,7 +310,7 @@ static const u16 sECPhrase_LinkTogetherWithAll[] = {
 
 static void CompareQuestionnaireResponseWithPassphrase(void)
 {
-    gSpecialVar_0x8004 = IsPhraseDifferentThanPlayerInput(sECPhrase_LinkTogetherWithAll, NELEMS(sECPhrase_LinkTogetherWithAll));
+    gSpecialVar_0x8004 = IsPhraseDifferentThanPlayerInput(sECPhrase_LinkTogetherWithAll, ARRAY_COUNT(sECPhrase_LinkTogetherWithAll));
 }
 
 static const struct EasyChatScreenTemplate sEasyChatScreenTemplates[] = {
@@ -1159,8 +1159,8 @@ static const u8 sAlphabetLayout[][7] = {
 
 static int GetSelectedLetter(void)
 {
-    int col = sEasyChatScreen->selectGroupCursorX < NELEMS(*sAlphabetLayout) ? sEasyChatScreen->selectGroupCursorX : 0;
-    int row = sEasyChatScreen->selectGroupCursorY < NELEMS(sAlphabetLayout) ? sEasyChatScreen->selectGroupCursorY : 0;
+    int col = sEasyChatScreen->selectGroupCursorX < ARRAY_COUNT(*sAlphabetLayout) ? sEasyChatScreen->selectGroupCursorX : 0;
+    int row = sEasyChatScreen->selectGroupCursorY < ARRAY_COUNT(sAlphabetLayout) ? sEasyChatScreen->selectGroupCursorY : 0;
     return sAlphabetLayout[row][col];
 }
 

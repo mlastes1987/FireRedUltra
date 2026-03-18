@@ -1831,7 +1831,7 @@ static bool8 IsInDungeonMap(void)
 {
     u8 i, j;
 
-    for (i = 0; i < NELEMS(sDungeonMaps); i++)
+    for (i = 0; i < ARRAY_COUNT(sDungeonMaps); i++)
     {
         for (j = 0; j < sDungeonMaps[i][2]; j++)
         {
