@@ -743,7 +743,7 @@ void DecompressTrainerBackPic(enum TrainerPicID trainerPicId, enum BattlerId bat
 {
     enum BattlerPosition position = GetBattlerPosition(battler);
     CopyTrainerBackspriteFramesToDest(trainerPicId, gMonSpritesGfxPtr->spritesGfx[position]);
-    LoadSpritePaletteWithTag(GetTrainerBackPicPalette(trainerPicId), trainerPicId);
+    LoadSpritePaletteWithTag(GetTrainerBackPicPalette(trainerPicId), TRAINER_PIC_COUNT + trainerPicId);
 }
 
 void FreeTrainerFrontPicPalette(enum TrainerPicID trainerPicId)

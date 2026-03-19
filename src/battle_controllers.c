@@ -2493,7 +2493,7 @@ void BtlController_HandleDrawTrainerPic(enum BattlerId battler, enum TrainerPicI
 
             // Sets sprite priority to 1 so mons don't remain in foreground
             gSprites[gBattleStruct->trainerSlideSpriteIds[battler]].oam.priority = 1;
-            gSprites[gBattleStruct->trainerSlideSpriteIds[battler]].oam.paletteNum = IndexOfSpritePaletteTag(trainerPicId);
+            gSprites[gBattleStruct->trainerSlideSpriteIds[battler]].oam.paletteNum = IndexOfSpritePaletteTag(TRAINER_PIC_COUNT + trainerPicId);
         }
         gSprites[gBattleStruct->trainerSlideSpriteIds[battler]].x2 = DISPLAY_WIDTH;
         gSprites[gBattleStruct->trainerSlideSpriteIds[battler]].sSpeedX = -2;
@@ -2520,7 +2520,7 @@ void BtlController_HandleTrainerSlide(enum BattlerId battler, enum TrainerPicID 
             gBattlerSpriteIds[battler] = gBattleStruct->trainerSlideSpriteIds[battler];
         // Sets sprite priority to 1 so mons don't remain in foreground
         gSprites[gBattleStruct->trainerSlideSpriteIds[battler]].oam.priority = 1;
-        gSprites[gBattleStruct->trainerSlideSpriteIds[battler]].oam.paletteNum = IndexOfSpritePaletteTag(trainerPicId);
+        gSprites[gBattleStruct->trainerSlideSpriteIds[battler]].oam.paletteNum = IndexOfSpritePaletteTag(TRAINER_PIC_COUNT + trainerPicId);
         gSprites[gBattleStruct->trainerSlideSpriteIds[battler]].x2 = -96;
         gSprites[gBattleStruct->trainerSlideSpriteIds[battler]].sSpeedX = 2;
     }
