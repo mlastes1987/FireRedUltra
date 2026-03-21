@@ -53,6 +53,7 @@
 #include "constants/field_move.h"
 #include "constants/items.h"
 #include "constants/maps.h"
+#include "constants/menu.h"
 #include "constants/sound.h"
 
 typedef void (*NativeFunc)(struct ScriptContext *ctx);
@@ -1958,7 +1959,7 @@ bool8 ScrCmd_multichoice(struct ScriptContext * ctx)
 {
     u8 left = ScriptReadByte(ctx);
     u8 top = ScriptReadByte(ctx);
-    u8 multichoiceId = ScriptReadByte(ctx);
+    enum MultichoiceID multichoiceId = ScriptReadByte(ctx);
     bool8 ignoreBPress = ScriptReadByte(ctx);
 
     Script_RequestEffects(SCREFF_V1 | SCREFF_HARDWARE);
@@ -1978,13 +1979,13 @@ bool8 ScrCmd_multichoicedefault(struct ScriptContext * ctx)
 {
     u8 left = ScriptReadByte(ctx);
     u8 top = ScriptReadByte(ctx);
-    u8 multichoiceId = ScriptReadByte(ctx);
+    enum MultichoiceID multichoiceId = ScriptReadByte(ctx);
     u8 defaultChoice = ScriptReadByte(ctx);
     bool8 ignoreBPress = ScriptReadByte(ctx);
 
     Script_RequestEffects(SCREFF_V1 | SCREFF_HARDWARE);
 
-    if (ScriptMenu_MultichoiceWithDefault(left, top, multichoiceId, ignoreBPress, defaultChoice) == TRUE)
+    if (ScriptMenu_MultichoiceWithDefault(left, top, multichoiceId, ignoreBPress, defaultChoice))
     {
         ScriptContext_Stop();
         return TRUE;
@@ -2004,7 +2005,7 @@ bool8 ScrCmd_multichoicegrid(struct ScriptContext * ctx)
 {
     u8 left = ScriptReadByte(ctx);
     u8 top = ScriptReadByte(ctx);
-    u8 multichoiceId = ScriptReadByte(ctx);
+    enum MultichoiceID multichoiceId = ScriptReadByte(ctx);
     u8 numColumns = ScriptReadByte(ctx);
     bool8 ignoreBPress = ScriptReadByte(ctx);
 
@@ -2238,11 +2239,11 @@ bool8 ScrCmd_buffernumberstring(struct ScriptContext * ctx)
 bool8 ScrCmd_bufferstdstring(struct ScriptContext * ctx)
 {
     u8 stringVarIndex = ScriptReadByte(ctx);
-    u16 index = VarGet(ScriptReadHalfword(ctx));
+    enum StdStringID stringID = VarGet(ScriptReadHalfword(ctx));
 
     Script_RequestEffects(SCREFF_V1);
 
-    StringCopy(sScriptStringVars[stringVarIndex], gStdStringPtrs[index]);
+    StringCopy(sScriptStringVars[stringVarIndex], gStdStrings[stringID]);
     return FALSE;
 }
 

@@ -2,43 +2,43 @@
 EventScript_ChooseDestFromOneIsland::
 	goto_if_ge VAR_MAP_SCENE_ONE_ISLAND_POKEMON_CENTER_1F, 5, EventScript_SeviiDestinationsPage1
 	goto_if_ge VAR_MAP_SCENE_CINNABAR_ISLAND, 4, EventScript_ChooseDestFromOneIslandVermilionAllowed
-	multichoice 19, 6, MULTICHOICE_ISLAND_23, FALSE
+	multichoice 19, 6, MULTI_ISLAND_23, FALSE
 	switch VAR_RESULT
 	case 0, EventScript_SailToTwoIsland2
 	case 1, EventScript_SailToThreeIsland2
 	case 2, EventScript_CancelSail
-	case SCR_MENU_CANCEL, EventScript_CancelSail
+	case MULTI_B_PRESSED, EventScript_CancelSail
 	end
 
 EventScript_ChooseDestFromOneIslandVermilionAllowed::
-	multichoice 19, 5, MULTICHOICE_SEAGALLOP_V23, FALSE
+	multichoice 19, 5, MULTI_SEAGALLOP_V23, FALSE
 	switch VAR_RESULT
 	case 0, EventScript_SailToVermilion2
 	case 1, EventScript_SailToTwoIsland2
 	case 2, EventScript_SailToThreeIsland2
 	case 3, EventScript_CancelSail
-	case SCR_MENU_CANCEL, EventScript_CancelSail
+	case MULTI_B_PRESSED, EventScript_CancelSail
 	end
 
 EventScript_ChooseDestFromTwoIsland::
 	goto_if_ge VAR_MAP_SCENE_ONE_ISLAND_POKEMON_CENTER_1F, 5, EventScript_SeviiDestinationsPage1
 	goto_if_ge VAR_MAP_SCENE_CINNABAR_ISLAND, 4, EventScript_ChooseDestFromTwoIslandVermilionAllowed
-	multichoice 19, 6, MULTICHOICE_ISLAND_13, FALSE
+	multichoice 19, 6, MULTI_ISLAND_13, FALSE
 	switch VAR_RESULT
 	case 0, EventScript_SailToOneIsland2
 	case 1, EventScript_SailToThreeIsland2
 	case 2, EventScript_CancelSail
-	case SCR_MENU_CANCEL, EventScript_CancelSail
+	case MULTI_B_PRESSED, EventScript_CancelSail
 	end
 
 EventScript_ChooseDestFromTwoIslandVermilionAllowed::
-	multichoice 19, 5, MULTICHOICE_SEAGALLOP_V13, FALSE
+	multichoice 19, 5, MULTI_SEAGALLOP_V13, FALSE
 	switch VAR_RESULT
 	case 0, EventScript_SailToVermilion2
 	case 1, EventScript_SailToOneIsland2
 	case 2, EventScript_SailToThreeIsland2
 	case 3, EventScript_CancelSail
-	case SCR_MENU_CANCEL, EventScript_CancelSail
+	case MULTI_B_PRESSED, EventScript_CancelSail
 	end
 
 EventScript_SailToVermilion2::
@@ -64,22 +64,22 @@ EventScript_SailToThreeIsland2::
 EventScript_ChooseDestFromIsland::
 	goto_if_ge VAR_MAP_SCENE_ONE_ISLAND_POKEMON_CENTER_1F, 5, EventScript_SeviiDestinationsPage1
 	goto_if_ge VAR_MAP_SCENE_CINNABAR_ISLAND, 4, EventScript_ChooseDestFromIslandVermilionAllowed
-	multichoice 19, 6, MULTICHOICE_ISLAND_12, FALSE
+	multichoice 19, 6, MULTI_ISLAND_12, FALSE
 	switch VAR_RESULT
 	case 0, EventScript_SailToOneIsland2
 	case 1, EventScript_SailToTwoIsland2
 	case 2, EventScript_CancelSail
-	case SCR_MENU_CANCEL, EventScript_CancelSail
+	case MULTI_B_PRESSED, EventScript_CancelSail
 	end
 
 EventScript_ChooseDestFromIslandVermilionAllowed::
-	multichoice 19, 5, MULTICHOICE_SEAGALLOP_V12, FALSE
+	multichoice 19, 5, MULTI_SEAGALLOP_V12, FALSE
 	switch VAR_RESULT
 	case 0, EventScript_SailToVermilion2
 	case 1, EventScript_SailToOneIsland2
 	case 2, EventScript_SailToTwoIsland2
 	case 3, EventScript_CancelSail
-	case SCR_MENU_CANCEL, EventScript_CancelSail
+	case MULTI_B_PRESSED, EventScript_CancelSail
 	end
 
 EventScript_SailToDest::
@@ -139,7 +139,7 @@ EventScript_SeviiDestinationsPage1::
 	case SEAGALLOP_THREE_ISLAND,   EventScript_SailToThreeIsland
 	case SEAGALLOP_FOUR_ISLAND,    EventScript_SailToFourIsland
 	case SEAGALLOP_MORE,           EventScript_SeviiDestinationsPage2
-	case SCR_MENU_CANCEL,          EventScript_CancelSail
+	case MULTI_B_PRESSED,          EventScript_CancelSail
 	end
 
 EventScript_SeviiDestinationsPage2::
@@ -153,7 +153,7 @@ EventScript_SeviiDestinationsPage2::
 	case SEAGALLOP_SIX_ISLAND,   EventScript_SailToSixIsland
 	case SEAGALLOP_SEVEN_ISLAND, EventScript_SailToSevenIsland
 	case SEAGALLOP_MORE,         EventScript_SeviiDestinationsPage1
-	case SCR_MENU_CANCEL,        EventScript_CancelSail
+	case MULTI_B_PRESSED,        EventScript_CancelSail
 	end
 
 EventScript_SailToVermilionCity::

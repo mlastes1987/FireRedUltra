@@ -17,12 +17,12 @@ EventScript_AlreadyGaveProfile:
 EventScript_AskForProfile:
 	message Text_TellMeWhatsYourProfile
 	waitmessage
-	multichoice 18, 6, MULTICHOICE_YES_NO_INFO_2, FALSE
+	multichoice 18, 6, MULTI_YES_NO_INFO, FALSE
 	switch VAR_RESULT
 	case 0, EventScript_AcceptGiveProfile
 	case 1, EventScript_DeclineGiveProfile
 	case 2, EventScript_ProfileInfo
-	case SCR_MENU_CANCEL, EventScript_DeclineGiveProfile
+	case MULTI_B_PRESSED, EventScript_DeclineGiveProfile
 	end
 
 EventScript_ProfileInfo:
@@ -64,12 +64,12 @@ EventScript_GivenProfileBefore:
 EventScript_AskForNewProfile:
 	message Text_ChangeYourProfile
 	waitmessage
-	multichoice 18, 6, MULTICHOICE_YES_NO_INFO_2, FALSE
+	multichoice 18, 6, MULTI_YES_NO_INFO, FALSE
 	switch VAR_RESULT
 	case 0, EventScript_AcceptGiveNewProfile
 	case 1, EventScript_DeclineGiveNewProfile
 	case 2, EventScript_ProfileInfo2
-	case SCR_MENU_CANCEL, EventScript_DeclineGiveNewProfile
+	case MULTI_B_PRESSED, EventScript_DeclineGiveNewProfile
 	end
 
 EventScript_ProfileInfo2:

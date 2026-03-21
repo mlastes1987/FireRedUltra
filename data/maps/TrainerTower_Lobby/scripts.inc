@@ -155,12 +155,12 @@ TrainerTower_Lobby_EventScript_AllFloorsUsed::
 TrainerTower_Lobby_EventScript_AskEnterChallenge::
 	message TrainerTower_Lobby_Text_LikeToChallengeTrainers
 	waitmessage
-	multichoice 18, 6, MULTICHOICE_YES_NO_INFO, FALSE
+	multichoice 18, 6, MULTI_YES_NO_INFO, FALSE
 	switch VAR_RESULT
 	case 0, TrainerTower_Lobby_EventScript_ChooseChallenge
 	case 1, TrainerTower_Lobby_EventScript_DeclineChallenge
 	case 2, TrainerTower_Lobby_EventScript_ChallengeInfo
-	case SCR_MENU_CANCEL, TrainerTower_Lobby_EventScript_DeclineChallenge
+	case MULTI_B_PRESSED, TrainerTower_Lobby_EventScript_DeclineChallenge
 	end
 
 TrainerTower_Lobby_EventScript_ChallengeInfo::
@@ -169,14 +169,14 @@ TrainerTower_Lobby_EventScript_ChallengeInfo::
 	end
 
 TrainerTower_Lobby_EventScript_ChooseChallenge::
-	multichoice 13, 3, MULTICHOICE_TRAINER_TOWER_MODE, FALSE
+	multichoice 13, 3, MULTI_TRAINER_TOWER_MODE, FALSE
 	switch VAR_RESULT
 	case 0, TrainerTower_Lobby_EventScript_BeginChallenge
 	case 1, TrainerTower_Lobby_EventScript_BeginChallenge
 	case 2, TrainerTower_Lobby_EventScript_BeginChallenge
 	case 3, TrainerTower_Lobby_EventScript_BeginChallenge
 	case 4, TrainerTower_Lobby_EventScript_DeclineChallenge
-	case SCR_MENU_CANCEL, TrainerTower_Lobby_EventScript_DeclineChallenge
+	case MULTI_B_PRESSED, TrainerTower_Lobby_EventScript_DeclineChallenge
 	end
 
 TrainerTower_Lobby_EventScript_BeginChallenge::

@@ -19,12 +19,12 @@ TrainerTower_Elevator_EventScript_FloorSelect::
 	end
 
 TrainerTower_Elevator_EventScript_FloorSelectFromRoof::
-	multichoicedefault 0, 0, MULTICHOICE_ROOFTOP_B1F, 0, FALSE
+	multichoicedefault 0, 0, MULTI_ROOFTOP_B1F, 0, FALSE
 	goto TrainerTower_Elevator_EventScript_ChooseFloor
 	end
 
 TrainerTower_Elevator_EventScript_FloorSelectFromLobby::
-	multichoicedefault 0, 0, MULTICHOICE_ROOFTOP_B1F, 1, FALSE
+	multichoicedefault 0, 0, MULTI_ROOFTOP_B1F, 1, FALSE
 	goto TrainerTower_Elevator_EventScript_ChooseFloor
 	end
 
@@ -33,7 +33,7 @@ TrainerTower_Elevator_EventScript_ChooseFloor::
 	case 0, TrainerTower_Elevator_EventScript_SelectRoof
 	case 1, TrainerTower_Elevator_EventScript_SelectLobby
 	case 2, TrainerTower_Elevator_EventScript_CloseFloorSelect
-	case SCR_MENU_CANCEL, TrainerTower_Elevator_EventScript_CloseFloorSelect
+	case MULTI_B_PRESSED, TrainerTower_Elevator_EventScript_CloseFloorSelect
 	end
 
 TrainerTower_Elevator_EventScript_SelectLobby::

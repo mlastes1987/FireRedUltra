@@ -18,9 +18,9 @@ EventScript_PCDisabled::
 	end
 
 EventScript_PCMainMenu::
-	message Text_AccessWhichPC
+	message gText_WhichPCShouldBeAccessed
 	waitmessage
-	special CreatePCMenu
+	special ScriptMenu_CreatePCMultichoice
 	waitstate
 	goto EventScript_ChoosePCMenu
 	end
@@ -32,7 +32,7 @@ EventScript_ChoosePCMenu::
 	case 2, EventScript_AccessProfOaksPC
 	case 3, EventScript_AccessHallOfFame
 	case 4, EventScript_TurnOffPC
-	case SCR_MENU_CANCEL, EventScript_TurnOffPC
+	case MULTI_B_PRESSED, EventScript_TurnOffPC
 	end
 
 EventScript_AccessPlayersPC::
