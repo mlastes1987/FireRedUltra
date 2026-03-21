@@ -31,6 +31,7 @@
 #include "task.h"
 #include "trainer_pokemon_sprites.h"
 #include "trainer_see.h"
+#include "trainer.h"
 #include "trig.h"
 #include "util.h"
 #include "constants/event_object_movement.h"
@@ -561,15 +562,15 @@ bool8 FieldEffectActiveListContains(enum FieldEffect fldeff)
     return FALSE;
 }
 
-u8 CreateTrainerSprite(u8 trainerSpriteID, s16 x, s16 y, u8 subpriority, u8 *buffer)
+u8 CreateTrainerSprite(enum TrainerPicID trainerPicId, s16 x, s16 y, u8 subpriority, u8 *buffer)
 {
     struct CompressedSpriteSheet spriteSheet;
     struct SpriteTemplate spriteTemplate;
     bool32 alloced = FALSE;
 
-    spriteSheet.data = GetTrainerFrontPicData(trainerSpriteID);
-    spriteSheet.size = GetTrainerFrontPicSize(trainerSpriteID);
-    spriteSheet.tag = trainerSpriteID;
+    spriteSheet.data = GetTrainerFrontPicData(trainerPicId);
+    spriteSheet.size = GetTrainerFrontPicSize(trainerPicId);
+    spriteSheet.tag = GetTrainerPicTag(trainerPicId, TRUE);
 
     // Allocate memory for buffer
     if (buffer == NULL)
@@ -578,13 +579,13 @@ u8 CreateTrainerSprite(u8 trainerSpriteID, s16 x, s16 y, u8 subpriority, u8 *buf
         alloced = TRUE;
     }
 
-    LoadSpritePaletteWithTag(GetTrainerFrontPicPalette(trainerSpriteID), trainerSpriteID);
+    LoadSpritePaletteWithTag(GetTrainerFrontPicPalette(trainerPicId), GetTrainerPicTag(trainerPicId, TRUE));
     LoadCompressedSpriteSheetOverrideBuffer(&spriteSheet, buffer);
     if (alloced)
         Free(buffer);
 
-    spriteTemplate.tileTag = trainerSpriteID;
-    spriteTemplate.paletteTag = trainerSpriteID;
+    spriteTemplate.tileTag = GetTrainerPicTag(trainerPicId, TRUE);
+    spriteTemplate.paletteTag = GetTrainerPicTag(trainerPicId, TRUE);
     spriteTemplate.oam = &sNewGameOakOamAttributes;
     spriteTemplate.anims = gDummySpriteAnimTable;
     spriteTemplate.images = NULL;

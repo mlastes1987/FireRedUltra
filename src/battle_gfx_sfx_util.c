@@ -23,6 +23,7 @@
 #include "data.h"
 #include "palette.h"
 #include "trainer_pokemon_sprites.h"
+#include "trainer.h"
 #include "constants/songs.h"
 #include "constants/rgb.h"
 #include "constants/battle_palace.h"
@@ -736,19 +737,19 @@ void DecompressTrainerFrontPic(enum TrainerPicID trainerPicId, enum BattlerId ba
 {
     enum BattlerPosition position = GetBattlerPosition(battler);
     DecompressDataWithHeaderWram(GetTrainerFrontPicData(trainerPicId), gMonSpritesGfxPtr->spritesGfx[position]);
-    LoadSpritePaletteWithTag(GetTrainerFrontPicPalette(trainerPicId), trainerPicId);
+    LoadSpritePaletteWithTag(GetTrainerFrontPicPalette(trainerPicId), GetTrainerPicTag(trainerPicId, TRUE));
 }
 
 void DecompressTrainerBackPic(enum TrainerPicID trainerPicId, enum BattlerId battler)
 {
     enum BattlerPosition position = GetBattlerPosition(battler);
     CopyTrainerBackspriteFramesToDest(trainerPicId, gMonSpritesGfxPtr->spritesGfx[position]);
-    LoadSpritePaletteWithTag(GetTrainerBackPicPalette(trainerPicId), TRAINER_PIC_COUNT + trainerPicId);
+    LoadSpritePaletteWithTag(GetTrainerBackPicPalette(trainerPicId), GetTrainerPicTag(trainerPicId, FALSE));
 }
 
 void FreeTrainerFrontPicPalette(enum TrainerPicID trainerPicId)
 {
-    FreeSpritePaletteByTag(trainerPicId);
+    FreeSpritePaletteByTag(GetTrainerPicTag(trainerPicId, TRUE));
 }
 
 // Unused.
