@@ -1917,7 +1917,7 @@ static void DrawTextEntry(void)
     for (i = 0; i < maxChars; i++)
     {
         temp[0] = sNamingScreen->textBuffer[i];
-        temp[1] = gExpandedPlaceholder_Empty[0];
+        temp[1] = gText_EmptyString[0];
         extraWidth = (IsWideLetter(temp[0]) == TRUE) ? 2 : 0;
 
         AddTextPrinterParameterized(sNamingScreen->windows[WIN_TEXT_ENTRY], FONT_NORMAL, temp, i * 8 + xpos + extraWidth, 1, TEXT_SKIP_DRAW, NULL);

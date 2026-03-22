@@ -3,9 +3,8 @@
 #include "strings.h"
 #include "constants/item.h"
 
-const u8 gExpandedPlaceholder_Empty[] = _("");
-const u8 gExpandedPlaceholder_Kun[] = _("");
-const u8 gExpandedPlaceholder_Chan[] = _("");
+const u8 gText_EmptyString[] = _("");
+
 const u8 gExpandedPlaceholder_Sapphire[] = _("SAPPHIRE");
 const u8 gExpandedPlaceholder_Ruby[] = _("RUBY");
 const u8 gExpandedPlaceholder_Aqua[] = _("AQUA");

@@ -1,6 +1,8 @@
 #ifndef GUARD_STRING_UTIL_H
 #define GUARD_STRING_UTIL_H
 
+#include "constants/global.h"
+
 enum StringConvertMode
 {
     STR_CONV_MODE_LEFT_ALIGN,
@@ -40,11 +42,11 @@ u8 *StringCopyPadded(u8 *dest, const u8 *src, u8 c, u16 n);
 u8 *StringFillWithTerminator(u8 *dest, u16 n);
 u8 *StringCopyN_Multibyte(u8 *dest, const u8 *src, u32 n);
 u32 StringLength_Multibyte(const u8 *str);
-u8 *WriteColorChangeControlCode(u8 *dest, u32 colorType, u8 color);
+u8 *WriteColorChangeControlCode(u8 *dest, enum TextColorType colorType, u8 color);
 bool32 IsStringJapanese(u8 *str);
 u8 GetExtCtrlCodeLength(u8 code);
 s32 StringCompareWithoutExtCtrlCodes(const u8 *str1, const u8 *str2);
-void ConvertInternationalString(u8 *s, u8 language);
+void ConvertInternationalString(u8 *s, enum Language language);
 void StripExtCtrlCodes(u8 *str);
 bool32 DoesStringProperlyTerminate(const u8 *str, u32 last);
 

@@ -106,8 +106,8 @@ static const struct WindowTemplate sDaycareLevelMenuWindowTemplate =
 
 static const struct ListMenuItem sLevelMenuItems[] =
 {
-    {gExpandedPlaceholder_Empty, 0},
-    {gExpandedPlaceholder_Empty, 1},
+    {gText_EmptyString, 0},
+    {gText_EmptyString, 1},
     {gOtherText_Exit, DAYCARE_LEVEL_MENU_EXIT}
 };
 
@@ -1354,7 +1354,7 @@ void CreateEgg(struct Pokemon *mon, u16 species, bool8 setHotSpringsLocation)
 {
     u8 metLevel;
     enum PokeBall ball;
-    u8 language;
+    enum Language language;
     u8 metLocation;
     u8 isEgg;
 
