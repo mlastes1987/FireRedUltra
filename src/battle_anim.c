@@ -1092,12 +1092,12 @@ void MoveBattlerSpriteToBG(enum BattlerId battler, bool8 toBG_2, bool8 setSprite
         else
         {
             RequestDma3Fill(0, (void *)(BG_SCREEN_ADDR(8)), 0x2000, DMA3_32BIT);
-            RequestDma3Fill(0, (void *)(BG_SCREEN_ADDR(28)), 0x1000, DMA3_32BIT);
+            RequestDma3Fill(0xFF, (void *)(BG_SCREEN_ADDR(28)), 0x1000, DMA3_16BIT);
         }
 
         GetBattleAnimBg1Data(&animBg);
-        CpuFill16(toBG_2, animBg.bgTiles, 0x1000);
-        CpuFill16(toBG_2, animBg.bgTilemap, 0x800);
+        CpuFill16(0, animBg.bgTiles, 0x1000);
+        CpuFill16(0, animBg.bgTilemap, 0x800);
 
         SetAnimBgAttribute(1, BG_ANIM_PRIORITY, 2);
         SetAnimBgAttribute(1, BG_ANIM_SCREEN_SIZE, 1);

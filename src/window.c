@@ -6,7 +6,7 @@
 #include "decompress.h"
 
 COMMON_DATA void *gWindowBgTilemapBuffers[NUM_BACKGROUNDS] = {0};
-extern u32 gWindowTileAutoAllocEnabled;
+extern bool32 gWindowTileAutoAllocEnabled;
 
 EWRAM_DATA struct Window gWindows[WINDOWS_MAX] = {0};
 
