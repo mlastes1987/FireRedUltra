@@ -44,7 +44,7 @@ struct Main
 extern const char RomHeaderGameCode[GAME_CODE_LENGTH];
 extern const char RomHeaderSoftwareVersion;
 
-extern const u8 gGameVersion;
+extern const enum GameVersion gGameVersion;
 extern const u8 gGameLanguage;
 
 extern u16 gKeyRepeatStartDelay;

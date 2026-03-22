@@ -2786,43 +2786,33 @@ static u32 CanTradeSelectedMon(struct Pokemon * playerParty, int partyCount, int
 
 s32 GetGameProgressForLinkTrade(void)
 {
-    s32 versionId; // 0: FRLG, 1: RS, 2: Emerald (or anything else)
-    u16 version;
+    enum GameVersion partnerVersion;
+    u8 playerId, partnerId;
 
-    if (gReceivedRemoteLinkPlayers)
-    {
-        versionId = 0;
-        version = (gLinkPlayers[GetMultiplayerId() ^ 1].version & 0xFF);
+    if (!gReceivedRemoteLinkPlayers)
+        return TRADE_BOTH_PLAYERS_READY;
 
-        if (version == VERSION_FIRE_RED || version == VERSION_LEAF_GREEN)
-            versionId = 0;
-        else if (version == VERSION_RUBY || version == VERSION_SAPPHIRE)
-            versionId = 1;
-        else
-            versionId = 2;
+    playerId = GetMultiplayerId();
+    partnerId = playerId ^ 1;
 
-        // If trading with RSE, both players must have progessed the story enough
-        if (versionId > 0)
-        {
-            // Has player finished the Sevii Islands
-            if (gLinkPlayers[GetMultiplayerId()].progressFlagsCopy & 0xF0)
-            {
-                if (versionId == 2)
-                {
-                    // Is RSE partner champion
-                    if (gLinkPlayers[GetMultiplayerId() ^ 1].progressFlagsCopy & 0xF0)
-                        return TRADE_BOTH_PLAYERS_READY;
-                    else
-                        return TRADE_PARTNER_NOT_READY;
-                }
-            }
-            else
-            {
-                return TRADE_PLAYER_NOT_READY;
-            }
-        }
-    }
-    return TRADE_BOTH_PLAYERS_READY;
+    partnerVersion = (gLinkPlayers[partnerId].version & 0xFF);
+    // FRLG <-> FRLG can always trade
+    if (partnerVersion == VERSION_FIRE_RED || partnerVersion == VERSION_LEAF_GREEN)
+        return TRADE_BOTH_PLAYERS_READY;
+
+    // Has player finished the Sevii Islands
+    if (!(gLinkPlayers[playerId].progressFlagsCopy & 0xF0))
+        return TRADE_PLAYER_NOT_READY;
+
+    // FRLG <-> RS only requires FRLG story progress
+    if (partnerVersion == VERSION_RUBY || partnerVersion == VERSION_SAPPHIRE)
+        return TRADE_BOTH_PLAYERS_READY;
+
+    // FRLG <-> E requires both stories to be progressed
+    if (gLinkPlayers[partnerId].progressFlagsCopy & 0xF0)
+        return TRADE_BOTH_PLAYERS_READY;
+    else
+        return TRADE_PARTNER_NOT_READY;
 }
 
 static bool32 IsDeoxysOrMewUntradable(u16 species, bool8 isModernFatefulEncounter)
@@ -2841,17 +2831,11 @@ int GetUnionRoomTradeMessageId(struct RfuGameCompatibilityData player, struct Rf
     bool8 playerCanLinkNationally = player.canLinkNationally;
     bool8 partnerHasNationalDex = partner.hasNationalDex;
     bool8 partnerCanLinkNationally = partner.canLinkNationally;
-    u8 partnerVersion = partner.version;
-    bool8 isNotFRLG;
-
-    if (partnerVersion == VERSION_FIRE_RED || partnerVersion == VERSION_LEAF_GREEN)
-        isNotFRLG = FALSE;
-    else
-        isNotFRLG = TRUE;
+    enum GameVersion partnerVersion = partner.version;
 
     // If partner is not using FRLG, both players must have progressed the story
     // to a certain point (becoming champion in RSE, finishing the Sevii islands in FRLG)
-    if (isNotFRLG)
+    if (partnerVersion != VERSION_FIRE_RED && partnerVersion != VERSION_LEAF_GREEN)
     {
         if (!playerCanLinkNationally)
             return UR_TRADE_MSG_CANT_TRADE_WITH_PARTNER_1;

@@ -347,12 +347,9 @@ static void Task_LinkupExchangeDataWithLeader(u8 taskId)
 
 static bool32 AnyConnectedPartnersPlayingRS(void)
 {
-    int i;
-    u16 version;
-
-    for (i = 0; i < GetLinkPlayerCount(); i++)
+    for (u32 i = 0; i < GetLinkPlayerCount(); i++)
     {
-        version = gLinkPlayers[i].version & 0xFF;
+        enum GameVersion version = gLinkPlayers[i].version & 0xFF;
         if (version == VERSION_RUBY || version == VERSION_SAPPHIRE)
             return TRUE;
     }
@@ -399,18 +396,15 @@ static void Task_LinkupCheckStatusAfterConfirm(u8 taskId)
 
 static void Task_LinkupAwaitTrainerCardData(u8 taskId)
 {
-    u8 i;
-    u16 version;
-
     if (CheckLinkErrored(taskId) == TRUE)
         return;
 
     if (GetBlockReceivedStatus() != GetSavedLinkPlayerCountAsBitFlags())
         return;
 
-    for (i = 0; i < GetLinkPlayerCount(); i++)
+    for (u32 i = 0; i < GetLinkPlayerCount(); i++)
     {
-        version = gLinkPlayers[i].version & 0xFF;
+        enum GameVersion version = gLinkPlayers[i].version & 0xFF;
         if (version != VERSION_FIRE_RED && version != VERSION_LEAF_GREEN)
         {
             const struct TrainerCardRSE * src = (const struct TrainerCardRSE *)gBlockRecvBuffer[i];

@@ -3213,7 +3213,7 @@ static void PokeSum_PrintTrainerMemo_Mon(void)
 static void PokeSum_PrintTrainerMemo_Egg(void)
 {
     u8 metLocation;
-    u8 version;
+    enum GameVersion version;
     u8 chosenStrIndex = 0;
 
     metLocation = GetMonData(&sMonSummaryScreen->currentMon, MON_DATA_MET_LOCATION);
@@ -5632,7 +5632,7 @@ static bool32 PokeSum_IsMonBoldOrGentle(u8 nature)
 
 static bool32 CurrentMonIsFromGBA(void)
 {
-    u8 version = GetMonData(&sMonSummaryScreen->currentMon, MON_DATA_MET_GAME);
+    enum GameVersion version = GetMonData(&sMonSummaryScreen->currentMon, MON_DATA_MET_GAME);
 
     if (version == VERSION_LEAF_GREEN
         || version == VERSION_FIRE_RED
