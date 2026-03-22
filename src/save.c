@@ -980,9 +980,6 @@ void Task_LinkFullSave(u8 taskId)
         gTasks[taskId].data[0] = 1;
         break;
     case 1:
-#if REVISION >= 0xA
-        if (!IsLinkTaskFinished()) break;
-#endif
         SetLinkStandbyCallback();
         gTasks[taskId].data[0] = 2;
         break;
@@ -1016,9 +1013,6 @@ void Task_LinkFullSave(u8 taskId)
         gTasks[taskId].data[0] = 7;
         break;
     case 7:
-#if REVISION >= 0xA
-        if (!IsLinkTaskFinished()) break;
-#endif
         ClearContinueGameWarpStatus2();
         SetLinkStandbyCallback();
         gTasks[taskId].data[0] = 8;
@@ -1027,16 +1021,10 @@ void Task_LinkFullSave(u8 taskId)
         if (IsLinkTaskFinished())
         {
             LinkFullSave_SetLastSectorSignature();
-#if REVISION >= 0xA
-            svc_FinishSave();
-#endif
             gTasks[taskId].data[0] = 9;
         }
         break;
     case 9:
-#if REVISION >= 0xA
-        if (!IsLinkTaskFinished()) break;
-#endif
         SetLinkStandbyCallback();
         gTasks[taskId].data[0] = 10;
         break;

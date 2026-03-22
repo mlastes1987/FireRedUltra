@@ -1,6 +1,5 @@
 #include <limits.h>
 #include "librfu.h"
-#include "sloopsvc.h"
 
 // If expanding the length of the player name and wireless link functionality is
 // desired, ensure that the name string is limited in size when it's copied from the
@@ -390,9 +389,6 @@ void rfu_REQ_stopMode(void)
             REG_SIOCNT = SIO_MULTI_MODE;
             rfu_STC_REQ_callback(ID_STOP_MODE_REQ, 0);
         }
-#if REVISION >= 0xA
-        svc_44();
-#endif
     }
 }
 
@@ -473,9 +469,6 @@ void rfu_REQ_configGameData(u8 mbootFlag, u16 serialNo, const u8 *gname, const u
         packet[14] = 0;
     STWI_set_Callback_M(rfu_CB_configGameData);
     STWI_send_GameConfigREQ(packet, uname);
-#if REVISION >= 0xA
-    svc_47();
-#endif
 }
 
 static void rfu_CB_configGameData(u8 reqCommand, u16 reqResult)
@@ -534,9 +527,6 @@ void rfu_REQ_startSearchChild(void)
     }
     STWI_set_Callback_M(rfu_CB_startSearchChild);
     STWI_send_SC_StartREQ();
-#if REVISION >= 0xA
-    svc_42();
-#endif
 }
 
 static void rfu_CB_startSearchChild(u8 reqCommand, u16 reqResult)
@@ -646,11 +636,7 @@ static void rfu_STC_readChildList(void)
                 gRfuStatic->cidBak[bm_slot_id] = gRfuLinkStatus->partner[bm_slot_id].id;
             }
         #else
-#if REVISION >= 0xA
-            gRfuStatic->lsFixedCount[bm_slot_id] = 0x3C;
-#else
             gRfuStatic->lsFixedCount[bm_slot_id] = 0xF0;
-#endif
             gRfuLinkStatus->strength[bm_slot_id] = 16;
             gRfuLinkStatus->connSlotFlag |= 1 << bm_slot_id;
             ++gRfuLinkStatus->connCount;
@@ -669,9 +655,6 @@ void rfu_REQ_startSearchParent(void)
 {
     STWI_set_Callback_M(rfu_CB_startSearchParent);
     STWI_send_SP_StartREQ();
-#if REVISION >= 0xA
-    svc_45_rfu_link_status();
-#endif
 }
 
 static void rfu_CB_startSearchParent(u8 reqCommand, u16 reqResult)
@@ -726,13 +709,8 @@ static void rfu_STC_readParentCandidateList(void)
         }
         if (my_check_sum == check_sum)
         {
-#if REVISION >= 0xA
-            target = &gRfuLinkStatus->partner[gRfuLinkStatus->findParentCount];
-            packet_p -= 28;
-#else
             packet_p -= 28;
             target = &gRfuLinkStatus->partner[gRfuLinkStatus->findParentCount];
-#endif
             target->id = *(u16 *)packet_p;
             packet_p += 2;
             target->slot = *packet_p;
@@ -751,9 +729,6 @@ static void rfu_STC_readParentCandidateList(void)
             ++gRfuLinkStatus->findParentCount;
         }
     }
-#if REVISION >= 0xA
-    svc_45_rfu_link_status();
-#endif
 }
 
 void rfu_REQ_startConnectParent(u16 pid)
@@ -769,9 +744,6 @@ void rfu_REQ_startConnectParent(u16 pid)
         gRfuStatic->tryPid = pid;
         STWI_set_Callback_M(rfu_STC_REQ_callback);
         STWI_send_CP_StartREQ(pid);
-#if REVISION >= 0xA
-        svc_43(pid);
-#endif
     }
     else
     {

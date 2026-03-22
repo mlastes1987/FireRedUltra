@@ -19,7 +19,6 @@
 #include "union_room_chat_display.h"
 #include "union_room_chat.h"
 #include "constants/songs.h"
-#include "sloopsvc.h"
 
 #define MESSAGE_BUFFER_NCHAR 15
 
@@ -814,9 +813,6 @@ static void ChatEntryRoutine_SendMessage(void)
     switch (sWork->routineState)
     {
     case 0:
-#if REVISION >= 0xA
-        svc_BadWordCheck(sWork->messageEntryBuffer);
-#endif
         if (!gReceivedRemoteLinkPlayers)
         {
             GoToRoutine(CHATNETRYROUTINE_HANDLE_INPUT);
@@ -1173,9 +1169,6 @@ static void RegisterTextAtRow(void)
 {
     u8 *src = UnionRoomChat_GetEndOfMessageEntryBuffer();
     StringCopy(sWork->registeredTexts[sWork->currentRow], src);
-#if REVISION >= 0xA
-    svc_BadWordCheck(sWork->registeredTexts[sWork->currentRow]);
-#endif
     sWork->changedRegisteredTexts = TRUE;
 }
 

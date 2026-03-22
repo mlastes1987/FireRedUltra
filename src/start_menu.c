@@ -45,9 +45,8 @@
 #include "trainer_card.h"
 #include "wild_encounter.h"
 #include "constants/battle_frontier.h"
-#include "constants/songs.h"
 #include "constants/field_weather.h"
-#include "sloopsvc.h"
+#include "constants/songs.h"
 
 enum StartMenuOption
 {

@@ -156,4 +156,6 @@
 
 #define OW_BATTLE_FRONTIER TRUE // If TRUE, enables the Battle Frontier.
 
+#define OW_HOF_EVENT_TICKETS FALSE
+
 #endif // GUARD_CONFIG_OVERWORLD_H

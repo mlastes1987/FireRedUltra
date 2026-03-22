@@ -941,7 +941,7 @@ void CreateYesNoMenuAtPos(const struct WindowTemplate *window, u8 fontId, u8 lef
     textSubPrinter.color.accent = GetFontAttribute(fontId, FONTATTR_COLOR_ACCENT);
     textSubPrinter.letterSpacing = GetFontAttribute(fontId, FONTATTR_LETTER_SPACING);
     textSubPrinter.lineSpacing = GetFontAttribute(fontId, FONTATTR_LINE_SPACING);
-    AddTextPrinter(&textSubPrinter, 0xFF, NULL);
+    AddTextPrinter(&textSubPrinter, TEXT_SKIP_DRAW, NULL);
     InitMenuNormal(sYesNoWindowId, fontId, left, top, GetFontAttribute(fontId, FONTATTR_MAX_LETTER_HEIGHT) + textSubPrinter.lineSpacing, 2, initialCursorPos);
 }
 
@@ -1303,14 +1303,12 @@ void ResetBgPositions(void)
 
 void DestroyYesNoMenu(void)
 {
-#if REVISION >= 0xA
-    if (sYesNoWindowId == 0xFF) return;
-#endif
+    if (sYesNoWindowId == WINDOW_NONE)
+        return;
+
     ClearStdWindowAndFrameToTransparent(sYesNoWindowId, TRUE);
     RemoveWindow(sYesNoWindowId);
-#if REVISION >= 0xA
-    sYesNoWindowId = 0xFF;
-#endif
+    sYesNoWindowId = WINDOW_NONE;
 }
 
 void MultichoiceGrid_PrintItems(u8 windowId, u8 fontId, u8 itemWidth, u8 itemHeight, u8 cols, u8 rows, const struct MenuAction *strs)

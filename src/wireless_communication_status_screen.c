@@ -17,7 +17,6 @@
 #include "union_room.h"
 #include "constants/songs.h"
 #include "constants/union_room.h"
-#include "sloopsvc.h"
 
 enum {
     COLOR_NONE,
@@ -154,23 +153,13 @@ static const u8 sActivityGroupInfo[][3] = {
     {ACTIVITY_TRADE,                          GROUPTYPE_TRADE,  2},
     {ACTIVITY_WONDER_CARD,                    GROUPTYPE_TOTAL,  2},
     {ACTIVITY_WONDER_NEWS,                    GROUPTYPE_TOTAL,  2},
-#if REVISION >= 0xA
-    {ACTIVITY_POKEMON_JUMP,                   GROUPTYPE_TOTAL,   0},
-    {ACTIVITY_BERRY_CRUSH,                    GROUPTYPE_TOTAL,   0},
-    {ACTIVITY_BERRY_PICK,                     GROUPTYPE_TOTAL,   0},
-#else
-    {ACTIVITY_POKEMON_JUMP,                   NUM_GROUPTYPES,   0},
-    {ACTIVITY_BERRY_CRUSH,                    NUM_GROUPTYPES,   0},
-    {ACTIVITY_BERRY_PICK,                     NUM_GROUPTYPES,   0},
-#endif
+    {ACTIVITY_POKEMON_JUMP,                   GROUPTYPE_TOTAL,  0},
+    {ACTIVITY_BERRY_CRUSH,                    GROUPTYPE_TOTAL,  0},
+    {ACTIVITY_BERRY_PICK,                     GROUPTYPE_TOTAL,  0},
     {ACTIVITY_SEARCH,                         GROUPTYPE_NONE,   0},
     {ACTIVITY_SPIN_TRADE,                     GROUPTYPE_TRADE,  0},
     {ACTIVITY_ITEM_TRADE,                     GROUPTYPE_NONE,   0},
-#if REVISION >= 0xA
-    {ACTIVITY_RECORD_CORNER,                  GROUPTYPE_TOTAL,   0},
-#else
-    {ACTIVITY_RECORD_CORNER,                  NUM_GROUPTYPES,   0},
-#endif
+    {ACTIVITY_RECORD_CORNER,                  GROUPTYPE_TOTAL,  0},
     {ACTIVITY_BERRY_BLENDER,                  GROUPTYPE_NONE,   0},
     {ACTIVITY_NONE | IN_UNION_ROOM,           GROUPTYPE_UNION,  1},
     {ACTIVITY_BATTLE_SINGLE | IN_UNION_ROOM,  GROUPTYPE_UNION,  2},
@@ -181,8 +170,8 @@ static const u8 sActivityGroupInfo[][3] = {
     {ACTIVITY_NPCTALK | IN_UNION_ROOM,        GROUPTYPE_UNION,  2},
     {ACTIVITY_ACCEPT | IN_UNION_ROOM,         GROUPTYPE_UNION,  1},
     {ACTIVITY_DECLINE | IN_UNION_ROOM,        GROUPTYPE_UNION,  1},
-    {ACTIVITY_BATTLE_TOWER,                  GROUPTYPE_BATTLE, 2},
-    {ACTIVITY_BATTLE_TOWER_OPEN,             GROUPTYPE_BATTLE, 2}
+    {ACTIVITY_BATTLE_TOWER,                  GROUPTYPE_BATTLE,  2},
+    {ACTIVITY_BATTLE_TOWER_OPEN,             GROUPTYPE_BATTLE,  2},
 };
 
 static void CB2_RunWirelessCommunicationScreen(void)
@@ -336,11 +325,8 @@ void Task_WirelessCommunicationScreen(u8 taskId)
             PutWindowTilemap(2);
             CopyWindowToVram(2, COPYWIN_FULL);
         }
-#if REVISION >= 0xA
-        if (JOY_NEW(A_BUTTON) || JOY_NEW(B_BUTTON) || svc_53())
-#else
+
         if (JOY_NEW(A_BUTTON) || JOY_NEW(B_BUTTON))
-#endif
         {
             PlaySE(SE_SELECT);
             gTasks[sStatusScreen->rfuTaskId].data[15] = 0xFF;
@@ -399,40 +385,6 @@ static void WCSS_AddTextPrinterParameterized(u8 windowId, u8 fontId, const u8 * 
 
 static u32 CountPlayersInGroupAndGetActivity(struct RfuPlayer * player, u32 * groupCounts)
 {
-#if REVISION >= 0xA
-    u32 activity = player->rfu.data.activity;
-    if (player->groupScheduledAnim == UNION_ROOM_SPAWN_IN)
-    {
-
-        u32 i = 0;
-        const u8 * group_info = &sActivityGroupInfo[0][0];
-        const u8 * group_players = &group_info[2];
-        const u8 * group_activity = group_info;
-        s32 offset = 0;
-        for (; i < ARRAY_COUNT(sActivityGroupInfo); i++)
-        {
-            const u8 * group_type = &group_info[1];
-            u8 type = ((u8*)offset)[(u32)group_type]; // needed to match, but nobody would write this???
-            if (type < MAX_LINK_PLAYERS && activity == *group_activity)
-            {
-                    u8 k = *group_players;
-                    if (k == 0)
-                    {
-                        s32 j;
-                        for (j = 0; j < RFU_CHILD_MAX; j++)
-                            if (player->rfu.data.partnerInfo[j] != 0) k++;
-                        k++;
-                    }
-                    groupCounts[type] += k;
-                    break;
-            }
-            group_players += sizeof(sActivityGroupInfo[0]);
-            group_activity += sizeof(sActivityGroupInfo[0]);
-            offset += (u8)sizeof(sActivityGroupInfo[0]);
-        }
-
-    }
-#else
     u32 activity = player->rfu.data.activity;
     s32 i, j, k;
 
@@ -469,7 +421,6 @@ static u32 CountPlayersInGroupAndGetActivity(struct RfuPlayer * player, u32 * gr
     #undef group_activity
     #undef group_type
     #undef group_players
-#endif
 
     return activity;
 
@@ -505,9 +456,6 @@ static bool32 UpdateCommunicationCounts(u32 * groupCounts, u32 * prevGroupCounts
         }
     }
 
-#if REVISION >= 0xA
-    if (HaveCountsChanged(groupCountBuffer, prevGroupCounts))
-#else
     if (!HaveCountsChanged(groupCountBuffer, prevGroupCounts))
     {
         if (activitiesUpdated == TRUE)
@@ -527,5 +475,4 @@ static bool32 UpdateCommunicationCounts(u32 * groupCounts, u32 * prevGroupCounts
                             #endif
                                  ;
     return TRUE;
-#endif
 }
