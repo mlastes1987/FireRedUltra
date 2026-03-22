@@ -4,6 +4,7 @@
 #include "malloc.h"
 #include "palette.h"
 #include "trainer_pokemon_sprites.h"
+#include "trainer.h"
 #include "window.h"
 
 #define PICS_COUNT 8
@@ -22,10 +23,21 @@ static EWRAM_DATA struct PicData sSpritePics[PICS_COUNT] = {};
 
 static const struct PicData sDummyPicData = {};
 
-static const struct OamData sOamData_Normal =
+static const struct OamData sOamData_64x64 =
 {
+    .y = 0,
+    .affineMode = ST_OAM_AFFINE_OFF,
+    .objMode = ST_OAM_OBJ_NORMAL,
+    .mosaic = FALSE,
+    .bpp = ST_OAM_4BPP,
     .shape = SPRITE_SHAPE(64x64),
-    .size = SPRITE_SIZE(64x64)
+    .x = 0,
+    .matrixNum = 0,
+    .size = SPRITE_SIZE(64x64),
+    .tileNum = 0x000,
+    .priority = 0,
+    .paletteNum = 0,
+    .affineParam = 0
 };
 
 static const struct OamData sOamData_Affine =
@@ -123,7 +135,7 @@ u16 CreateMonFrontPicSprite(u16 species, bool32 isShiny, u32 personality, s16 x,
     }
 
     sCreatingSpriteTemplate.tileTag = TAG_NONE;
-    sCreatingSpriteTemplate.oam = &sOamData_Normal;
+    sCreatingSpriteTemplate.oam = &sOamData_64x64;
     sCreatingSpriteTemplate.anims = gAnims_MonPic;
     sCreatingSpriteTemplate.images = images;
     sCreatingSpriteTemplate.affineAnims = gDummySpriteAffineAnimTable;
@@ -201,7 +213,7 @@ u16 CreateMonPicSprite_Affine(u16 species, bool8 isShiny, u32 personality, u8 fl
     }
     else // MON_PIC_AFFINE_NONE
     {
-        sCreatingSpriteTemplate.oam = &sOamData_Normal;
+        sCreatingSpriteTemplate.oam = &sOamData_64x64;
         sCreatingSpriteTemplate.affineAnims = gDummySpriteAffineAnimTable;
     }
     sCreatingSpriteTemplate.callback = DummyPicSpriteCallback;
@@ -251,7 +263,7 @@ u16 CreateTrainerFrontPicSprite(enum TrainerPicID trainerPicId, s16 x, s16 y, u8
     images->size = TRAINER_PIC_SIZE;
 
     sCreatingSpriteTemplate.tileTag = TAG_NONE;
-    sCreatingSpriteTemplate.oam = &sOamData_Normal;
+    sCreatingSpriteTemplate.oam = &sOamData_64x64;
     sCreatingSpriteTemplate.anims = gAnims_Trainer;
     sCreatingSpriteTemplate.images = images;
     sCreatingSpriteTemplate.affineAnims = gDummySpriteAffineAnimTable;
@@ -317,4 +329,36 @@ void CopyTrainerBackspriteFramesToDest(u8 trainerPicId, u8 *dest)
     // y_offset is repurposed to indicates how many frames does the trainer pic have.
     u32 size = (frame->size * GetTrainerBackPicCoords(trainerPicId)->y_offset);
     CpuSmartCopy16(frame->data, dest, size);
+}
+
+u8 CreateTrainerSprite(enum TrainerPicID trainerPicId, s16 x, s16 y, u8 subpriority, u8 *buffer)
+{
+    struct CompressedSpriteSheet spriteSheet;
+    struct SpriteTemplate spriteTemplate;
+    bool32 alloced = FALSE;
+
+    spriteSheet.data = GetTrainerFrontPicData(trainerPicId);
+    spriteSheet.size = GetTrainerFrontPicSize(trainerPicId);
+    spriteSheet.tag = GetTrainerPicTag(trainerPicId, TRUE);
+
+    // Allocate memory for buffer
+    if (buffer == NULL)
+    {
+        buffer = Alloc(spriteSheet.size);
+        alloced = TRUE;
+    }
+
+    LoadSpritePaletteWithTag(GetTrainerFrontPicPalette(trainerPicId), GetTrainerPicTag(trainerPicId, TRUE));
+    LoadCompressedSpriteSheetOverrideBuffer(&spriteSheet, buffer);
+    if (alloced)
+        Free(buffer);
+
+    spriteTemplate.tileTag = GetTrainerPicTag(trainerPicId, TRUE);
+    spriteTemplate.paletteTag = GetTrainerPicTag(trainerPicId, TRUE);
+    spriteTemplate.oam = &sOamData_64x64;
+    spriteTemplate.anims = gDummySpriteAnimTable;
+    spriteTemplate.images = NULL;
+    spriteTemplate.affineAnims = gDummySpriteAffineAnimTable;
+    spriteTemplate.callback = SpriteCallbackDummy;
+    return CreateSprite(&spriteTemplate, x, y, subpriority);
 }

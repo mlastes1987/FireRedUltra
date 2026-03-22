@@ -75,7 +75,6 @@ void StartEscapeRopeFieldEffect(void);
 void FieldEffectFreeGraphicsResources(struct Sprite *sprite);
 void FieldEff_CaveDust(void);
 void FieldEffectStop(struct Sprite *sprite, enum FieldEffect fldeff);
-u8 CreateTrainerSprite(enum TrainerPicID trainerPicId, s16 x, s16 y, u8 subpriority, u8 *buffer);
 void FieldCB_FallWarpExit(void);
 void StartEscalatorWarp(u8 metatileBehavior, u8 priority);
 void StartLavaridgeGymB1FWarp(u8 a0);

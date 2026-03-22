@@ -53,10 +53,6 @@ static void SpriteCB_PokecenterMonitor(struct Sprite *sprite);
 static void SpriteCB_HallOfFameMonitor(struct Sprite *sprite);
 static u32 FldEff_Nop(void);
 
-// Unused
-static const u16 sNewGameOakObject_Gfx[] = INCBIN_U16("graphics/field_effects/pics/new_game_oak.4bpp");
-static const u16 sNewGameOakObject_Pal[] = INCBIN_U16("graphics/field_effects/pics/new_game_oak.gbapal");
-
 static const u16 sPokeballGlow_Gfx[] = INCBIN_U16("graphics/field_effects/pics/pokeball_glow.4bpp");
 static const u16 sPokeballGlow_Pal[] = INCBIN_U16("graphics/field_effects/pics/pokeball_glow.gbapal");
 static const u16 sPokecenterMonitor_Gfx[] = INCBIN_U16("graphics/field_effects/pics/pokemoncenter_monitor.4bpp");
@@ -159,23 +155,9 @@ static const u32 (*const sFieldEffectFuncs[FLDEFF_COUNT]) (void) =
     [FLDEFF_SNOW_TRACKS_SPOT]             = FldEff_SnowTracksSpot,
     [FLDEFF_CAVE_DUST]                    = FldEff_CaveDust,
 };
-static const struct OamData sNewGameOakOamAttributes = {
-    .y = 0,
-    .affineMode = ST_OAM_AFFINE_OFF,
-    .objMode = ST_OAM_OBJ_NORMAL,
-    .mosaic = FALSE,
-    .bpp = ST_OAM_4BPP,
-    .shape = SPRITE_SHAPE(64x64),
-    .x = 0,
-    .matrixNum = 0,
-    .size = SPRITE_SIZE(64x64),
-    .tileNum = 0x000,
-    .priority = 0,
-    .paletteNum = 0,
-    .affineParam = 0
-};
 
-static const struct OamData sOamData_8x8 = {
+static const struct OamData sOamData_8x8 =
+{
     .y = 0,
     .affineMode = ST_OAM_AFFINE_OFF,
     .objMode = ST_OAM_OBJ_NORMAL,
@@ -205,33 +187,6 @@ static const struct OamData sOamData_16x16 = {
     .priority = 0,
     .paletteNum = 0,
     .affineParam = 0
-};
-
-static const struct SpriteFrameImage sNewGameOakObjectSpriteFrames[] = {
-    {sNewGameOakObject_Gfx, 0x800}
-};
-
-static const struct SpritePalette sNewGameOakObjectPaletteInfo = {
-    sNewGameOakObject_Pal, 4102
-};
-
-static const union AnimCmd sNewGameOakAnim[] = {
-    ANIMCMD_FRAME(0, 1),
-    ANIMCMD_END
-};
-
-static const union AnimCmd *const sNewGameOakAnimTable[] = {
-    sNewGameOakAnim
-};
-
-static const struct SpriteTemplate sNewGameOakObjectTemplate = {
-    .tileTag = TAG_NONE,
-    .paletteTag = 0x1006,
-    .oam = &sNewGameOakOamAttributes,
-    .anims = sNewGameOakAnimTable,
-    .images = sNewGameOakObjectSpriteFrames,
-    .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = SpriteCallbackDummy
 };
 
 const struct SpritePalette gSpritePalette_PokeballGlow = {
@@ -275,80 +230,6 @@ static const struct SpriteFrameImage sPicTable_HofMonitor[] = {
     {sHofMonitor_Gfx + 0x80, 0x80},
     {sHofMonitor_Gfx + 0xC0, 0x80}
 };
-
-// Unused, leftover from RSE
-static const struct Subsprite sSubsprites_PokecenterMonitor[] =
-{
-    {
-        .x = -12,
-        .y =  -8,
-        .shape = SPRITE_SHAPE(16x8),
-        .size = SPRITE_SIZE(16x8),
-        .tileOffset = 0,
-        .priority = 2
-    }, {
-        .x =  4,
-        .y = -8,
-        .shape = SPRITE_SHAPE(8x8),
-        .size = SPRITE_SIZE(8x8),
-        .tileOffset = 2,
-        .priority = 2
-    }, {
-        .x = -12,
-        .y =   0,
-        .shape = SPRITE_SHAPE(16x8),
-        .size = SPRITE_SIZE(16x8),
-        .tileOffset = 3,
-        .priority = 2
-    }, {
-        .x = 4,
-        .y = 0,
-        .shape = SPRITE_SHAPE(8x8),
-        .size = SPRITE_SIZE(8x8),
-        .tileOffset = 5,
-        .priority = 2
-    }
-};
-
-// Unused, leftover from RSE
-static const struct SubspriteTable sSubspriteTable_PokecenterMonitor = subsprite_table(sSubsprites_PokecenterMonitor);
-
-// Unused, leftover from RSE
-static const struct Subsprite sSubsprites_HofMonitorBig[] =
-{
-    {
-        .x = -32,
-        .y = -8,
-        .shape = SPRITE_SHAPE(32x8),
-        .size = SPRITE_SIZE(32x8),
-        .tileOffset = 0,
-        .priority = 2
-    }, {
-        .x =  0,
-        .y = -8,
-        .shape = SPRITE_SHAPE(32x8),
-        .size = SPRITE_SIZE(32x8),
-        .tileOffset = 4,
-        .priority = 2
-    }, {
-        .x = -32,
-        .y =  0,
-        .shape = SPRITE_SHAPE(32x8),
-        .size = SPRITE_SIZE(32x8),
-        .tileOffset = 8,
-        .priority = 2
-    }, {
-        .x =   0,
-        .y =  0,
-        .shape = SPRITE_SHAPE(32x8),
-        .size = SPRITE_SIZE(32x8),
-        .tileOffset = 12,
-        .priority = 2
-    }
-};
-
-// Unused, leftover from RSE
-static const struct SubspriteTable sSubspriteTable_HofMonitorBig = subsprite_table(sSubsprites_HofMonitorBig);
 
 static const union AnimCmd sAnim_Static[] = {
     ANIMCMD_FRAME(0, 1),
@@ -422,12 +303,6 @@ u32 FieldEffectStart(enum FieldEffect fldeff)
 {
     FieldEffectActiveListAdd(fldeff);
     return sFieldEffectFuncs[fldeff]();
-}
-
-static void UNUSED FieldEffectScript_LoadTiles(const struct SpriteSheet * spriteSheet)
-{
-    if (GetSpriteTileStartByTag(spriteSheet->tag) == 0xFFFF)
-        LoadSpriteSheet(spriteSheet);
 }
 
 void ApplyGlobalFieldPaletteTint(u8 paletteIdx)
@@ -560,38 +435,6 @@ bool8 FieldEffectActiveListContains(enum FieldEffect fldeff)
         }
     }
     return FALSE;
-}
-
-u8 CreateTrainerSprite(enum TrainerPicID trainerPicId, s16 x, s16 y, u8 subpriority, u8 *buffer)
-{
-    struct CompressedSpriteSheet spriteSheet;
-    struct SpriteTemplate spriteTemplate;
-    bool32 alloced = FALSE;
-
-    spriteSheet.data = GetTrainerFrontPicData(trainerPicId);
-    spriteSheet.size = GetTrainerFrontPicSize(trainerPicId);
-    spriteSheet.tag = GetTrainerPicTag(trainerPicId, TRUE);
-
-    // Allocate memory for buffer
-    if (buffer == NULL)
-    {
-        buffer = Alloc(spriteSheet.size);
-        alloced = TRUE;
-    }
-
-    LoadSpritePaletteWithTag(GetTrainerFrontPicPalette(trainerPicId), GetTrainerPicTag(trainerPicId, TRUE));
-    LoadCompressedSpriteSheetOverrideBuffer(&spriteSheet, buffer);
-    if (alloced)
-        Free(buffer);
-
-    spriteTemplate.tileTag = GetTrainerPicTag(trainerPicId, TRUE);
-    spriteTemplate.paletteTag = GetTrainerPicTag(trainerPicId, TRUE);
-    spriteTemplate.oam = &sNewGameOakOamAttributes;
-    spriteTemplate.anims = gDummySpriteAnimTable;
-    spriteTemplate.images = NULL;
-    spriteTemplate.affineAnims = gDummySpriteAffineAnimTable;
-    spriteTemplate.callback = SpriteCallbackDummy;
-    return CreateSprite(&spriteTemplate, x, y, subpriority);
 }
 
 u8 CreateMonSprite_PicBox(u16 species, s16 x, s16 y, u8 subpriority)
@@ -1644,77 +1487,92 @@ static bool8 EscalatorWarpInEffect_7(struct Task *task)
 
 static void Task_UseWaterfall(u8 taskId);
 
-static bool8 waterfall_0_setup(struct Task *task, struct ObjectEvent * playerObj);
-static bool8 waterfall_1_do_anim_probably(struct Task *task, struct ObjectEvent * playerObj);
-static bool8 waterfall_2_wait_anim_finish_probably(struct Task *task, struct ObjectEvent * playerObj);
-static bool8 waterfall_3_move_player_probably(struct Task *task, struct ObjectEvent * playerObj);
-static bool8 waterfall_4_wait_player_move_probably(struct Task *task, struct ObjectEvent * playerObj);
+static bool32 WaterfallFieldEffect_Init(struct Task *task, struct ObjectEvent * playerObj);
+static bool32 WaterfallFieldEffect_ShowMon(struct Task *task, struct ObjectEvent * playerObj);
+static bool32 WaterfallFieldEffect_WaitForShowMon(struct Task *task, struct ObjectEvent * playerObj);
+static bool32 WaterfallFieldEffect_RideUp(struct Task *task, struct ObjectEvent * playerObj);
+static bool32 WaterfallFieldEffect_ContinueRideOrEnd(struct Task *task, struct ObjectEvent * playerObj);
 
-static bool8 (*const sUseWaterfallFieldEffectFuncs[])(struct Task *task, struct ObjectEvent * playerObj) = {
-    waterfall_0_setup,
-    waterfall_1_do_anim_probably,
-    waterfall_2_wait_anim_finish_probably,
-    waterfall_3_move_player_probably,
-    waterfall_4_wait_player_move_probably
+enum WaterfallState
+{
+    WATERFALL_INIT,
+    WATERFALL_SHOWMON,
+    WATERFALL_WAITMON,
+    WATERFALL_RIDE_UP,
+    WATERFALL_CONTINUE_OR_END,
 };
+
+static bool32 (*const sWaterfallFieldEffectFuncs[])(struct Task *task, struct ObjectEvent * playerObj) = {
+    [WATERFALL_INIT]            = WaterfallFieldEffect_Init,
+    [WATERFALL_SHOWMON]         = WaterfallFieldEffect_ShowMon,
+    [WATERFALL_WAITMON]         = WaterfallFieldEffect_WaitForShowMon,
+    [WATERFALL_RIDE_UP]         = WaterfallFieldEffect_RideUp,
+    [WATERFALL_CONTINUE_OR_END] = WaterfallFieldEffect_ContinueRideOrEnd
+};
+
+#define tState data[0]
+#define tMonId data[1]
 
 u32 FldEff_UseWaterfall(void)
 {
     u8 taskId = CreateTask(Task_UseWaterfall, 0xFF);
-    gTasks[taskId].data[1] = gFieldEffectArguments[0];
+    gTasks[taskId].tMonId = gFieldEffectArguments[0];
     Task_UseWaterfall(taskId);
+
     return 0;
 }
 
 static void Task_UseWaterfall(u8 taskId)
 {
-    while (sUseWaterfallFieldEffectFuncs[gTasks[taskId].data[0]](&gTasks[taskId], &gObjectEvents[gPlayerAvatar.objectEventId]))
+    while (sWaterfallFieldEffectFuncs[gTasks[taskId].tState](&gTasks[taskId], &gObjectEvents[gPlayerAvatar.objectEventId]))
         ;
 }
 
-static bool8 waterfall_0_setup(struct Task *task, struct ObjectEvent * playerObj)
+static bool32 WaterfallFieldEffect_Init(struct Task *task, struct ObjectEvent * playerObj)
 {
     LockPlayerFieldControls();
     gPlayerAvatar.preventStep = TRUE;
-    task->data[0]++;
+    task->tState = WATERFALL_SHOWMON;
+
     return FALSE;
 }
 
-static bool8 waterfall_1_do_anim_probably(struct Task *task, struct ObjectEvent * playerObj)
+static bool32 WaterfallFieldEffect_ShowMon(struct Task *task, struct ObjectEvent * playerObj)
 {
     LockPlayerFieldControls();
     if (!ObjectEventIsMovementOverridden(playerObj))
     {
         ObjectEventClearHeldMovementIfFinished(playerObj);
-        gFieldEffectArguments[0] = task->data[1];
+        gFieldEffectArguments[0] = task->tMonId;
         FieldEffectStart(FLDEFF_FIELD_MOVE_SHOW_MON_INIT);
-        task->data[0]++;
+        task->tState = WATERFALL_WAITMON;
     }
     return FALSE;
 }
 
-static bool8 waterfall_2_wait_anim_finish_probably(struct Task *task, struct ObjectEvent * playerObj)
+static bool32 WaterfallFieldEffect_WaitForShowMon(struct Task *task, struct ObjectEvent * playerObj)
 {
     if (FieldEffectActiveListContains(FLDEFF_FIELD_MOVE_SHOW_MON))
         return FALSE;
-    task->data[0]++;
+
+    task->tState = WATERFALL_RIDE_UP;
     return TRUE;
 }
 
-static bool8 waterfall_3_move_player_probably(struct Task *task, struct ObjectEvent * playerObj)
+static bool32 WaterfallFieldEffect_RideUp(struct Task *task, struct ObjectEvent * playerObj)
 {
     ObjectEventSetHeldMovement(playerObj, GetWalkSlowerMovementAction(DIR_NORTH));
-    task->data[0]++;
+    task->tState = WATERFALL_CONTINUE_OR_END;
     return FALSE;
 }
 
-static bool8 waterfall_4_wait_player_move_probably(struct Task *task, struct ObjectEvent * playerObj)
+static bool32 WaterfallFieldEffect_ContinueRideOrEnd(struct Task *task, struct ObjectEvent * playerObj)
 {
     if (!ObjectEventClearHeldMovementIfFinished(playerObj))
         return FALSE;
     if (MetatileBehavior_IsWaterfall(playerObj->currentMetatileBehavior))
     {
-        task->data[0] = 3;
+        task->tState = WATERFALL_RIDE_UP;
         return TRUE;
     }
     UnlockPlayerFieldControls();
@@ -1723,6 +1581,9 @@ static bool8 waterfall_4_wait_player_move_probably(struct Task *task, struct Obj
     FieldEffectActiveListRemove(FLDEFF_USE_WATERFALL);
     return FALSE;
 }
+
+#undef tState
+#undef tMonId
 
 static void Task_UseDive(u8 taskId);
 static bool8 DiveFieldEffect_Init(struct Task *task);
