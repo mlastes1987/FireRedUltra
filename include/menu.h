@@ -94,10 +94,6 @@ void SetWindowTemplateFields(struct WindowTemplate *template, u8 bg, u8 left, u8
 void RemoveMapNamePopUpWindow(void);
 u8 GetMapNamePopUpWindowId(void);
 u8 AddMapNamePopUpWindow(void);
-u8 AddSecondaryPopUpWindow(void);
-u8 GetSecondaryPopUpWindowId(void);
-void RemoveSecondaryPopUpWindow(void);
-void HBlankCB_DoublePopupWindow(void);
 void InitPopupWindows(void);
 u16 GetStandardFrameBaseTileNum(void);
 void EraseFieldMessageBox(bool8 copyToVram);

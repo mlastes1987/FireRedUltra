@@ -62,7 +62,7 @@ void ShowMapNamePopup(bool32 palIntoFadedBuffer)
     if (QL_IS_PLAYBACK_STATE)
         return;
 
-    if (OW_POPUP_GENERATION >= GEN_4)
+    if (OW_MAP_POPUP_EMERALD)
     {
         ShowMapNamePopupExpansion();
         return;
@@ -172,7 +172,7 @@ void HideMapNamePopUpWindow(void)
     u8 taskId;
     s16 *data;
 
-    if (OW_POPUP_GENERATION >= GEN_4)
+    if (OW_MAP_POPUP_EMERALD)
     {
         HideMapNamePopUpExpansionWindow();
         return;
