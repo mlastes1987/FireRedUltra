@@ -17,6 +17,8 @@
 #include "strings.h"
 #include "text_window.h"
 #include "trig.h"
+#include "constants/menu.h"
+#include "constants/pokemon_special_anim.h"
 #include "constants/songs.h"
 
 static void LoadBgGfxByAnimType(u16 animType);
@@ -640,7 +642,7 @@ static void LoadBgGfxByAnimType(u16 animType)
 {
     CopyToBgTilemapBuffer(3, sBg_Tilemap, 0, 0x000);
     DecompressAndCopyTileDataToVram(3, sBg_Gfx, 0, 0x000, 0);
-    if (animType != 4)
+    if (animType != PSA_ITEM_ANIM_TYPE_TMHM)
         LoadPalette(sBg_Pal, BG_PLTT_ID(0), sizeof(sBg_Pal));
     else
         LoadPalette(sBg_TmHm_Pal, BG_PLTT_ID(0), sizeof(sBg_TmHm_Pal));
@@ -652,28 +654,26 @@ void PSA_CreateMonSpriteAtCloseness(u8 closeness)
     struct Pokemon * pokemon = PSA_GetPokemon();
     u16 species = GetMonData(pokemon, MON_DATA_SPECIES);
     u32 personality = GetMonData(pokemon, MON_DATA_PERSONALITY);
-    u8 r1 = Menu2_GetMonSpriteAnchorCoord(species, personality, 2);
-    void *r6;
-    void *r9;
+    u8 yOffset = Menu2_GetMonPosAttribute(species, personality, PSA_MON_ATTR_Y_OFFSET);
+    void *monPicBuffer;
     u8 spriteId;
 
-    if (r1 != 0xFF)
+    if (yOffset != 0xFF)
     {
-        scene->monSpriteY1 = 0x48;
-        scene->monSpriteY2 = r1 + 0x30;
+        scene->monSpriteY1 = 72;
+        scene->monSpriteY2 = yOffset + 48;
     }
     else
     {
-        scene->monSpriteY1 = 0x48;
-        scene->monSpriteY2 = 0x60;
+        scene->monSpriteY1 = 72;
+        scene->monSpriteY2 = 96;
     }
 
-    r6 = Alloc(0x2000);
-    r9 = Alloc(0x2000);
-    if (r6 != NULL && r9 != NULL)
+    monPicBuffer = Alloc(MON_PIC_SIZE * MAX_MON_PIC_FRAMES);
+    if (monPicBuffer != NULL)
     {
-        HandleLoadSpecialPokePic(TRUE, r6, species, personality);
-        LoadMonSpriteGraphics(r6, GetMonFrontSpritePal(pokemon));
+        HandleLoadSpecialPokePic(TRUE, monPicBuffer, species, personality);
+        LoadMonSpriteGraphics(monPicBuffer, GetMonFrontSpritePal(pokemon));
         spriteId = CreateSprite(&sSpriteTemplate_MonSprite, 120, scene->monSpriteY1, 4);
         if (spriteId != MAX_SPRITES)
         {
@@ -684,8 +684,7 @@ void PSA_CreateMonSpriteAtCloseness(u8 closeness)
             scene->monSprite = NULL;
         scene->lastCloseness = closeness;
     }
-    if (r6 != NULL) Free(r6);
-    if (r9 != NULL) Free(r9);
+    if (monPicBuffer != NULL) Free(monPicBuffer);
 }
 
 #define tState          data[0]
@@ -843,7 +842,7 @@ static void LoadMonSpriteGraphics(u16 *tiles, const u16 *palette)
     struct SpritePalette spritePalette;
 
     spriteSheet.data = tiles;
-    spriteSheet.size = 0x800;
+    spriteSheet.size = MON_PIC_SIZE;
     spriteSheet.tag = 0;
     spritePalette.data = palette;
     spritePalette.tag = 0;
@@ -1062,10 +1061,10 @@ static void InitItemIconSpriteState(struct PokemonSpecialAnimScene * scene, stru
     personality = PSA_GetMonPersonality();
     switch (PSA_GetAnimType())
     {
-        case 4:
+        case PSA_ITEM_ANIM_TYPE_TMHM:
         {
-            x = Menu2_GetMonSpriteAnchorCoord(species, personality, 0);
-            y = Menu2_GetMonSpriteAnchorCoord(species, personality, 1);
+            x = Menu2_GetMonPosAttribute(species, personality, PSA_MON_ATTR_TMHM_X_POS);
+            y = Menu2_GetMonPosAttribute(species, personality, PSA_MON_ATTR_TMHM_Y_POS);
             if (x == 0xFF)
                 x = 0;
             if (y == 0xFF)
@@ -1076,8 +1075,8 @@ static void InitItemIconSpriteState(struct PokemonSpecialAnimScene * scene, stru
         }
         default:
         {
-            x = Menu2_GetMonSpriteAnchorCoord(species, personality, 3);
-            y = Menu2_GetMonSpriteAnchorCoord(species, personality, 4);
+            x = Menu2_GetMonPosAttribute(species, personality, PSA_MON_ATTR_ITEM_X_POS);
+            y = Menu2_GetMonPosAttribute(species, personality, PSA_MON_ATTR_ITEM_Y_POS);
             if (x == 0xFF)
                 x = 0;
             if (y == 0xFF)
@@ -1200,8 +1199,8 @@ static void CreateStarSprites(struct PokemonSpecialAnimScene * scene)
             personality = PSA_GetMonPersonality();
             gSprites[spriteId].data[3] = sStarCoordOffsets[i][0] * 8;
             gSprites[spriteId].data[4] = sStarCoordOffsets[i][1] * 8;
-            gSprites[spriteId].x += GetSpriteOffsetByScale(Menu2_GetMonSpriteAnchorCoordMinusx20(species, personality, 0), 3);
-            gSprites[spriteId].y += GetSpriteOffsetByScale(Menu2_GetMonSpriteAnchorCoordMinusx20(species, personality, 1), 3);
+            gSprites[spriteId].x += GetSpriteOffsetByScale(Menu2_GetStarSpritePosAttribute(species, personality, PSA_MON_ATTR_TMHM_X_POS), 3);
+            gSprites[spriteId].y += GetSpriteOffsetByScale(Menu2_GetStarSpritePosAttribute(species, personality, PSA_MON_ATTR_TMHM_Y_POS), 3);
             scene->field_0002++;
         }
     }

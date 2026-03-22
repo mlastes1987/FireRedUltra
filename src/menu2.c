@@ -2,6 +2,7 @@
 #include "gpu_regs.h"
 #include "task.h"
 #include "wild_encounter.h"
+#include "constants/menu.h"
 
 // Not actually "old" given these were introduced in Gen 3,
 // but they're used as equivalents here alongside the other OLD_UNOWN
@@ -67,7 +68,7 @@ static void Task_SmoothBlendLayers(u8 taskId)
     }
 }
 
-u8 Menu2_GetMonSpriteAnchorCoord(u16 species, u32 personality, u8 a2)
+u8 Menu2_GetMonPosAttribute(u16 species, u32 personality, u8 attributeId)
 {
     // if (species == SPECIES_UNOWN)
     // {
@@ -96,7 +97,7 @@ u8 Menu2_GetMonSpriteAnchorCoord(u16 species, u32 personality, u8 a2)
     return 32;
 }
 
-s8 Menu2_GetMonSpriteAnchorCoordMinusx20(u16 species, u32 personality, u8 a2)
+s8 Menu2_GetStarSpritePosAttribute(u16 species, u32 personality, u8 attributeId)
 {
-    return Menu2_GetMonSpriteAnchorCoord(species, personality, a2) - 32;
+    return Menu2_GetMonPosAttribute(species, personality, attributeId) - 32;
 }
