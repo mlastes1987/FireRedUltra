@@ -96,7 +96,7 @@ void MoveSaveBlocks_ResetHeap(void)
     gMain.vblankCallback = NULL;
     gMain.hblankCallback = NULL;
     gTrainerTowerVBlankCounter = NULL;
-    
+
     saveBlock2Copy = (struct SaveBlock2 *)(gHeap);
     saveBlock1Copy = (struct SaveBlock1 *)(gHeap + sizeof(struct SaveBlock2));
     pokemonStorageCopy = (struct PokemonStorage *)(gHeap + sizeof(struct SaveBlock2) + sizeof(struct SaveBlock1));
@@ -187,7 +187,7 @@ void SaveObjectEvents(void)
         gSaveBlock1Ptr->objectEvents[i].graphicsId = (graphicsId >> 8) | (graphicsId << 8);
         gSaveBlock1Ptr->objectEvents[i].spriteId = 127; // magic number
         // To avoid crash on vanilla, save follower as inactive
-        if (gObjectEvents[i].localId == OBJ_EVENT_ID_FOLLOWER) 
+        if (gObjectEvents[i].localId == OBJ_EVENT_ID_FOLLOWER)
             gSaveBlock1Ptr->objectEvents[i].active = FALSE;
     }
 }

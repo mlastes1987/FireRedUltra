@@ -709,6 +709,9 @@ static void Task_StartWirelessCableClubBattle(u8 taskId)
             tState = 5;
         break;
     case 5:
+#if REVISION >= 0xA
+        if (!IsLinkTaskFinished()) break;
+#endif
         SetLinkStandbyCallback();
         tState = 6;
         break;
@@ -911,6 +914,9 @@ static void Task_StartWirelessTrade(u8 taskId)
             tState++;
         break;
     case 2:
+#if REVISION >= 0xA
+        if (!IsLinkTaskFinished()) break;
+#endif
         gSelectedTradeMonPositions[TRADE_PLAYER] = 0;
         gSelectedTradeMonPositions[TRADE_PARTNER] = 0;
         m4aMPlayAllStop();
@@ -980,7 +986,11 @@ bool32 GetSeeingLinkPlayerCardMsg(u8 linkPlayerIndex)
 void Task_WaitForLinkPlayerConnection(u8 taskId)
 {
     struct Task *task = &gTasks[taskId];
+#if REVISION >= 0xA
+    if (++task->tTimer > 480)
+#else
     if (++task->tTimer > 300)
+#endif
     {
         CloseLink();
         SetMainCallback2(CB2_LinkError);

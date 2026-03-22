@@ -294,6 +294,7 @@ bool32 WaitRfuState(bool32 force);
 bool32 HasTrainerLeftPartnersList(u16 trainerId, const u8 *trainerName);
 void SendRfuStatusToPartner(u8 status, u16 trainerId, const u8 *name);
 u32 WaitSendRfuStatusToPartner(u16 trainerId, const u8 *name);
+s32 GetJoinGroupStatus(void);
 void SetHostRfuGameData(u8 activity, u32 partnerInfo, bool32 startedActivity);
 void InitializeRfuLinkManager_LinkLeader(u32 availSlots);
 void RequestDisconnectSlotByTrainerNameAndId(const u8 *trainerName, u16 trainerId);

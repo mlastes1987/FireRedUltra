@@ -1236,7 +1236,10 @@ static void SetLinkBattleEndCallbacks(enum BattlerId battler)
 // Despite handling link battles separately, this is only ever used by link battles
 void SetBattleEndCallbacks(enum BattlerId battler)
 {
+#if REVISION >= 0xA
+#else
     if (!gPaletteFade.active)
+#endif
     {
         if (gBattleTypeFlags & BATTLE_TYPE_LINK)
         {

@@ -193,6 +193,9 @@ static void InitMainCallbacks(void)
     gSaveBlock2Ptr = &gSaveblock2.block;
     gPokemonStoragePtr = &gPokemonStorage.block;
     gQuestLogPlaybackState = QL_PLAYBACK_STATE_STOPPED;
+#if REVISION >= 0xA
+    svc_SetSaveBlock2(&gSaveBlock2);
+#endif
 }
 
 static void CallCallbacks(void)

@@ -178,6 +178,9 @@ u8 rfu_LMAN_establishConnection(u8 parent_child, u16 connect_period, u16 name_ac
     }
     lman.parent_child = parent_child;
     lman.connect_period = connect_period;
+#if REVISION >= 0xA
+    lman.connect_period_initial = 0;
+#endif
     lman.nameAcceptTimer.count_max = name_accept_period;
     lman.acceptable_serialNo_list = acceptable_serialNo_list;
     return 0;
@@ -224,6 +227,9 @@ u8 rfu_LMAN_CHILD_connectParent(u16 parentId, u16 connect_period)
     }
     lman.work = parentId;
     lman.connect_period = connect_period;
+#if REVISION >= 0xA
+    lman.connect_period_initial = 0;
+#endif
     if (lman.pcswitch_flag != 0)
     {
         lman.pcswitch_flag = PCSWITCH_CP;
@@ -562,6 +568,9 @@ static void rfu_LMAN_settingPCSWITCH(u32 rand)
         lman.parent_child = MODE_PARENT;
         lman.state = LMAN_STATE_START_SEARCH_CHILD;
         lman.connect_period = lman.pcswitch_period_bak;
+#if REVISION >= 0xA
+        lman.connect_period_initial = 0;
+#endif
         if (lman.connect_period)
         {
             lman.pcswitch_flag = PCSWITCH_3RD_SC;
@@ -575,8 +584,14 @@ static void rfu_LMAN_settingPCSWITCH(u32 rand)
     {
         lman.parent_child = MODE_PARENT;
         lman.state = LMAN_STATE_START_SEARCH_CHILD;
+#if REVISION >= 0xA
+        lman.connect_period = rand % 285;
+        lman.pcswitch_period_bak = 285 - lman.connect_period;
+        lman.connect_period_initial = 0;
+#else
         lman.connect_period = rand % 140;
         lman.pcswitch_period_bak = 140 - lman.connect_period;
+#endif
         if (lman.connect_period)
         {
             lman.pcswitch_flag = PCSWITCH_1ST_SC;
@@ -590,6 +605,9 @@ static void rfu_LMAN_settingPCSWITCH(u32 rand)
     {
         lman.parent_child = MODE_CHILD;
         lman.connect_period = PCSWITCH_SP_PERIOD;
+#if REVISION >= 0xA
+        lman.connect_period_initial = 0;
+#endif
         lman.pcswitch_flag = PCSWITCH_2ND_SP;
         lman.state = LMAN_STATE_START_SEARCH_PARENT;
     }
@@ -634,11 +652,27 @@ static void rfu_LMAN_REQ_callback(u16 reqCommandId, u16 reqResult)
             }
             break;
         case ID_SC_POLL_REQ:
+#if REVISION >= 0xA
+            if (lman.connect_period)
+            {
+                if (svc_49() != 0 && lman.connect_period_initial < 300)
+                {
+                    if (lman.connect_period > 1) lman.connect_period--;
+                    else lman.connect_period_initial++;
+                }
+                else if (--lman.connect_period == 0)
+                {
+                    lman.state = LMAN_STATE_END_SEARCH_CHILD;
+                    lman.next_state = LMAN_STATE_WAIT_RECV_CHILD_NAME;
+                }
+            }
+#else
             if (lman.connect_period && --lman.connect_period == 0)
             {
                 lman.state = LMAN_STATE_END_SEARCH_CHILD;
                 lman.next_state = LMAN_STATE_WAIT_RECV_CHILD_NAME;
             }
+#endif
             break;
         case ID_SC_END_REQ:
             if (reqResult == 0)
@@ -681,11 +715,27 @@ static void rfu_LMAN_REQ_callback(u16 reqCommandId, u16 reqResult)
                     lman.fastSearchParent_flag = FSP_ON;
                 }
             }
+#if REVISION >= 0xA
+            if (lman.connect_period)
+            {
+                if (svc_4a() != 0 && lman.connect_period_initial < 300)
+                {
+                    if (lman.connect_period > 1) lman.connect_period--;
+                    else lman.connect_period_initial++;
+                }
+                else if (--lman.connect_period == 0)
+                {
+                    lman.state = LMAN_STATE_END_SEARCH_PARENT;
+                    lman.next_state = LMAN_STATE_READY;
+                }
+            }
+#else
             if (lman.connect_period && --lman.connect_period == 0)
             {
                 lman.state = LMAN_STATE_END_SEARCH_PARENT;
                 lman.next_state = LMAN_STATE_READY;
             }
+#endif
             break;
         case ID_SP_END_REQ:
             if (reqResult == 0)
@@ -1304,15 +1354,30 @@ static void UNUSED rfu_LMAN_setLMANCallback(void (*func)(u8, u8))
 
 u8 rfu_LMAN_setLinkRecovery(u8 enable_flag, u16 recovery_period)
 {
+#if REVISION >= 0xA
+    u16 imeNew = 0;
+#endif
     u16 imeBak;
+#if REVISION >= 0xA
+
+    imeBak = REG_IME;
+    REG_IME = imeNew;
+
+    lman.linkRecovery_enable = FALSE;
+    lman.linkRecoveryTimer.count_max = recovery_period;
+#else
+
     if (lman.linkRecovery_enable && enable_flag == 0 && lman.linkRecoveryTimer.active)
     {
         return LMAN_ERROR_NOW_LINK_RECOVERY;
     }
+
     imeBak = REG_IME;
     REG_IME = 0;
+
     lman.linkRecovery_enable = enable_flag;
     lman.linkRecoveryTimer.count_max = recovery_period;
+#endif
     REG_IME = imeBak;
     return 0;
 }
@@ -1369,7 +1434,11 @@ void rfu_LMAN_requestChangeAgbClockMaster(void)
     }
 }
 
+#if REVISION >= 0xA
+void rfu_LMAN_forceChangeSP(bool8 child)
+#else
 void rfu_LMAN_forceChangeSP(void)
+#endif
 {
     if (lman.pcswitch_flag)
     {
@@ -1389,10 +1458,22 @@ void rfu_LMAN_forceChangeSP(void)
             break;
         case LMAN_STATE_START_SEARCH_PARENT:
         case LMAN_STATE_POLL_SEARCH_PARENT:
+#if REVISION >= 0xA
+            if (!child) break;
+#endif
             lman.connect_period = PCSWITCH_SP_PERIOD;
+#if REVISION >= 0xA
+            lman.connect_period_initial = 0;
+#endif
             break;
         case LMAN_STATE_END_SEARCH_PARENT:
+#if REVISION >= 0xA
+            if (!child) break;
+#endif
             lman.connect_period = PCSWITCH_SP_PERIOD;
+#if REVISION >= 0xA
+            lman.connect_period_initial = 0;
+#endif
             lman.state = LMAN_STATE_POLL_SEARCH_PARENT;
             break;
         }

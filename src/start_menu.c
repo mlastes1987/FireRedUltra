@@ -47,6 +47,7 @@
 #include "constants/battle_frontier.h"
 #include "constants/songs.h"
 #include "constants/field_weather.h"
+#include "sloopsvc.h"
 
 enum StartMenuOption
 {
