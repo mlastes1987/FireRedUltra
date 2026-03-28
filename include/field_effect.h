@@ -89,6 +89,7 @@ void SpriteCB_AshLaunch(struct Sprite *sprite);
 void FieldEffectActiveListClear(void);
 void FieldEffectFreePaletteIfUnused(u8 paletteNum);
 void FieldCallback_UseFly(void);
+void HideFollowerForFieldEffect(void);
 
 void FieldEffectScript_LoadFadedPal(const struct SpritePalette * spritePalette);
 void FieldEffectScript_LoadPal(const struct SpritePalette * spritePalette);
@@ -120,8 +121,8 @@ u32 FldEff_DeepSandFootprints(void);
 u32 FldEff_PokecenterHeal(void);
 u32 FldEff_TreeDisguise(void);
 u32 FldEff_MountainDisguise(void);
-u32 FldEff_NpcFlyOut(void);
-u32 FldEff_FlyOut(void);
+u32 FldEff_NPCFlyOut(void);
+u32 FldEff_UseFly(void);
 u32 FldEff_FlyIn(void);
 u32 FldEff_QuestionMarkIcon(void);
 u32 FldEff_FeetInFlowingWater(void);
