@@ -88,7 +88,8 @@ enum FieldEffect
     FLDEFF_COUNT,
 };
 
-#define NOT_IN_PARTY_MASK (1 << 12)
+#define SHOW_MON_NOT_IN_PARTY   (1 << 15)
+#define SHOW_MON_CRY_NO_DUCKING (1 << 31)
 
 #define FLDEFF_PAL_TAG_GENERAL_0          0x1004
 #define FLDEFF_PAL_TAG_GENERAL_1          0x1005

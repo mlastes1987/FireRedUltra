@@ -2362,7 +2362,7 @@ bool8 ScrCmd_checkfieldmoveusable(struct ScriptContext* ctx)
     else if (OW_FIELD_MOVES_WITHOUT_HMS)
     {
         u16 species = FieldMove_GetDefaultSpecies(fieldMove);
-        gFieldEffectArguments[0] = species | NOT_IN_PARTY_MASK;
+        gFieldEffectArguments[0] = species | SHOW_MON_NOT_IN_PARTY;
         gSpecialVar_0x8004 = species;
         gSpecialVar_Result = TRUE;
         StringCopy(gStringVar1, COMPOUND_STRING("PROF. OAK's "));

@@ -3021,21 +3021,23 @@ u32 FldEff_FieldMoveShowMon(void)
     return 0;
 }
 
-#define SHOW_MON_CRY_NO_DUCKING (1 << 31)
 
 u32 FldEff_FieldMoveShowMonInit(void)
 {
     u32 noDucking = gFieldEffectArguments[0] & SHOW_MON_CRY_NO_DUCKING;
-    u8 partyIdx = gFieldEffectArguments[0];
 
-    if (gFieldEffectArguments[0] & NOT_IN_PARTY_MASK)
+    if (gFieldEffectArguments[0] & SHOW_MON_NOT_IN_PARTY)
     {
-        gFieldEffectArguments[0] &= ~NOT_IN_PARTY_MASK;
+        u16 species = gFieldEffectArguments[0] & (~SHOW_MON_NOT_IN_PARTY);
+
+        gFieldEffectArguments[0] = species;
         gFieldEffectArguments[1] = FALSE;
         gFieldEffectArguments[2] = SHINY_ODDS;
     }
     else
     {
+        u8 partyIdx = gFieldEffectArguments[0];
+
         gFieldEffectArguments[0] = GetMonData(&gPlayerParty[partyIdx], MON_DATA_SPECIES);
         gFieldEffectArguments[1] = GetMonData(&gPlayerParty[partyIdx], MON_DATA_IS_SHINY, NULL);
         gFieldEffectArguments[2] = GetMonData(&gPlayerParty[partyIdx], MON_DATA_PERSONALITY);
