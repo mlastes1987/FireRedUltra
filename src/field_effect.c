@@ -191,7 +191,7 @@ static void FieldMoveShowMonOutdoorsEffect_ShrinkBanner(struct Task *task);
 static void FieldMoveShowMonOutdoorsEffect_RestoreBg(struct Task *task);
 static void FieldMoveShowMonOutdoorsEffect_End(struct Task *task);
 static void VBlankCB_ShowMonEffect_Outdoors(void);
-static void LoadFieldMoveStreaksTilemapToVram(u16 screenbase);
+static void LoadFieldMoveOutdoorStreaksTilemap(u16 screenbase);
 
 // Show Mon Indoors
 static void Task_FieldMoveShowMonIndoors(u8 taskId);
@@ -3076,7 +3076,7 @@ static void FieldMoveShowMonOutdoorsEffect_LoadGfx(struct Task *task)
     CpuCopy16(sFieldMoveStreaksOutdoors_Gfx, (void *)(VRAM + charbase), sizeof(sFieldMoveStreaksOutdoors_Gfx));
     CpuFill32(0, (void *)(VRAM + screenbase), 0x800);
     LoadPalette(sFieldMoveStreaksOutdoors_Pal, BG_PLTT_ID(15), sizeof(sFieldMoveStreaksOutdoors_Pal));
-    LoadFieldMoveStreaksTilemapToVram(screenbase);
+    LoadFieldMoveOutdoorStreaksTilemap(screenbase);
     task->tState = SHOW_MON_OUTDOORS_CREATE_BANNER;
 }
 
@@ -3179,12 +3179,12 @@ static void VBlankCB_ShowMonEffect_Outdoors(void)
     SetGpuReg(REG_OFFSET_BG0VOFS, task->tBgVert);
 }
 
-static void LoadFieldMoveStreaksTilemapToVram(u16 screenbase)
+static void LoadFieldMoveOutdoorStreaksTilemap(u16 screenbase)
 {
     u16 i;
-    u16 *dest = (u16 *)(VRAM + (sizeof(sFieldMoveStreaksOutdoors_Tilemap) / 2) + screenbase);
+    u16 *dest = (u16 *)(VRAM + ARRAY_COUNT(sFieldMoveStreaksOutdoors_Tilemap) + screenbase);
 
-    for (i = 0; i < (sizeof(sFieldMoveStreaksOutdoors_Tilemap) / 2); i++, dest++)
+    for (i = 0; i < ARRAY_COUNT(sFieldMoveStreaksOutdoors_Tilemap); i++, dest++)
         *dest = sFieldMoveStreaksOutdoors_Tilemap[i] | 0xF000;
 }
 
