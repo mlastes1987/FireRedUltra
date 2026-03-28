@@ -172,7 +172,7 @@ struct PokemonSummaryScreenData
 
     struct PokeSummary
     {
-        u8 ALIGNED(4) speciesNameStrBuf[POKEMON_NAME_LENGTH];
+        u8 ALIGNED(4) speciesNameStrBuf[POKEMON_NAME_LENGTH + 1];
         u8 ALIGNED(4) nicknameStrBuf[POKEMON_NAME_LENGTH + 1];
         u8 ALIGNED(4) otNameStrBuf[12];
         u8 ALIGNED(4) otNameStrBufs[2][12];
@@ -185,11 +185,11 @@ struct PokemonSummaryScreenData
         u8 ALIGNED(4) levelStrBuf[7];
         u8 ALIGNED(4) statValueStrBufs[NUM_STATS][30];
 
-        u8 ALIGNED(4) moveCurPpStrBufs[5][11];
-        u8 ALIGNED(4) moveMaxPpStrBufs[5][11];
-        u8 ALIGNED(4) moveNameStrBufs[5][MOVE_NAME_LENGTH + 1];
-        u8 ALIGNED(4) movePowerStrBufs[5][5];
-        u8 ALIGNED(4) moveAccuracyStrBufs[5][5];
+        u8 ALIGNED(4) moveCurPpStrBufs[MAX_MON_MOVES + 1][11];
+        u8 ALIGNED(4) moveMaxPpStrBufs[MAX_MON_MOVES + 1][11];
+        u8 ALIGNED(4) moveNameStrBufs[MAX_MON_MOVES + 1][MOVE_NAME_LENGTH + 1];
+        u8 ALIGNED(4) movePowerStrBufs[MAX_MON_MOVES + 1][5];
+        u8 ALIGNED(4) moveAccuracyStrBufs[MAX_MON_MOVES + 1][5];
 
         u8 ALIGNED(4) expPointsStrBuf[9];
         u8 ALIGNED(4) expToNextLevelStrBuf[9];
@@ -326,18 +326,18 @@ struct ShinyStarObjData
     u16 palTag; /* 0x06 */
 };
 
-static EWRAM_DATA struct PokemonSummaryScreenData * sMonSummaryScreen = NULL;
-static EWRAM_DATA struct Struct203B144 * sMonSkillsPrinterXpos = NULL;
-static EWRAM_DATA struct MoveSelectionCursor * sMoveSelectionCursorObjs[4] = {};
-static EWRAM_DATA struct MonStatusIconObj * sStatusIcon = NULL;
-static EWRAM_DATA struct HpBarObjs * sHpBarObjs = NULL;
-static EWRAM_DATA struct ExpBarObjs * sExpBarObjs = NULL;
-static EWRAM_DATA struct PokerusIconObj * sPokerusIconObj = NULL;
-static EWRAM_DATA struct ShinyStarObjData * sShinyStarObjData = NULL;
+static EWRAM_DATA struct PokemonSummaryScreenData *sMonSummaryScreen = NULL;
+static EWRAM_DATA struct Struct203B144 *sMonSkillsPrinterXpos = NULL;
+static EWRAM_DATA struct MoveSelectionCursor *sMoveSelectionCursorObjs[4] = {};
+static EWRAM_DATA struct MonStatusIconObj *sStatusIcon = NULL;
+static EWRAM_DATA struct HpBarObjs *sHpBarObjs = NULL;
+static EWRAM_DATA struct ExpBarObjs *sExpBarObjs = NULL;
+static EWRAM_DATA struct PokerusIconObj *sPokerusIconObj = NULL;
+static EWRAM_DATA struct ShinyStarObjData *sShinyStarObjData = NULL;
 EWRAM_DATA u8 gLastViewedMonIndex = 0;
 static EWRAM_DATA u8 sMoveSelectionCursorPos = 0;
 static EWRAM_DATA u8 sMoveSwapCursorPos = 0;
-static EWRAM_DATA struct MonPicBounceState * sMonPicBounceState = NULL;
+static EWRAM_DATA struct MonPicBounceState *sMonPicBounceState = NULL;
 EWRAM_DATA MainCallback gInitialSummaryScreenCallback = NULL; // stores callback from the first time the screen is opened from the party or PC menu
 
 extern const u32 gSummaryScreen_PageSkills_Tilemap[];
@@ -388,7 +388,7 @@ static const union AnimCmd sMoveSelectionCursorOamAnim_Blue[] =
     ANIMCMD_JUMP(0),
 };
 
-static const union AnimCmd * const sMoveSelectionCursorOamAnimTable[] =
+static const union AnimCmd *const sMoveSelectionCursorOamAnimTable[] =
 {
     sMoveSelectionCursorOamAnim_Red,
     sMoveSelectionCursorOamAnim_Blue
@@ -457,7 +457,7 @@ static const union AnimCmd sStatusAilmentIconAnim_Blank[] =
     ANIMCMD_JUMP(0),
 };
 
-static const union AnimCmd * const sStatusAilmentIconAnimTable[] =
+static const union AnimCmd *const sStatusAilmentIconAnimTable[] =
 {
     sStatusAilmentIconAnim_PSN,
     sStatusAilmentIconAnim_PRZ,
@@ -556,7 +556,7 @@ static const union AnimCmd sHpOrExpAnim_11[] =
     ANIMCMD_JUMP(0),
 };
 
-static const union AnimCmd * const sHpOrExpBarAnimTable[] =
+static const union AnimCmd *const sHpOrExpBarAnimTable[] =
 {
     sHpOrExpAnim_0,
     sHpOrExpAnim_1,
@@ -596,7 +596,7 @@ static const union AnimCmd sPokerusIconObjAnim0[] =
     ANIMCMD_JUMP(0),
 };
 
-static const union AnimCmd * const sPokerusIconObjAnimTable[] =
+static const union AnimCmd *const sPokerusIconObjAnimTable[] =
 {
     sPokerusIconObjAnim0
 };
@@ -626,7 +626,7 @@ static const union AnimCmd sStarObjAnim0[] =
     ANIMCMD_JUMP(0),
 };
 
-static const union AnimCmd * const sStarObjAnimTable[] =
+static const union AnimCmd *const sStarObjAnimTable[] =
 {
     sStarObjAnim0
 };
@@ -984,7 +984,7 @@ static const s8 sEggPicShakeXDelta_AlmostReadyToHatch[] =
     2, 1, 1, 0, -1, -1, -2, 0, -2, -1, -1, 0, 1, 1, 2
 };
 
-static const u16 * const sHpBarPals[] =
+static const u16 *const sHpBarPals[] =
 {
     gSummaryScreen_HpExpBar_Pal,
     sPokeSummary_HpBarPalYellow,
@@ -2834,10 +2834,13 @@ static void PrintMonLevelNickOnWindow2(const u8 * str)
 
     if (!sMonSummaryScreen->isEgg)
     {
+        u16 nicknameFont;
+
         if (sMonSummaryScreen->curPageIndex != PSS_PAGE_MOVES_INFO)
             AddTextPrinterParameterized3(sMonSummaryScreen->windowIds[POKESUM_WIN_LVL_NICK], 2, 4, 2, sLevelNickTextColors[1], TEXT_SKIP_DRAW, sMonSummaryScreen->summary.levelStrBuf);
 
-        AddTextPrinterParameterized3(sMonSummaryScreen->windowIds[POKESUM_WIN_LVL_NICK], FONT_NORMAL, 40, 2, sLevelNickTextColors[1], TEXT_SKIP_DRAW, sMonSummaryScreen->summary.nicknameStrBuf);
+        nicknameFont = GetFontIdToFit(sMonSummaryScreen->summary.nicknameStrBuf, FONT_NORMAL, 0, 60);
+        AddTextPrinterParameterized3(sMonSummaryScreen->windowIds[POKESUM_WIN_LVL_NICK], nicknameFont, 40, 2, sLevelNickTextColors[1], TEXT_SKIP_DRAW, sMonSummaryScreen->summary.nicknameStrBuf);
 
         if (GetMonGender(&sMonSummaryScreen->currentMon) == MON_FEMALE)
             AddTextPrinterParameterized3(sMonSummaryScreen->windowIds[POKESUM_WIN_LVL_NICK], FONT_NORMAL, 105, 2, sLevelNickTextColors[3], 0, sMonSummaryScreen->summary.genderSymbolStrBuf);
@@ -2878,7 +2881,6 @@ u32 GetInfoPageFontIdForString(u8 *str, u32 x)
         maxTextWidth = 0;
     else
         maxTextWidth -= x;
-
 
     return GetFontIdToFit(str, FONT_NORMAL, letterSpacing, maxTextWidth);
 }
@@ -3712,7 +3714,7 @@ static void PokeSum_SetHelpContext(void)
     }
 }
 
-static u8 PokeSum_BufferOtName_IsEqualToCurrentOwner(struct Pokemon * mon)
+static u8 PokeSum_BufferOtName_IsEqualToCurrentOwner(struct Pokemon *mon)
 {
     u8 multiplayerId;
     u32 trainerId = 0;

@@ -505,7 +505,10 @@ struct PokemonStorageSystemData
     u8 displayMonLevel;
     bool8 displayMonIsEgg;
     u8 displayMonNickname[POKEMON_NAME_LENGTH + 1];
-    u8 displayMonTexts[4][36]; // nickname, species name, gender and level, item name
+    u8 displayMonNameText[36];
+    u8 displayMonSpeciesName[36];
+    u8 displayMonGenderLvlText[36];
+    u8 displayMonItemName[36];
     bool8 (*monPlaceChangeFunc)(void);
     u8 monPlaceChangeState;
     u8 shiftBoxId;
@@ -3766,21 +3769,20 @@ static void LoadDisplayMonGfx(u16 species, u32 personality)
 
 static void PrintDisplayMonInfo(void)
 {
-    u16 i;
-    u16 y;
     FillWindowPixelBuffer(0, PIXEL_FILL(1));
     if (gStorage->boxOption != OPTION_MOVE_ITEMS)
     {
-        for (i = 0, y = 0; i < 3; i++, y += 14)
-            AddTextPrinterParameterized(0, FONT_NORMAL, gStorage->displayMonTexts[i], i == 2 ? 10 : 6, y, TEXT_SKIP_DRAW, NULL);
-
-        AddTextPrinterParameterized(0, FONT_SMALL, gStorage->displayMonTexts[3], 6, y + 2, TEXT_SKIP_DRAW, NULL);
+        AddTextPrinterParameterized(0, GetFontIdToFit(gStorage->displayMonNameText, FONT_NORMAL, 0, 70), gStorage->displayMonNameText, 6, 0, TEXT_SKIP_DRAW, NULL);
+        AddTextPrinterParameterized(0, GetFontIdToFit(gStorage->displayMonSpeciesName, FONT_NORMAL, 0, 70), gStorage->displayMonSpeciesName, 6, 14, TEXT_SKIP_DRAW, NULL);
+        AddTextPrinterParameterized(0, FONT_NORMAL, gStorage->displayMonGenderLvlText, 10, 28, TEXT_SKIP_DRAW, NULL);
+        AddTextPrinterParameterized(0, GetFontIdToFit(gStorage->displayMonItemName, FONT_SMALL, 0, 66), gStorage->displayMonItemName, 6, 44, TEXT_SKIP_DRAW, NULL);
     }
     else
     {
-        AddTextPrinterParameterized(0, FONT_SMALL, gStorage->displayMonTexts[3], 6, 0, TEXT_SKIP_DRAW, NULL);
-        for (i = 0, y = 15; i < 3; i++, y += 14)
-            AddTextPrinterParameterized(0, FONT_NORMAL, gStorage->displayMonTexts[i], i == 2 ? 10 : 6, y, TEXT_SKIP_DRAW, NULL);
+        AddTextPrinterParameterized(0, GetFontIdToFit(gStorage->displayMonItemName, FONT_SMALL, 0, 66), gStorage->displayMonItemName, 6, 0, TEXT_SKIP_DRAW, NULL);
+        AddTextPrinterParameterized(0, GetFontIdToFit(gStorage->displayMonNameText, FONT_NORMAL, 0, 70), gStorage->displayMonNameText, 6, 15, TEXT_SKIP_DRAW, NULL);
+        AddTextPrinterParameterized(0, GetFontIdToFit(gStorage->displayMonSpeciesName, FONT_NORMAL, 0, 70), gStorage->displayMonSpeciesName, 6, 29, TEXT_SKIP_DRAW, NULL);
+        AddTextPrinterParameterized(0, FONT_NORMAL, gStorage->displayMonGenderLvlText, 10, 43, TEXT_SKIP_DRAW, NULL);
     }
 
     CopyWindowToVram(0, COPYWIN_GFX);
@@ -4053,7 +4055,7 @@ static void PrintStorageMessage(u8 id)
         if (IsActiveItemMoving())
             txtPtr = StringCopy(gStorage->itemName, GetMovingItemName());
         else
-            txtPtr = StringCopy(gStorage->itemName, gStorage->displayMonTexts[3]);
+            txtPtr = StringCopy(gStorage->itemName, gStorage->displayMonItemName);
 
         while (*(txtPtr - 1) == CHAR_SPACE)
             txtPtr--;
@@ -6565,11 +6567,6 @@ static void ReshowDisplayMon(void)
         TrySetDisplayMonData();
 }
 
-#define displayMonNicknameText        displayMonTexts[0]
-#define displayMonSpeciesNameText     displayMonTexts[1]
-#define displayMonGenderAndLevelText  displayMonTexts[2]
-#define displayMonItemNameText        displayMonTexts[3]
-
 static void SetDisplayMonData(void *pokemon, u8 mode)
 {
     u8 *txtPtr;
@@ -6635,21 +6632,21 @@ static void SetDisplayMonData(void *pokemon, u8 mode)
     if (gStorage->displayMonSpecies == SPECIES_NONE)
     {
         StringFill(gStorage->displayMonNickname, CHAR_SPACE, 5);
-        StringFill(gStorage->displayMonNicknameText, CHAR_SPACE, 8);
-        StringFill(gStorage->displayMonSpeciesNameText, CHAR_SPACE, 8);
-        StringFill(gStorage->displayMonGenderAndLevelText, CHAR_SPACE, 8);
-        StringFill(gStorage->displayMonItemNameText, CHAR_SPACE, 8);
+        StringFill(gStorage->displayMonNameText, CHAR_SPACE, 8);
+        StringFill(gStorage->displayMonSpeciesName, CHAR_SPACE, 8);
+        StringFill(gStorage->displayMonGenderLvlText, CHAR_SPACE, 8);
+        StringFill(gStorage->displayMonItemName, CHAR_SPACE, 8);
     }
     else if (gStorage->displayMonIsEgg)
     {
         if (sanityIsBagEgg)
-            StringCopyPadded(gStorage->displayMonNicknameText, gStorage->displayMonNickname, CHAR_SPACE, 5);
+            StringCopyPadded(gStorage->displayMonNameText, gStorage->displayMonNickname, CHAR_SPACE, 5);
         else
-            StringCopyPadded(gStorage->displayMonNicknameText, gText_EggNickname, CHAR_SPACE, 8);
+            StringCopyPadded(gStorage->displayMonNameText, gText_EggNickname, CHAR_SPACE, 8);
 
-        StringFill(gStorage->displayMonSpeciesNameText, CHAR_SPACE, 8);
-        StringFill(gStorage->displayMonGenderAndLevelText, CHAR_SPACE, 8);
-        StringFill(gStorage->displayMonItemNameText, CHAR_SPACE, 8);
+        StringFill(gStorage->displayMonSpeciesName, CHAR_SPACE, 8);
+        StringFill(gStorage->displayMonGenderLvlText, CHAR_SPACE, 8);
+        StringFill(gStorage->displayMonItemName, CHAR_SPACE, 8);
     }
     else
     {
@@ -6657,15 +6654,15 @@ static void SetDisplayMonData(void *pokemon, u8 mode)
             gender = MON_GENDERLESS;
 
         // Buffer nickname
-        StringCopyPadded(gStorage->displayMonNicknameText, gStorage->displayMonNickname, CHAR_SPACE, 5);
+        StringCopyPadded(gStorage->displayMonNameText, gStorage->displayMonNickname, CHAR_SPACE, 5);
 
         // Buffer species name
-        txtPtr = gStorage->displayMonSpeciesNameText;
+        txtPtr = gStorage->displayMonSpeciesName;
         *(txtPtr)++ = CHAR_SLASH;
         StringCopyPadded(txtPtr, gSpeciesInfo[gStorage->displayMonSpecies].speciesName, CHAR_SPACE, 5);
 
         // Buffer gender and level
-        txtPtr = gStorage->displayMonGenderAndLevelText;
+        txtPtr = gStorage->displayMonGenderLvlText;
         *(txtPtr)++ = EXT_CTRL_CODE_BEGIN;
         *(txtPtr)++ = EXT_CTRL_CODE_COLOR_HIGHLIGHT_SHADOW;
         switch (gender)
@@ -6705,16 +6702,11 @@ static void SetDisplayMonData(void *pokemon, u8 mode)
 
         // Buffer item name
         if (gStorage->displayMonItemId != ITEM_NONE)
-            StringCopyPadded(gStorage->displayMonItemNameText, GetItemName(gStorage->displayMonItemId), CHAR_SPACE, 8);
+            StringCopyPadded(gStorage->displayMonItemName, GetItemName(gStorage->displayMonItemId), CHAR_SPACE, 8);
         else
-            StringFill(gStorage->displayMonItemNameText, CHAR_SPACE, 8);
+            StringFill(gStorage->displayMonItemName, CHAR_SPACE, 8);
     }
 }
-
-#undef displayMonNicknameText
-#undef displayMonSpeciesNameText
-#undef displayMonGenderAndLevelText
-#undef displayMonItemNameText
 
 static u8 HandleInput_InBox(void)
 {

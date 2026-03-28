@@ -230,6 +230,7 @@ static bool8 GetBattleEntryEligibility(struct Pokemon *mon);
 static bool8 IsMonAllowedInMinigame(u8 slot);
 static void DisplayPartyPokemonDataToTeachMove(u8 slot, u16 move);
 static void DisplayPartyPokemonBarDetail(u8 windowId, const u8 *str, u8 color, const u8 *dimensions);
+static void DisplayPartyPokemonBarDetailToFit(u8 windowId, const u8 *str, u8 color, const u8 *align, u32 width);
 static void DisplayPartyPokemonLevel(u8 level, struct PartyMenuBox *menuBox);
 static void DisplayPartyPokemonGender(u8 gender, u16 species, u8 *nickname, struct PartyMenuBox *menuBox);
 static void DisplayPartyPokemonHP(u16 hp, struct PartyMenuBox *menuBox);
@@ -1092,9 +1093,10 @@ static void DisplayPartyPokemonDataForMultiBattle(u8 slot)
         menuBox->infoRects->blitFunc(menuBox->windowId, 0, 0, 0, 0, FALSE);
         StringCopy(gStringVar1, gMultiPartnerParty[actualSlot].nickname);
         StringGet_Nickname(gStringVar1);
-        if (StringLength(gStringVar1) <= 5)
-            ConvertInternationalString(gStringVar1, 1);
-        DisplayPartyPokemonBarDetail(menuBox->windowId, gStringVar1, 0, menuBox->infoRects->dimensions);
+        if (StringLength(gStringVar1) < PLAYER_NAME_LENGTH - 1)
+            ConvertInternationalString(gStringVar1, LANGUAGE_JAPANESE);
+
+        DisplayPartyPokemonBarDetailToFit(menuBox->windowId, gStringVar1, 0, menuBox->infoRects->dimensions, 50);
         DisplayPartyPokemonLevel(gMultiPartnerParty[actualSlot].level, menuBox);
         DisplayPartyPokemonGender(gMultiPartnerParty[actualSlot].gender, gMultiPartnerParty[actualSlot].species, gMultiPartnerParty[actualSlot].nickname, menuBox);
         DisplayPartyPokemonHP(gMultiPartnerParty[actualSlot].hp, menuBox);
@@ -2523,6 +2525,11 @@ static void DisplayPartyPokemonBarDetail(u8 windowId, const u8 *str, u8 color, c
     AddTextPrinterParameterized3(windowId, FONT_SMALL, dimensions[0], dimensions[1], sFontColorTable[color], 0, str);
 }
 
+static void DisplayPartyPokemonBarDetailToFit(u8 windowId, const u8 *str, u8 color, const u8 *align, u32 width)
+{
+    AddTextPrinterParameterized3(windowId, GetFontIdToFit(str, FONT_SMALL, 0, width), align[0], align[1], sFontColorTable[color], 0, str);
+}
+
 static void DisplayPartyPokemonNickname(struct Pokemon *mon, struct PartyMenuBox *menuBox, u8 drawMenuBoxOrText)
 {
     u8 nickname[POKEMON_NAME_LENGTH + 1];
@@ -2532,7 +2539,7 @@ static void DisplayPartyPokemonNickname(struct Pokemon *mon, struct PartyMenuBox
         if (drawMenuBoxOrText == DRAW_MENU_BOX_AND_TEXT)
             menuBox->infoRects->blitFunc(menuBox->windowId, menuBox->infoRects->dimensions[0] / 8, menuBox->infoRects->dimensions[1] / 8, menuBox->infoRects->dimensions[2] / 8, menuBox->infoRects->dimensions[3] / 8, FALSE);
         GetMonNickname(mon, nickname);
-        DisplayPartyPokemonBarDetail(menuBox->windowId, nickname, 0, menuBox->infoRects->dimensions);
+        DisplayPartyPokemonBarDetailToFit(menuBox->windowId, nickname, 0, menuBox->infoRects->dimensions, 50);
     }
 }
 
@@ -2576,7 +2583,7 @@ static void DisplayPartyPokemonGender(u8 gender, u16 species, u8 *nickname, stru
 
     if (species == SPECIES_NONE)
         return;
-    if ((species == SPECIES_NIDORAN_M || species == SPECIES_NIDORAN_F) && StringCompare(nickname, gSpeciesInfo[species].speciesName) == 0)
+    if ((species == SPECIES_NIDORAN_M || species == SPECIES_NIDORAN_F) && StringCompare(nickname, GetSpeciesName(species)) == 0)
         return;
     switch (gender)
     {
@@ -4911,12 +4918,13 @@ void Task_AbilityCapsule(u8 taskId)
 
     switch (tState)
     {
-    case 0:
-        // Can't use.
-        if (gSpeciesInfo[tSpecies].abilities[0] == gSpeciesInfo[tSpecies].abilities[1]
-            || gSpeciesInfo[tSpecies].abilities[1] == 0
-            || tAbilityNum > 1
-            || !tSpecies)
+    case 0: // Can't use.
+    {
+        enum Ability ability1, ability2;
+
+        ability1 = GetSpeciesAbility(tSpecies, 0);
+        ability2 = GetSpeciesAbility(tSpecies, 1);
+        if (ability1 == ability2 || ability2 == ABILITY_NONE || tAbilityNum > 1 || !tSpecies)
         {
             gPartyMenuUseExitCallback = FALSE;
             PlaySE(SE_SELECT);
@@ -4934,6 +4942,7 @@ void Task_AbilityCapsule(u8 taskId)
         ScheduleBgCopyTilemapToVram(2);
         tState++;
         break;
+    }
     case 1:
         if (!IsPartyMenuTextPrinterActive())
         {
@@ -5025,9 +5034,7 @@ void Task_AbilityPatch(u8 taskId)
     {
     case 0:
         // Can't use.
-        if (gSpeciesInfo[tSpecies].abilities[tAbilityNum] == 0
-            || !tSpecies
-            )
+        if (GetSpeciesAbility(tSpecies, tAbilityNum) == ABILITY_NONE || !tSpecies)
         {
             gPartyMenuUseExitCallback = FALSE;
             PlaySE(SE_SELECT);
