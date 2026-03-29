@@ -46,7 +46,7 @@ struct TrainerCard
     /*0x54*/ u16 monSpecies[PARTY_SIZE];
 };
 
-extern struct TrainerCard gTrainerCards[4];
+extern struct TrainerCard gTrainerCards[MAX_BATTLERS_COUNT];
 
 void ShowPlayerTrainerCard(void (*callback)(void));
 void ShowTrainerCardInLink(u8 whoseCard, MainCallback callback);

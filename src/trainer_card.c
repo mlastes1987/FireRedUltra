@@ -89,7 +89,7 @@ struct TrainerCardData
 }; /* size = 0x7BD0 */
 
 // RAM
-EWRAM_DATA struct TrainerCard gTrainerCards[4] = {0};
+EWRAM_DATA struct TrainerCard gTrainerCards[MAX_BATTLERS_COUNT] = {0};
 EWRAM_DATA static struct TrainerCardData *sTrainerCardDataPtr = NULL;
 
 // Function Declaration
