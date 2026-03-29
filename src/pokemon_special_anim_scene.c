@@ -31,8 +31,7 @@ static void StartMonWiggleAnim(struct PokemonSpecialAnimScene * scene, u8 frameL
 static void StopMonWiggleAnim(struct PokemonSpecialAnimScene * scene);
 static void SpriteCallback_MonSpriteWiggle(struct Sprite *sprite);
 static void LoadMonSpriteGraphics(u16 *tilees, const u16 *palette);
-static struct Sprite *PSA_CreateItemIconObject(u16 itemId);
-static u16 GetBlendColorByItemId(u16 itemId);
+static struct Sprite *PSA_CreateItemIconObject(enum Item itemId);
 static void Task_ItemUseOnMonAnim(u8 taskId);
 static void CreateSprites_UseItem_OutwardSpiralDots(u8 taskId, s16 *data, struct Sprite *sprite);
 static void SpriteCB_OutwardSpiralDots(struct Sprite *sprite);
@@ -391,7 +390,7 @@ void PSA_HideMessageWindow(void)
 void PSA_PrintMessage(u8 messageId)
 {
     struct PokemonSpecialAnimScene * scene = PSA_GetSceneWork();
-    u16 itemId = PSA_GetItemId();
+    enum Item itemId = PSA_GetItemId();
     u16 strWidth = 0;
     u8 textSpeed = GetPlayerTextSpeedDelay();
     struct Pokemon * pokemon = PSA_GetPokemon();
@@ -652,7 +651,7 @@ void PSA_CreateMonSpriteAtCloseness(u8 closeness)
 {
     struct PokemonSpecialAnimScene * scene = PSA_GetSceneWork();
     struct Pokemon * pokemon = PSA_GetPokemon();
-    u16 species = GetMonData(pokemon, MON_DATA_SPECIES);
+    enum Species species = GetMonData(pokemon, MON_DATA_SPECIES);
     u32 personality = GetMonData(pokemon, MON_DATA_PERSONALITY);
     u8 yOffset = Menu2_GetMonPosAttribute(species, personality, PSA_MON_ATTR_Y_OFFSET);
     void *monPicBuffer;
@@ -872,7 +871,7 @@ static void LoadMonSpriteGraphics(u16 *tiles, const u16 *palette)
 #define tTimerReset      data[10]
 #define tSuppressDots    data[11]
 
-void PSA_SetUpItemUseOnMonAnim(u16 itemId, u8 closeness, bool32 a2)
+void PSA_SetUpItemUseOnMonAnim(enum Item itemId, u8 closeness, bool32 a2)
 {
     struct PokemonSpecialAnimScene * scene = PSA_GetSceneWork();
     u8 taskId;
@@ -887,18 +886,13 @@ void PSA_SetUpItemUseOnMonAnim(u16 itemId, u8 closeness, bool32 a2)
         gTasks[taskId].tCloseness = closeness;
         gTasks[taskId].tYpos = GetYPosByScale(sAffineScales[closeness]);
         gTasks[taskId].tData6 = a2;
-        gTasks[taskId].tBlendColor = GetBlendColorByItemId(itemId);
+        gTasks[taskId].tBlendColor = RGB_WHITE;
     }
 }
 
-static u16 GetBlendColorByItemId(u16 itemId)
+void CreateItemIconSpriteAtMaxCloseness(enum Item itemId)
 {
-    return RGB_WHITE;
-}
-
-void CreateItemIconSpriteAtMaxCloseness(u16 itemId)
-{
-    struct PokemonSpecialAnimScene * scene = PSA_GetSceneWork();
+    struct PokemonSpecialAnimScene *scene = PSA_GetSceneWork();
     scene->itemIconSprite = PSA_CreateItemIconObject(itemId);
     if (scene->itemIconSprite != NULL)
     {
@@ -907,7 +901,7 @@ void CreateItemIconSpriteAtMaxCloseness(u16 itemId)
     }
 }
 
-static struct Sprite *PSA_CreateItemIconObject(u16 itemId)
+static struct Sprite *PSA_CreateItemIconObject(enum Item itemId)
 {
     u8 spriteId;
     spriteId = AddItemIconSprite(1, 1, itemId);
@@ -1043,8 +1037,10 @@ void PSA_UseItem_CleanUpForCancel(void)
 
 static void InitItemIconSpriteState(struct PokemonSpecialAnimScene * scene, struct Sprite *sprite, u8 closeness)
 {
-    u16 species, x, y;
+    enum Species species;
+    u16 x, y;
     u32 personality;
+
     if (closeness == 3)
     {
         sprite->x = 120;
@@ -1185,8 +1181,9 @@ static void CreateStarSprites(struct PokemonSpecialAnimScene * scene)
 {
     int i;
     u8 spriteId;
-    u16 species;
+    enum Species species;
     u32 personality;
+
     LoadCompressedSpriteSheet(&sSpriteSheet_Star);
     LoadSpritePalette(&sSpritePalette_Star);
     scene->field_0002 = 0;

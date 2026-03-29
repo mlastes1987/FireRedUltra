@@ -761,7 +761,7 @@ static void PokeMartWriteNameAndIdAt(struct ListMenuItem *list, u16 index, u8 *d
     list->id = index;
 }
 
-static void BuyMenuAddItemIcon(u16 item, u8 iconSlot)
+static void BuyMenuAddItemIcon(enum Item item, u8 iconSlot)
 {
     u8 *spriteIdPtr = &sShopData.itemSpriteIds[iconSlot];
 
@@ -1310,7 +1310,7 @@ static void DebugFunc_PrintShopMenuHistoryBeforeClearMaybe(void)
 
 // Records a transaction during a single shopping session.
 // This is for the Quest Log to save information about the player's purchases/sales when they finish.
-void RecordItemTransaction(u16 itemId, u16 quantity, u8 logEventId)
+void RecordItemTransaction(enum Item itemId, u16 quantity, u8 logEventId)
 {
     struct QuestLogEvent_Shop *history;
 

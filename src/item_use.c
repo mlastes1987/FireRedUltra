@@ -175,7 +175,7 @@ static void Task_ItemUse_CloseMessageBoxAndReturnToField(u8 taskId)
     UnlockPlayerFieldControls();
 }
 
-u8 CheckIfItemIsTMHMOrEvolutionStone(u16 itemId)
+u8 CheckIfItemIsTMHMOrEvolutionStone(enum Item itemId)
 {
     if (GetItemPocket(itemId) == POCKET_TM_HM)
         return 1;
@@ -1059,7 +1059,7 @@ static const u8 sText_CantThrowPokeBall_TwoMons[] = _("Cannot throw a ball!\nThe
 static const u8 sText_CantThrowPokeBall_SemiInvulnerable[] = _("Cannot throw a ball!\nThere's no Pokémon in sight!\p");
 static const u8 sText_CantThrowPokeBall_Disabled[] = _("POKé BALLS cannot be used\nright now!\p");
 
-static bool32 IteamHealsMonVolatile(u32 battler, u16 itemId)
+static bool32 IteamHealsMonVolatile(u32 battler, enum Item itemId)
 {
     const u8 *effect = GetItemEffect(itemId);
     if (effect[3] & ITEM3_STATUS_ALL)
@@ -1072,7 +1072,7 @@ static bool32 IteamHealsMonVolatile(u32 battler, u16 itemId)
     return FALSE;
 }
 
-static bool32 SelectedMonHasVolatile(u16 itemId)
+static bool32 SelectedMonHasVolatile(enum Item itemId)
 {
     if (gPartyMenu.slotId == 0)
         return IteamHealsMonVolatile(0, itemId);
@@ -1082,7 +1082,7 @@ static bool32 SelectedMonHasVolatile(u16 itemId)
 }
 
 // Returns whether an item can be used in battle and sets the fail text.
-bool32 CannotUseItemsInBattle(u16 itemId, struct Pokemon *mon)
+bool32 CannotUseItemsInBattle(enum Item itemId, struct Pokemon *mon)
 {
     u16 battleUsage = GetItemBattleUsage(itemId);
     bool8 cannotUse = FALSE;
@@ -1270,7 +1270,7 @@ void ItemUseOutOfBattle_CannotUse(u8 taskId)
         PrintNotTheTimeToUseThat(taskId, gTasks[taskId].data[3]);
 }
 
-void ItemUse_SetQuestLogEvent(u8 eventId, struct Pokemon *pokemon, u16 itemId, u16 param)
+void ItemUse_SetQuestLogEvent(u8 eventId, struct Pokemon *pokemon, enum Item itemId, u16 param)
 {
     struct QuestLogEvent_Item *data = Alloc(sizeof(*data));
 

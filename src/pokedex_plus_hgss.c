@@ -293,8 +293,8 @@ static EWRAM_DATA u8 sPokeBallRotation = 0;
 static EWRAM_DATA struct PokedexListItem *sPokedexListItem = NULL;
 //Pokedex Plus HGSS_Ui
 #define MOVES_COUNT_TOTAL (EGG_MOVES_ARRAY_COUNT + MAX_LEVEL_UP_MOVES + NUM_ALL_MACHINES)
-EWRAM_DATA static u16 sStatsMoves[MOVES_COUNT_TOTAL] = {0};
-EWRAM_DATA static u16 sStatsMovesTMHM_ID[NUM_ALL_MACHINES] = {0};
+EWRAM_DATA static enum Move sStatsMoves[MOVES_COUNT_TOTAL] = {0};
+EWRAM_DATA static enum Item sStatsMovesTMHM_ID[NUM_ALL_MACHINES] = {0};
 
 
 struct SearchOptionText
@@ -332,7 +332,7 @@ struct SearchMenuItem
 
 struct PokedexListItem
 {
-    u16 dexNum;
+    enum NationalDexOrder dexNum;
     u16 seen:1;
     u16 owned:1;
 };
@@ -340,7 +340,7 @@ struct PokedexListItem
 
 struct PokemonStats
 {
-    u16 species;
+    enum Species species;
     u8  genderRatio;
     u8  baseHP;
     u8  baseSpeed;
@@ -371,7 +371,7 @@ struct EvoScreenData
 {
     bool8 fromEvoPage;
     u8 numAllEvolutions;
-    u16 targetSpecies[10];
+    enum Species targetSpecies[10];
     u8 numSeen;
     bool8 seen[10];
     u8 menuPos;
@@ -417,7 +417,7 @@ struct PokedexView
     struct PokemonStats sPokemonStats;
     struct EvoScreenData sEvoScreenData;
     struct FromScreenData sFormScreenData;
-    u16 formSpecies;
+    enum Species formSpecies;
     u16 selectedMonSpriteId;
     u16 pokeBallRotationStep;
     u16 pokeBallRotationBackup;
@@ -478,7 +478,7 @@ static u16 TryDoPokedexScroll(u16, u16);
 static void UpdateSelectedMonSpriteId(void);
 static bool8 TryDoInfoScreenScroll(void);
 static u8 ClearMonSprites(void);
-static u16 GetPokemonSpriteToDisplay(u16);
+static u16 GetPokemonSpriteToDisplay(enum NationalDexOrder natDexNum);
 static u32 CreatePokedexMonSprite(u16, s16, s16);
 static void CreateInterfaceSprites(u8);
 static void SpriteCB_MoveMonForInfoScreen(struct Sprite *sprite);
@@ -518,7 +518,7 @@ static void ResetOtherVideoRegisters(u16);
 static u8 PrintCryScreenSpeciesName(u8, u16, u8, u8);
 static void PrintDecimalNum(u8 windowId, u16 num, u8 left, u8 top);
 static u16 CreateMonSpriteFromNationalDexNumberHGSS(u16 nationalNum, s16 x, s16 y, u16 paletteSlot);
-static u16 CreateSizeScreenTrainerPic(u16, s16, s16, s8);
+static u16 CreateSizeScreenTrainerPic(enum TrainerPicID trainerPicId, s16, s16, s8);
 static u16 GetNextPosition(u8, u16, u16, u16);
 static u8 LoadSearchMenu(void);
 static void Task_LoadSearchMenu(u8);
@@ -574,8 +574,8 @@ static void Task_LoadEvolutionScreen(u8 taskId);
 static void Task_HandleEvolutionScreenInput(u8 taskId);
 static void Task_SwitchScreensFromEvolutionScreen(u8 taskId);
 static void Task_ExitEvolutionScreen(u8 taskId);
-static void PrintEvolutionTargetSpeciesAndMethod(u8 taskId, u16 species, u8 depth, u32 *depth_i, u32 alreadyPrintedIcons[], u32 *icon_depth_i, u32 numLines);
-static u8 PrintPreEvolutions(u8 taskId, u16 species);
+static void PrintEvolutionTargetSpeciesAndMethod(u8 taskId, enum Species species, u8 depth, u32 *depth_i, u32 alreadyPrintedIcons[], u32 *icon_depth_i, u32 numLines);
+static u8 PrintPreEvolutions(u8 taskId, enum Species species);
 //Stat bars on scrolling screens
 static void TryDestroyStatBars(void);
 static void TryDestroyStatBarsBg(void);
@@ -587,7 +587,7 @@ static void SpriteCB_StatBarsBg(struct Sprite *sprite);
 //Forms screen
 static void Task_LoadFormsScreen(u8 taskId);
 static void Task_HandleFormsScreenInput(u8 taskId);
-static void PrintForms(u8 taskId, u16 species);
+static void PrintForms(u8 taskId, enum Species species);
 static void Task_SwitchScreensFromFormsScreen(u8 taskId);
 static void Task_ExitFormsScreen(u8 taskId);
 
@@ -595,7 +595,7 @@ static void Task_ExitFormsScreen(u8 taskId);
 static u8 ShowCategoryIcon(enum DamageCategory category);
 static void DestroyCategoryIcon(void);
 
-static u16 NationalPokedexNumToSpeciesHGSS(u16 nationalNum);
+static enum Species NationalPokedexNumToSpeciesHGSS(enum NationalDexOrder nationalNum);
 
 //Evo screen
 u32 GetSpeciesNameFontId(u32 nameWidth);
@@ -3057,12 +3057,12 @@ static u8 ClearMonSprites(void)
     return FALSE;
 }
 
-static u16 GetPokemonSpriteToDisplay(u16 species)
+static u16 GetPokemonSpriteToDisplay(enum NationalDexOrder natDexNum)
 {
-    if (species >= NATIONAL_DEX_COUNT || sPokedexView->pokedexList[species].dexNum == 0xFFFF)
+    if (natDexNum >= NATIONAL_DEX_COUNT || sPokedexView->pokedexList[natDexNum].dexNum == 0xFFFF)
         return 0xFFFF;
-    else if (sPokedexView->pokedexList[species].seen)
-        return sPokedexView->pokedexList[species].dexNum;
+    else if (sPokedexView->pokedexList[natDexNum].seen)
+        return sPokedexView->pokedexList[natDexNum].dexNum;
     else
         return 0;
 }
@@ -4093,7 +4093,7 @@ static void UNUSED HighlightScreenSelectBarItem(u8 selectedScreen, u16 unused)
 void Task_DisplayCaughtMonDexPageHGSS(u8 taskId)
 {
     u8 spriteId;
-    u16 species;
+    enum Species species;
     enum NationalDexOrder dexNum;
 
     if (!POKEDEX_PLUS_HGSS) return; // prevents the compiler from emitting static .rodata
@@ -4215,7 +4215,7 @@ static void Task_ExitCaughtMonPage(u8 taskId)
 {
     if (!gPaletteFade.active)
     {
-        u16 species;
+        enum Species species;
         u32 otId;
         u32 personality;
         u8 paletteNum;
@@ -4351,7 +4351,7 @@ static void SetTypeIconPosAndPal(u8 typeId, u8 x, u8 y, u8 spriteArrayId)
     sprite->y = y + 8;
     SetSpriteInvisibility(spriteArrayId, FALSE);
 }
-static void PrintCurrentSpeciesTypeInfo(u8 newEntry, u16 species)
+static void PrintCurrentSpeciesTypeInfo(u8 newEntry, enum Species species)
 {
     enum Type type1, type2;
 
@@ -4402,7 +4402,7 @@ static void PrintMonInfo(u32 num, u32 value, u32 owned, u32 newEntry)
 {
     u8 str[16];
     u8 str2[32];
-    u16 species;
+    enum Species species;
     const u8 *name;
     const u8 *category;
     const u8 *description;
@@ -4517,7 +4517,7 @@ static u8 PrintCryScreenSpeciesName(u8 windowId, u16 num, u8 left, u8 top)
 
 // Unown and Spinda use the personality of the first seen individual of that species
 // All others use personality 0
-static u32 GetPokedexMonPersonality(u16 species)
+static u32 GetPokedexMonPersonality(enum Species species)
 {
     if (species == SPECIES_UNOWN || species == SPECIES_SPINDA)
     {
@@ -4562,9 +4562,9 @@ static u16 GetTrainerOffsetFromNationalDexNumber(u16 nationalNum)
     return gSpeciesInfo[nationalNum].trainerOffset;
 }
 
-static u16 CreateSizeScreenTrainerPic(u16 species, s16 x, s16 y, s8 paletteSlot)
+static u16 CreateSizeScreenTrainerPic(enum TrainerPicID trainerPicId, s16 x, s16 y, s8 paletteSlot)
 {
-    return CreateTrainerFrontPicSprite(species, x, y, paletteSlot);
+    return CreateTrainerFrontPicSprite(trainerPicId, x, y, paletteSlot);
 }
 
 
@@ -4667,12 +4667,12 @@ static u16 GetNextPosition(u8 direction, u16 position, u16 min, u16 max)
 //*        HGSS                      *
 //*                                  *
 //************************************
-static u16 NationalPokedexNumToSpeciesHGSS(u16 nationalNum)
+static enum Species NationalPokedexNumToSpeciesHGSS(enum NationalDexOrder nationalNum)
 {
     if (!nationalNum)
-        return 0;
+        return SPECIES_NONE;
 
-    if (sPokedexView->formSpecies != 0)
+    if (sPokedexView->formSpecies != SPECIES_NONE)
         return sPokedexView->formSpecies;
     else
         return NationalPokedexNumToSpecies(nationalNum);
@@ -4764,7 +4764,7 @@ static void ResetStatsWindows(void)
 
 static void SaveMonDataInStruct(void)
 {
-    u16 species = NationalPokedexNumToSpeciesHGSS(sPokedexListItem->dexNum);
+    enum Species species = NationalPokedexNumToSpeciesHGSS(sPokedexListItem->dexNum);
     u8 evs[NUM_STATS] =
     {
         [STAT_HP]    = gSpeciesInfo[species].evYield_HP,
@@ -5054,16 +5054,16 @@ static void PrintStatsScreen_DestroyMoveItemIcon(u8 taskId)
     DestroySprite(&gSprites[gTasks[taskId].data[3]]);       //Destroy item icon
 }
 
-static u16 AddTMTutorMoves(u16 species, u16 movesTotal, u8 *numTMHMMoves, u8 *numTutorMoves)
+static u16 AddTMTutorMoves(enum Species species, u16 movesTotal, u8 *numTMHMMoves, u8 *numTutorMoves)
 {
-    u16 i, move;
+    enum Move move;
     bool8 isTMMove[MOVES_COUNT] = {0};
     const u16 *teachableLearnset = GetSpeciesTeachableLearnset(species);
 
     // TM Moves
     if (HGSS_SORT_TMS_BY_NUM)
     {
-        for (i = 0; i < NUM_ALL_MACHINES; i++)
+        for (u32 i = 0; i < NUM_ALL_MACHINES; i++)
         {
             move = GetTMHMMoveId(i + 1);
             if (move != MOVE_NONE && CanLearnTeachableMove(species, move))
@@ -5078,7 +5078,7 @@ static u16 AddTMTutorMoves(u16 species, u16 movesTotal, u8 *numTMHMMoves, u8 *nu
     }
     else
     {
-        for (i = 0; teachableLearnset[i] != MOVE_UNAVAILABLE; i++)
+        for (u32 i = 0; teachableLearnset[i] != MOVE_UNAVAILABLE; i++)
         {
             move = teachableLearnset[i];
             for (u16 j = 0; j < NUM_ALL_MACHINES; j++)
@@ -5098,7 +5098,7 @@ static u16 AddTMTutorMoves(u16 species, u16 movesTotal, u8 *numTMHMMoves, u8 *nu
 
     // Tutor Moves
 #if P_TUTOR_MOVES_ARRAY
-    for (i = 0; gTutorMoves[i] != MOVE_UNAVAILABLE; i++)
+    for (u32 i = 0; gTutorMoves[i] != MOVE_UNAVAILABLE; i++)
     {
         move = gTutorMoves[i];
         if (!isTMMove[move] && CanLearnTeachableMove(species, move))
@@ -5109,7 +5109,7 @@ static u16 AddTMTutorMoves(u16 species, u16 movesTotal, u8 *numTMHMMoves, u8 *nu
         }
     }
 #else
-    for (i = 0; teachableLearnset[i] != MOVE_UNAVAILABLE; i++)
+    for (u32 i = 0; teachableLearnset[i] != MOVE_UNAVAILABLE; i++)
     {
         move = teachableLearnset[i];
         if (!isTMMove[move] && CanLearnTeachableMove(species, move))
@@ -5125,7 +5125,7 @@ static u16 AddTMTutorMoves(u16 species, u16 movesTotal, u8 *numTMHMMoves, u8 *nu
 
 static bool8 CalculateMoves(void)
 {
-    u16 species = NationalPokedexNumToSpeciesHGSS(sPokedexListItem->dexNum);
+    enum Species species = NationalPokedexNumToSpeciesHGSS(sPokedexListItem->dexNum);
 
     u16 statsMovesEgg[EGG_MOVES_ARRAY_COUNT] = {0};
     u16 statsMovesLevelUp[MAX_LEVEL_UP_MOVES] = {0};
@@ -5193,10 +5193,9 @@ static void PrintStatsScreen_Moves_Top(u8 taskId)
     u8 level;
     u8 moves_x = 5;
     u8 moves_y = 3;
-    u16 move;
-    u16 item;
-
-    u16 species = NationalPokedexNumToSpeciesHGSS(sPokedexListItem->dexNum);
+    enum Move move;
+    enum Item item;
+    enum Species species = NationalPokedexNumToSpeciesHGSS(sPokedexListItem->dexNum);
 
     //Move
     move = sStatsMoves[selected];
@@ -5266,7 +5265,7 @@ static void PrintStatsScreen_Moves_Top(u8 taskId)
 static void PrintStatsScreen_Moves_Description(u8 taskId)
 {
     u16 selected = sPokedexView->moveSelected;
-    u16 move;
+    enum Move move;
     u8 moves_x = 5;
     u8 moves_y = 5;
 
@@ -5308,7 +5307,7 @@ static void PrintStatsScreen_Moves_Bottom(u8 taskId)
     u8 moves_x = 8;
     u8 moves_y = 3;
     u8 selected = sPokedexView->moveSelected;
-    u16 move;
+    enum Move move;
     //Contest
     u8 contest_effectValue;
     u8 contest_appeal = 0;
@@ -5364,7 +5363,7 @@ static void PrintStatsScreen_Moves_Bottom(u8 taskId)
 static void PrintStatsScreen_NameGender(u8 taskId, u32 num, u32 value)
 {
     u8 str[16];
-    u16 species = NationalPokedexNumToSpeciesHGSS(sPokedexListItem->dexNum);
+    enum Species species = NationalPokedexNumToSpeciesHGSS(sPokedexListItem->dexNum);
 
     u8 base_x = 38;
     u8 base_y = 0;
@@ -6008,7 +6007,7 @@ static void ResetEvoScreenDataStruct(void)
 static void GetSeenFlagTargetSpecies(void)
 {
     u8 i;
-    u16 species;
+    enum Species species;
     for (i = 0; i < sPokedexView->sEvoScreenData.numAllEvolutions; i++)
     {
         species = sPokedexView->sEvoScreenData.targetSpecies[i];
@@ -6188,7 +6187,7 @@ static void Task_HandleEvolutionScreenInput(u8 taskId)
 
         if (JOY_NEW(A_BUTTON))
         {
-            u16 targetSpecies            = sPokedexView->sEvoScreenData.targetSpecies[sPokedexView->sEvoScreenData.menuPos];
+            enum Species targetSpecies = sPokedexView->sEvoScreenData.targetSpecies[sPokedexView->sEvoScreenData.menuPos];
             enum NationalDexOrder dexNum = SpeciesToNationalPokedexNum(targetSpecies);
             if (sPokedexView->isSearchResults && sPokedexView->originalSearchSelectionNum == 0)
                 sPokedexView->originalSearchSelectionNum = sPokedexListItem->dexNum;
@@ -6200,7 +6199,7 @@ static void Task_HandleEvolutionScreenInput(u8 taskId)
                 if (GetSpeciesFormTable(targetSpecies) != NULL)
                     sPokedexView->formSpecies = targetSpecies;
                 else
-                    sPokedexView->formSpecies = 0;
+                    sPokedexView->formSpecies = SPECIES_NONE;
 
             sPokedexView->sEvoScreenData.fromEvoPage = TRUE;
             PlaySE(SE_PIN);
@@ -6278,7 +6277,7 @@ static void CreateCaughtBallEvolutionScreen(u16 targetSpecies, u8 x, u8 y, u16 u
     }
 }
 
-static void HandlePreEvolutionSpeciesPrint(u8 taskId, u16 preSpecies, u16 species, u8 base_x, u8 base_y, u8 base_y_offset, u8 base_i)
+static void HandlePreEvolutionSpeciesPrint(u8 taskId, enum Species preSpecies, enum Species species, u8 base_x, u8 base_y, u8 base_y_offset, u8 base_i)
 {
     bool8 seen = GetSetPokedexFlag(SpeciesToNationalPokedexNum(preSpecies), FLAG_GET_SEEN);
 
@@ -6309,7 +6308,7 @@ static void HandlePreEvolutionSpeciesPrint(u8 taskId, u16 preSpecies, u16 specie
     }
 }
 
-static bool32 HasTwoPreEvolutions(u32 species)
+static bool32 HasTwoPreEvolutions(enum Species species)
 {
     switch (species)
     {
@@ -6320,9 +6319,8 @@ static bool32 HasTwoPreEvolutions(u32 species)
     }
 }
 
-static u8 PrintPreEvolutions(u8 taskId, u16 species)
+static u8 PrintPreEvolutions(u8 taskId, enum Species species)
 {
-    u16 i;
     u16 j;
 
     u8 base_x = 13+8;
@@ -6333,7 +6331,7 @@ static u8 PrintPreEvolutions(u8 taskId, u16 species)
     u16 preEvolutionTwo = 0;
     u8 numPreEvolutions = 0;
 
-    u16 baseFormSpecies;
+    enum Species baseFormSpecies;
     sPokedexView->sEvoScreenData.isMega = FALSE;
 
     //Check if it's a mega
@@ -6341,7 +6339,7 @@ static u8 PrintPreEvolutions(u8 taskId, u16 species)
     if (baseFormSpecies != species)
     {
         const struct FormChange *formChanges = GetSpeciesFormChanges(baseFormSpecies);
-        for (i = 0; formChanges != NULL && formChanges[i].method != FORM_CHANGE_TERMINATOR; i++)
+        for (u32 i = 0; formChanges != NULL && formChanges[i].method != FORM_CHANGE_TERMINATOR; i++)
         {
             if (formChanges[i].method == FORM_CHANGE_BATTLE_MEGA_EVOLUTION_ITEM
                 && formChanges[i].targetSpecies == species)
@@ -6361,7 +6359,7 @@ static u8 PrintPreEvolutions(u8 taskId, u16 species)
     }
 
     //Calculate previous evolution
-    for (i = 0; i < NUM_SPECIES; i++)
+    for (enum Species i = 0; i < NUM_SPECIES; i++)
     {
         const struct Evolution *evolutions = GetSpeciesEvolutions(i);
         if (evolutions == NULL)
@@ -6407,7 +6405,7 @@ static u8 PrintPreEvolutions(u8 taskId, u16 species)
     //Calculate if previous evolution also has a previous evolution
     if (numPreEvolutions != 0)
     {
-        for (i = 0; i < NUM_SPECIES; i++)
+        for (enum Species i = 0; i < NUM_SPECIES; i++)
         {
             const struct Evolution *evolutions = GetSpeciesEvolutions(i);
             if (evolutions == NULL)
@@ -6486,7 +6484,7 @@ bool32 IsItemSweet(u32 item)
     return item >= ITEM_STRAWBERRY_SWEET && item <= ITEM_RIBBON_SWEET;
 }
 
-static void PrintEvolutionTargetSpeciesAndMethod(u8 taskId, u16 species, u8 depth, u32 *depth_i, u32 alreadyPrintedIcons[], u32 *icon_depth_i, u32 numLines)
+static void PrintEvolutionTargetSpeciesAndMethod(u8 taskId, enum Species species, u8 depth, u32 *depth_i, u32 alreadyPrintedIcons[], u32 *icon_depth_i, u32 numLines)
 {
     int i;
     u32 depth_x = 4;
@@ -7136,7 +7134,7 @@ static void Task_HandleFormsScreenInput(u8 taskId)
 
 #define FORM_SPECIES_END (0xffff)
 
-static void PrintForms(u8 taskId, u16 species)
+static void PrintForms(u8 taskId, enum Species species)
 {
     u8 i;
     u8 j = 1;
@@ -7832,7 +7830,7 @@ static void Task_ClosePokedexFromSearchResultsStartMenu(u8 taskId)
 //************************************
 static int DoPokedexSearch(u8 dexMode, u8 order, u8 abcGroup, enum BodyColor bodyColor, enum Type type1, enum Type type2)
 {
-    u16 species;
+    enum Species species;
     u16 i;
     u16 resultsCount;
     enum Type types[2];

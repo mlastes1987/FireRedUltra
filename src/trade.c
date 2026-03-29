@@ -1538,7 +1538,7 @@ static bool8 BufferTradeParties(void)
         for (i = 0, mon = gEnemyParty; i < PARTY_SIZE; mon++, i++)
         {
             u8 name[POKEMON_NAME_LENGTH + 1];
-            u16 species = GetMonData(mon, MON_DATA_SPECIES);
+            enum Species species = GetMonData(mon, MON_DATA_SPECIES);
 
             if (species != SPECIES_NONE)
             {
@@ -2815,7 +2815,7 @@ s32 GetGameProgressForLinkTrade(void)
         return TRADE_PARTNER_NOT_READY;
 }
 
-static bool32 IsDeoxysOrMewUntradable(u16 species, bool8 isModernFatefulEncounter)
+static bool32 IsDeoxysOrMewUntradable(enum Species species, bool8 isModernFatefulEncounter)
 {
     if (species == SPECIES_DEOXYS || species == SPECIES_MEW)
     {
@@ -2825,7 +2825,7 @@ static bool32 IsDeoxysOrMewUntradable(u16 species, bool8 isModernFatefulEncounte
     return FALSE;
 }
 
-int GetUnionRoomTradeMessageId(struct RfuGameCompatibilityData player, struct RfuGameCompatibilityData partner, u16 playerSpecies2, u16 partnerSpecies, u8 requestedType, u16 playerSpecies, bool8 isModernFatefulEncounter)
+int GetUnionRoomTradeMessageId(struct RfuGameCompatibilityData player, struct RfuGameCompatibilityData partner, enum Species playerSpecies2, enum Species partnerSpecies, u8 requestedType, enum Species playerSpecies, bool8 isModernFatefulEncounter)
 {
     bool8 playerHasNationalDex = player.hasNationalDex;
     bool8 playerCanLinkNationally = player.canLinkNationally;
@@ -2887,7 +2887,7 @@ int GetUnionRoomTradeMessageId(struct RfuGameCompatibilityData player, struct Rf
     return UR_TRADE_MSG_NONE;
 }
 
-int CanRegisterMonForTradingBoard(struct RfuGameCompatibilityData player, u16 species2, u16 species, bool8 isModernFatefulEncounter)
+int CanRegisterMonForTradingBoard(struct RfuGameCompatibilityData player, enum Species species2, enum Species species, bool8 isModernFatefulEncounter)
 {
     bool8 hasNationalDex = player.hasNationalDex;
 

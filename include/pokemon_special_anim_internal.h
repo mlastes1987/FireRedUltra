@@ -31,8 +31,8 @@ struct PokemonSpecialAnim
     /*0x0084*/ u8 nameOfMoveToTeach[MOVE_NAME_LENGTH + 1];
     /*0x0091*/ bool8 cancelDisabled;
     /*0x0092*/ u16 state;
-    /*0x0094*/ u16 species;
-    /*0x0096*/ u16 itemId;
+    /*0x0094*/ enum Species species;
+    /*0x0096*/ enum Item itemId;
     /*0x0098*/ u16 animType;
     /*0x009a*/ u16 slotId;
     /*0x009c*/ u16 closeness;
@@ -45,13 +45,13 @@ struct PokemonSpecialAnim
 struct PokemonSpecialAnim * GetPSAStruct(void);
 struct Pokemon * PSA_GetPokemon(void);
 struct PokemonSpecialAnimScene * PSA_GetSceneWork(void);
-u16 PSA_GetItemId(void);
+enum Item PSA_GetItemId(void);
 u8 *PSA_GetNameOfMoveForgotten(void);
 u8 *PSA_GetNameOfMoveToTeach(void);
 u8 *PSA_CopyMonNickname(u8 *dest);
 u8 *PSA_GetMonNickname(void);
 u8 PSA_GetAnimType(void);
-u16 PSA_GetMonSpecies(void);
+enum Species PSA_GetMonSpecies(void);
 u32 PSA_GetMonPersonality(void);
 
 void InitPokemonSpecialAnimScene(struct PokemonSpecialAnimScene * buffer, u16 animType);
@@ -73,8 +73,8 @@ bool8 PSA_LevelUpVerticalSpritesTaskIsRunning(void);
 void PSA_CreateMonSpriteAtCloseness(u8 closeness);
 void PSA_SetUpZoomAnim(u8 closeness);
 bool8 PSA_IsZoomTaskActive(void);
-void PSA_SetUpItemUseOnMonAnim(u16 itemId, u8 closeness, bool32 a2);
-void CreateItemIconSpriteAtMaxCloseness(u16 itemId);
+void PSA_SetUpItemUseOnMonAnim(enum Item itemId, u8 closeness, bool32 a2);
+void CreateItemIconSpriteAtMaxCloseness(enum Item itemId);
 bool8 PSA_IsItemUseOnMonAnimActive(void);
 void PSA_UseItem_CleanUpForCancel(void);
 

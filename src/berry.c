@@ -15,7 +15,7 @@
 #include "constants/event_object_movement.h"
 #include "constants/items.h"
 
-static u16 BerryTypeToItemId(u16 berry);
+static enum Item BerryTypeToItemId(u16 berry);
 static u8 BerryTreeGetNumStagesWatered(struct BerryTree *tree);
 static u8 GetNumStagesWateredByBerryTreeId(u8 id);
 static u8 CalcBerryYieldInternal(u16 max, u16 min, u8 water);
@@ -28,7 +28,7 @@ static u8 GetWeedingBonusByBerryType(u8);
 static u8 GetPestsBonusByBerryType(u8);
 static void SetTreeMutations(u8 id, u8 berry);
 static u8 GetTreeMutationValue(u8 id);
-static u16 GetBerryPestSpecies(u8 berryId);
+static enum Species GetBerryPestSpecies(u8 berryId);
 static void TryForWeeds(struct BerryTree *tree);
 static void TryForPests(struct BerryTree *tree);
 static void AddTreeBonus(struct BerryTree *tree, u8 bonus);
@@ -1969,7 +1969,7 @@ u8 GetMulchByBerryTreeId(u8 id)
     return gSaveBlock3Ptr->berryTrees[id].mulch;
 }
 
-u8 ItemIdToBerryType(u16 item)
+u8 ItemIdToBerryType(enum Item item)
 {
     u16 berry = item - FIRST_BERRY_INDEX;
 
@@ -1979,9 +1979,9 @@ u8 ItemIdToBerryType(u16 item)
         return ITEM_TO_BERRY(item);
 }
 
-static u16 BerryTypeToItemId(u16 berry)
+static enum Item BerryTypeToItemId(u16 berry)
 {
-    u16 item = berry - 1;
+    enum Item item = berry - 1;
 
     if (item > LAST_BERRY_INDEX - FIRST_BERRY_INDEX)
         return FIRST_BERRY_INDEX;
@@ -2235,12 +2235,15 @@ bool8 ObjectEventInteractionBerryHasWeed(void)
 
 bool8 ObjectEventInteractionBerryHasPests(void)
 {
-    u16 species;
+    enum Species species;
+
     if (!OW_BERRY_PESTS || !gSaveBlock3Ptr->berryTrees[GetObjectEventBerryTreeId(gSelectedObjectEvent)].pests)
         return FALSE;
+
     species = GetBerryPestSpecies(gSaveBlock3Ptr->berryTrees[GetObjectEventBerryTreeId(gSelectedObjectEvent)].berry);
     if (species == SPECIES_NONE)
         return FALSE;
+
     CreateScriptedWildMon(species, 14 + Random() % 3, ITEM_NONE);
     gSaveBlock3Ptr->berryTrees[GetObjectEventBerryTreeId(gSelectedObjectEvent)].pests = FALSE;
     return TRUE;
@@ -2408,7 +2411,7 @@ static void SetTreeMutations(u8 id, u8 berry)
 #endif
 }
 
-static u16 GetBerryPestSpecies(u8 berryId)
+static enum Species GetBerryPestSpecies(u8 berryId)
 {
 #if OW_BERRY_PESTS == TRUE
     const struct Berry *berry = GetBerryInfo(berryId);

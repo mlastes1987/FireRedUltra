@@ -22,7 +22,7 @@ static EWRAM_DATA bool32 sCancelDisabled = FALSE;
 static EWRAM_DATA u8 sPSATaskId = 0;
 static EWRAM_DATA struct PokemonSpecialAnim * sPSAWork = NULL;
 
-static struct PokemonSpecialAnim * AllocPSA(u8 slotId, u16 itemId, MainCallback callback);
+static struct PokemonSpecialAnim *AllocPSA(u8 slotId, enum Item itemId, MainCallback callback);
 static void SetUpUseItemAnim_Normal(struct PokemonSpecialAnim * ptr);
 static void SetUpUseItemAnim_ForgetMoveAndLearnTMorHM(struct PokemonSpecialAnim * ptr);
 static void SetUpUseItemAnim_CantEvolve(struct PokemonSpecialAnim * ptr);
@@ -33,18 +33,18 @@ static void Task_UseTM_NoForget(u8 taskId);
 static void Task_MachineSet(u8 taskId);
 static void Task_CleanUp(u8 taskId);
 static u8 GetClosenessFromFriendship(u16 friendship);
-static u16 GetAnimTypeByItemId(u16 itemId);
+static u16 GetAnimTypeByItemId(enum Item itemId);
 
-void StartUseItemAnim_Normal(u8 slotId, u16 itemId, MainCallback callback)
+void StartUseItemAnim_Normal(u8 slotId, enum Item itemId, MainCallback callback)
 {
-    struct PokemonSpecialAnim * ptr = AllocPSA(slotId, itemId, callback);
+    struct PokemonSpecialAnim *ptr = AllocPSA(slotId, itemId, callback);
     if (ptr == NULL)
         SetMainCallback2(callback);
     else
         SetUpUseItemAnim_Normal(ptr);
 }
 
-void StartUseItemAnim_ForgetMoveAndLearnTMorHM(u8 slotId, u16 itemId, u16 moveId, MainCallback callback)
+void StartUseItemAnim_ForgetMoveAndLearnTMorHM(u8 slotId, enum Item itemId, enum Move moveId, MainCallback callback)
 {
     struct PokemonSpecialAnim * ptr = AllocPSA(slotId, itemId, callback);
     if (ptr == NULL)
@@ -56,7 +56,7 @@ void StartUseItemAnim_ForgetMoveAndLearnTMorHM(u8 slotId, u16 itemId, u16 moveId
     }
 }
 
-void StartUseItemAnim_CantEvolve(u8 slotId, u16 itemId, MainCallback callback)
+void StartUseItemAnim_CantEvolve(u8 slotId, enum Item itemId, MainCallback callback)
 {
     struct PokemonSpecialAnim * ptr = AllocPSA(slotId, itemId, callback);
     if (ptr == NULL)
@@ -65,14 +65,14 @@ void StartUseItemAnim_CantEvolve(u8 slotId, u16 itemId, MainCallback callback)
         SetUpUseItemAnim_CantEvolve(ptr);
 }
 
-static struct PokemonSpecialAnim * AllocPSA(u8 slotId, u16 itemId, MainCallback callback)
+static struct PokemonSpecialAnim *AllocPSA(u8 slotId, enum Item itemId, MainCallback callback)
 {
-    struct PokemonSpecialAnim * ptr;
-    struct Pokemon * pokemon;
-    u16 moveId;
+    struct PokemonSpecialAnim *ptr;
+    struct Pokemon *pokemon;
 
     if (!gMain.inBattle)
         ResetTasks();
+
     ResetSpriteData();
     FreeAllSpritePalettes();
     ptr = Alloc(sizeof(struct PokemonSpecialAnim));
@@ -95,7 +95,7 @@ static struct PokemonSpecialAnim * AllocPSA(u8 slotId, u16 itemId, MainCallback 
     GetMonData(pokemon, MON_DATA_NICKNAME, ptr->nickname);
     if (ptr->animType == PSA_ITEM_ANIM_TYPE_TMHM)
     {
-        moveId = ItemIdToBattleMoveId(itemId);
+        enum Move moveId = ItemIdToBattleMoveId(itemId);
         StringCopy(ptr->nameOfMoveToTeach, GetMoveName(moveId));
     }
     return ptr;
@@ -606,14 +606,14 @@ static void Task_CleanUp(u8 taskId)
 }
 
 static const struct {
-    u16 itemId;
+    enum Item itemId;
     u16 animType;
 } sItemAnimMap[2] = {
     {ITEM_RARE_CANDY, PSA_ITEM_ANIM_TYPE_DEFAULT},
     {ITEM_POTION,     PSA_ITEM_ANIM_TYPE_POTION}
 };
 
-static u16 GetAnimTypeByItemId(u16 itemId)
+static u16 GetAnimTypeByItemId(enum Item itemId)
 {
     int i;
 
@@ -659,7 +659,7 @@ struct PokemonSpecialAnimScene * PSA_GetSceneWork(void)
     return &GetPSAStruct()->sceneResources;
 }
 
-u16 PSA_GetItemId(void)
+enum Item PSA_GetItemId(void)
 {
     return GetPSAStruct()->itemId;
 }
@@ -689,7 +689,7 @@ u8 PSA_GetAnimType(void)
     return GetPSAStruct()->animType;
 }
 
-u16 PSA_GetMonSpecies(void)
+enum Species PSA_GetMonSpecies(void)
 {
     return GetPSAStruct()->species;
 }
