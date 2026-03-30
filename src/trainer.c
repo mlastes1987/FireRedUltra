@@ -25,3 +25,5 @@ enum TrainerPicID GetPlayerTrainerPic(enum Gender gender, enum GameVersion versi
             return GetKantoTrainerPic(gender);
     }
 }
+
+STATIC_ASSERT(TRAINERS_COUNT <= MAX_TRAINERS_COUNT, tooManyTrainers);
