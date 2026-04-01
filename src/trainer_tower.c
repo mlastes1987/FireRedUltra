@@ -31,40 +31,34 @@ struct TrainerTowerState
 
 struct TrainerTowerOpponent
 {
-    /* 0x00 */ u8 name[11];
-    /* 0x0C */ u16 speechWin[6];
-    /* 0x18 */ u16 speechLose[6];
-    /* 0x24 */ u16 speechWin2[6];
-    /* 0x30 */ u16 speechLose2[6];
+    /* 0x00 */ u8 name[TRAINER_NAME_LENGTH + 1];
+    /* 0x0C */ u16 speechWin[EASY_CHAT_BATTLE_WORDS_COUNT];
+    /* 0x18 */ u16 speechLose[EASY_CHAT_BATTLE_WORDS_COUNT];
+    /* 0x24 */ u16 speechWin2[EASY_CHAT_BATTLE_WORDS_COUNT];
+    /* 0x30 */ u16 speechLose2[EASY_CHAT_BATTLE_WORDS_COUNT];
     /* 0x3C */ u8 battleType;
-    /* 0x3D */ u8 facilityClass;
+    /* 0x3D */ enum FacilityClass facilityClass;
     /* 0x3E */ u8 textColor;
 };
 
 struct SinglesTrainerInfo
 {
-    u8 objGfx;
-    u8 facilityClass;
-    bool8 gender;
+    enum ObjectEventGfx objGfx;
+    enum FacilityClass facilityClass;
+    enum Gender gender;
 };
 
 struct DoublesTrainerInfo
 {
-    u8 objGfx1;
-    u8 objGfx2;
-    u8 facilityClass;
-    bool8 gender1;
-    bool8 gender2;
+    enum ObjectEventGfx objGfx1;
+    enum ObjectEventGfx objGfx2;
+    enum FacilityClass facilityClass;
+    enum Gender gender1;
+    enum Gender gender2;
 };
 
-struct TrainerEncounterMusicPairs
-{
-    u8 facilityClass;
-    u8 musicId;
-};
-
-static EWRAM_DATA struct TrainerTowerState * sTrainerTowerState = NULL;
-static EWRAM_DATA struct TrainerTowerOpponent * sTrainerTowerOpponent = NULL;
+static EWRAM_DATA struct TrainerTowerState *sTrainerTowerState = NULL;
+static EWRAM_DATA struct TrainerTowerOpponent *sTrainerTowerOpponent = NULL;
 EWRAM_DATA u32 *gTrainerTowerVBlankCounter = NULL;
 
 static void SetUpTrainerTowerDataStruct(void);
@@ -73,7 +67,7 @@ static void InitTrainerTowerFloor(void);
 static void SetTrainerTowerNPCGraphics(void);
 static void TT_ConvertEasyChatMessageToString(u16 *ecWords, u8 *dest);
 static void BufferTowerOpponentSpeech(void);
-static void TrainerTowerGetOpponentTextColor(u8 battleType, u8 facilityClass);
+static void TrainerTowerGetOpponentTextColor(u8 battleType, enum FacilityClass facilityClass);
 static void DoTrainerTowerBattle(void);
 static void TrainerTowerGetChallengeType(void);
 static void TrainerTowerAddFloorCleared(void);
@@ -206,115 +200,116 @@ static const struct DoublesTrainerInfo sDoubleBattleTrainerInfo[] = {
     {OBJ_EVENT_GFX_SWIMMER_F_LAND, OBJ_EVENT_GFX_TUBER_M_LAND,   FACILITY_CLASS_SIS_AND_BRO,     FEMALE,   MALE}
 };
 
-static const struct TrainerEncounterMusicPairs sTrainerEncounterMusicLUT[105] = {
-    {FACILITY_CLASS_RS_AROMA_LADY,          TRAINER_ENCOUNTER_MUSIC_AQUA},
-    {FACILITY_CLASS_BOARDER_F,              TRAINER_ENCOUNTER_MUSIC_AQUA},
-    {FACILITY_CLASS_AQUA_GRUNT_F,           TRAINER_ENCOUNTER_MUSIC_AQUA},
-    {FACILITY_CLASS_GAMER,                  TRAINER_ENCOUNTER_MUSIC_FEMALE},
-    {FACILITY_CLASS_RS_RUIN_MANIAC,         TRAINER_ENCOUNTER_MUSIC_FEMALE},
-    {FACILITY_CLASS_RS_YOUNGSTER,           TRAINER_ENCOUNTER_MUSIC_INTENSE},
-    {FACILITY_CLASS_RS_YOUNG_COUPLE,        TRAINER_ENCOUNTER_MUSIC_FEMALE},
-    {FACILITY_CLASS_RS_FISHERMAN,           TRAINER_ENCOUNTER_MUSIC_FEMALE},
-    {FACILITY_CLASS_RUNNING_TRIATHLETE_F,   TRAINER_ENCOUNTER_MUSIC_MALE},
-    {FACILITY_CLASS_RS_PKMN_RANGER_M,       TRAINER_ENCOUNTER_MUSIC_SUSPICIOUS},
-    {FACILITY_CLASS_LEADER_BRAWLY,          TRAINER_ENCOUNTER_MUSIC_TWINS},
-    {FACILITY_CLASS_RS_SIS_AND_BRO,         TRAINER_ENCOUNTER_MUSIC_SUSPICIOUS},
-    {FACILITY_CLASS_MAGMA_LEADER_MAXIE,     TRAINER_ENCOUNTER_MUSIC_SUSPICIOUS},
-    {FACILITY_CLASS_POKEFAN_F,              TRAINER_ENCOUNTER_MUSIC_INTENSE},
-    {FACILITY_CLASS_RS_PKMN_RANGER_F,       TRAINER_ENCOUNTER_MUSIC_SUSPICIOUS},
-    {FACILITY_CLASS_PSYCHIC_M,              TRAINER_ENCOUNTER_MUSIC_FEMALE},
-    {FACILITY_CLASS_PICNICKER,              TRAINER_ENCOUNTER_MUSIC_COOL},
-    {FACILITY_CLASS_ELITE_FOUR_GLACIA,      TRAINER_ENCOUNTER_MUSIC_COOL},
-    {FACILITY_CLASS_RS_COOLTRAINER_F,       TRAINER_ENCOUNTER_MUSIC_COOL},
-    {FACILITY_CLASS_GUITARIST,              TRAINER_ENCOUNTER_MUSIC_INTENSE},
-    {FACILITY_CLASS_RS_BUG_CATCHER,         TRAINER_ENCOUNTER_MUSIC_SUSPICIOUS},
-    {FACILITY_CLASS_PKMN_TRAINER_BRENDAN_3, TRAINER_ENCOUNTER_MUSIC_MALE},
-    {FACILITY_CLASS_RUNNING_TRIATHLETE_M,   TRAINER_ENCOUNTER_MUSIC_MALE},
-    {FACILITY_CLASS_CAMPER,                 TRAINER_ENCOUNTER_MUSIC_TWINS},
-    {FACILITY_CLASS_CYCLING_TRIATHLETE_F,   TRAINER_ENCOUNTER_MUSIC_TWINS},
-    {FACILITY_CLASS_RS_TUBER_F,             TRAINER_ENCOUNTER_MUSIC_INTERVIEWER},
-    {FACILITY_CLASS_BEAUTY,                 TRAINER_ENCOUNTER_MUSIC_HIKER},
-    {FACILITY_CLASS_INTERVIEWER,            TRAINER_ENCOUNTER_MUSIC_HIKER},
-    {FACILITY_CLASS_YOUNGSTER,              TRAINER_ENCOUNTER_MUSIC_RICH},
-    {FACILITY_CLASS_RS_PSYCHIC_F,           TRAINER_ENCOUNTER_MUSIC_RICH},
-    {FACILITY_CLASS_MAGMA_GRUNT_F,          TRAINER_ENCOUNTER_MUSIC_SWIMMER},
-    {FACILITY_CLASS_RS_SWIMMER_M,           TRAINER_ENCOUNTER_MUSIC_FEMALE},
-    {FACILITY_CLASS_PKMN_TRAINER_MAY_3,     TRAINER_ENCOUNTER_MUSIC_SUSPICIOUS},
-    {FACILITY_CLASS_RS_POKEMANIAC,          TRAINER_ENCOUNTER_MUSIC_SUSPICIOUS},
-    {FACILITY_CLASS_SUPER_NERD,             TRAINER_ENCOUNTER_MUSIC_INTENSE},
-    {FACILITY_CLASS_ENGINEER,               TRAINER_ENCOUNTER_MUSIC_INTENSE},
-    {FACILITY_CLASS_MAGMA_ADMIN_F,          TRAINER_ENCOUNTER_MUSIC_INTENSE},
-    {FACILITY_CLASS_RS_BLACK_BELT,          TRAINER_ENCOUNTER_MUSIC_INTENSE},
-    {FACILITY_CLASS_LEADER_FLANNERY,        TRAINER_ENCOUNTER_MUSIC_SUSPICIOUS},
-    {FACILITY_CLASS_RS_SAILOR,              TRAINER_ENCOUNTER_MUSIC_INTENSE},
-    {FACILITY_CLASS_SAILOR,                 TRAINER_ENCOUNTER_MUSIC_SUSPICIOUS},
-    {FACILITY_CLASS_BUG_MANIAC,             TRAINER_ENCOUNTER_MUSIC_SUSPICIOUS},
-    {FACILITY_CLASS_PKMN_TRAINER_MAY,       TRAINER_ENCOUNTER_MUSIC_MALE},
-    {FACILITY_CLASS_RS_CAMPER,              TRAINER_ENCOUNTER_MUSIC_MALE},
-    {FACILITY_CLASS_KINDLER,                TRAINER_ENCOUNTER_MUSIC_HIKER},
-    {FACILITY_CLASS_BATTLE_GIRL,            TRAINER_ENCOUNTER_MUSIC_MAGMA},
-    {FACILITY_CLASS_COLLECTOR,              TRAINER_ENCOUNTER_MUSIC_MAGMA},
-    {FACILITY_CLASS_NINJA_BOY,              TRAINER_ENCOUNTER_MUSIC_MAGMA},
-    {FACILITY_CLASS_PKMN_TRAINER_BRENDAN_2, TRAINER_ENCOUNTER_MUSIC_FEMALE},
-    {FACILITY_CLASS_PARASOL_LADY,           TRAINER_ENCOUNTER_MUSIC_FEMALE},
-    {FACILITY_CLASS_AQUA_ADMIN_F,           TRAINER_ENCOUNTER_MUSIC_HIKER},
-    {FACILITY_CLASS_PKMN_TRAINER_BRENDAN,   TRAINER_ENCOUNTER_MUSIC_MALE},
-    {FACILITY_CLASS_RS_SWIMMER_F,           TRAINER_ENCOUNTER_MUSIC_MALE},
-    {FACILITY_CLASS_EXPERT_F,               TRAINER_ENCOUNTER_MUSIC_SUSPICIOUS},
-    {FACILITY_CLASS_RICH_BOY,               TRAINER_ENCOUNTER_MUSIC_RICH},
-    {FACILITY_CLASS_HEX_MANIAC,             TRAINER_ENCOUNTER_MUSIC_SUSPICIOUS},
-    {FACILITY_CLASS_RS_HIKER,               TRAINER_ENCOUNTER_MUSIC_FEMALE},
-    {FACILITY_CLASS_RS_BEAUTY,              TRAINER_ENCOUNTER_MUSIC_FEMALE},
-    {FACILITY_CLASS_SWIMMER_F,              TRAINER_ENCOUNTER_MUSIC_FEMALE},
-    {FACILITY_CLASS_RS_LADY,                TRAINER_ENCOUNTER_MUSIC_FEMALE},
-    {FACILITY_CLASS_CHAMPION_STEVEN,        TRAINER_ENCOUNTER_MUSIC_FEMALE},
-    {FACILITY_CLASS_PKMN_TRAINER_MAY_2,     TRAINER_ENCOUNTER_MUSIC_GIRL},
-    {FACILITY_CLASS_CYCLING_TRIATHLETE_M,   TRAINER_ENCOUNTER_MUSIC_GIRL},
-    {FACILITY_CLASS_SWIMMER_M,              TRAINER_ENCOUNTER_MUSIC_FEMALE},
-    {FACILITY_CLASS_DRAGON_TAMER,           TRAINER_ENCOUNTER_MUSIC_FEMALE},
-    {FACILITY_CLASS_BIKER,                  TRAINER_ENCOUNTER_MUSIC_FEMALE},
-    {FACILITY_CLASS_SWIMMING_TRIATHLETE_M,  TRAINER_ENCOUNTER_MUSIC_SUSPICIOUS},
-    {FACILITY_CLASS_CUE_BALL,               TRAINER_ENCOUNTER_MUSIC_COOL},
-    {FACILITY_CLASS_RS_BIRD_KEEPER,         TRAINER_ENCOUNTER_MUSIC_COOL},
-    {FACILITY_CLASS_SWIMMING_TRIATHLETE_F,  TRAINER_ENCOUNTER_MUSIC_MALE},
-    {FACILITY_CLASS_POKEMANIAC,             TRAINER_ENCOUNTER_MUSIC_GIRL},
-    {FACILITY_CLASS_RS_TWINS,               TRAINER_ENCOUNTER_MUSIC_GIRL},
-    {FACILITY_CLASS_LEADER_WATTSON,         TRAINER_ENCOUNTER_MUSIC_MALE},
-    {FACILITY_CLASS_BUG_CATCHER,            TRAINER_ENCOUNTER_MUSIC_MALE},
-    {FACILITY_CLASS_RS_PKMN_BREEDER_M,      TRAINER_ENCOUNTER_MUSIC_SUSPICIOUS},
-    {FACILITY_CLASS_LEADER_WALLACE,         TRAINER_ENCOUNTER_MUSIC_AQUA},
-    {FACILITY_CLASS_LEADER_NORMAN,          TRAINER_ENCOUNTER_MUSIC_AQUA},
-    {FACILITY_CLASS_OLD_COUPLE,             TRAINER_ENCOUNTER_MUSIC_INTENSE},
-    {FACILITY_CLASS_RS_PSYCHIC_M,           TRAINER_ENCOUNTER_MUSIC_INTENSE},
-    {FACILITY_CLASS_LEADER_ROXANNE,         TRAINER_ENCOUNTER_MUSIC_TWINS},
-    {FACILITY_CLASS_ELITE_FOUR_DRAKE,       TRAINER_ENCOUNTER_MUSIC_ELITE_FOUR},
-    {FACILITY_CLASS_RS_GENTLEMAN,           TRAINER_ENCOUNTER_MUSIC_FEMALE},
-    {FACILITY_CLASS_RS_LASS,                TRAINER_ENCOUNTER_MUSIC_SUSPICIOUS},
-    {FACILITY_CLASS_BURGLAR,                TRAINER_ENCOUNTER_MUSIC_FEMALE},
-    {FACILITY_CLASS_PKMN_TRAINER_WALLY,     TRAINER_ENCOUNTER_MUSIC_MALE},
-    {FACILITY_CLASS_SCHOOL_KID_M,           TRAINER_ENCOUNTER_MUSIC_MALE},
-    {FACILITY_CLASS_LEADER_TATE_AND_LIZA,   TRAINER_ENCOUNTER_MUSIC_INTENSE},
-    {FACILITY_CLASS_POKEFAN_M,              TRAINER_ENCOUNTER_MUSIC_MALE},
-    {FACILITY_CLASS_MAGMA_ADMIN_M,          TRAINER_ENCOUNTER_MUSIC_COOL},
-    {FACILITY_CLASS_EXPERT_M,               TRAINER_ENCOUNTER_MUSIC_COOL},
-    {FACILITY_CLASS_MAGMA_GRUNT_M,          TRAINER_ENCOUNTER_MUSIC_HIKER},
-    {FACILITY_CLASS_SR_AND_JR,              TRAINER_ENCOUNTER_MUSIC_HIKER},
-    {FACILITY_CLASS_LASS,                   TRAINER_ENCOUNTER_MUSIC_MALE},
-    {FACILITY_CLASS_SCHOOL_KID_F,           TRAINER_ENCOUNTER_MUSIC_MALE},
-    {FACILITY_CLASS_RS_COOLTRAINER_M,       TRAINER_ENCOUNTER_MUSIC_MALE},
-    {FACILITY_CLASS_FISHERMAN,              TRAINER_ENCOUNTER_MUSIC_GIRL},
-    {FACILITY_CLASS_RS_TUBER_M,             TRAINER_ENCOUNTER_MUSIC_GIRL},
-    {FACILITY_CLASS_HIKER,                  TRAINER_ENCOUNTER_MUSIC_SWIMMER},
-    {FACILITY_CLASS_BOARDER_M,              TRAINER_ENCOUNTER_MUSIC_SWIMMER},
-    {FACILITY_CLASS_RS_PKMN_BREEDER_F,      TRAINER_ENCOUNTER_MUSIC_HIKER},
-    {FACILITY_CLASS_RS_PICNICKER,           TRAINER_ENCOUNTER_MUSIC_HIKER},
-    {FACILITY_CLASS_LEADER_WINONA,          TRAINER_ENCOUNTER_MUSIC_MALE},
-    {FACILITY_CLASS_ELITE_FOUR_SIDNEY,      TRAINER_ENCOUNTER_MUSIC_FEMALE},
-    {FACILITY_CLASS_AQUA_ADMIN_M,           TRAINER_ENCOUNTER_MUSIC_HIKER},
-    {FACILITY_CLASS_ELITE_FOUR_PHOEBE,      TRAINER_ENCOUNTER_MUSIC_MALE}
+static const enum TrainerEncounterMusic sFacilityClassToEncounterMusic[FACILITY_CLASS_COUNT] = {
+    [FACILITY_CLASS_RS_AROMA_LADY]          = TRAINER_ENCOUNTER_MUSIC_AQUA,
+    [FACILITY_CLASS_BOARDER_F]              = TRAINER_ENCOUNTER_MUSIC_AQUA,
+    [FACILITY_CLASS_AQUA_GRUNT_F]           = TRAINER_ENCOUNTER_MUSIC_AQUA,
+    [FACILITY_CLASS_GAMER]                  = TRAINER_ENCOUNTER_MUSIC_FEMALE,
+    [FACILITY_CLASS_RS_RUIN_MANIAC]         = TRAINER_ENCOUNTER_MUSIC_FEMALE,
+    [FACILITY_CLASS_RS_YOUNGSTER]           = TRAINER_ENCOUNTER_MUSIC_INTENSE,
+    [FACILITY_CLASS_RS_YOUNG_COUPLE]        = TRAINER_ENCOUNTER_MUSIC_FEMALE,
+    [FACILITY_CLASS_RS_FISHERMAN]           = TRAINER_ENCOUNTER_MUSIC_FEMALE,
+    [FACILITY_CLASS_RUNNING_TRIATHLETE_F]   = TRAINER_ENCOUNTER_MUSIC_MALE,
+    [FACILITY_CLASS_RS_PKMN_RANGER_M]       = TRAINER_ENCOUNTER_MUSIC_SUSPICIOUS,
+    [FACILITY_CLASS_LEADER_BRAWLY]          = TRAINER_ENCOUNTER_MUSIC_TWINS,
+    [FACILITY_CLASS_RS_SIS_AND_BRO]         = TRAINER_ENCOUNTER_MUSIC_SUSPICIOUS,
+    [FACILITY_CLASS_MAGMA_LEADER_MAXIE]     = TRAINER_ENCOUNTER_MUSIC_SUSPICIOUS,
+    [FACILITY_CLASS_POKEFAN_F]              = TRAINER_ENCOUNTER_MUSIC_INTENSE,
+    [FACILITY_CLASS_RS_PKMN_RANGER_F]       = TRAINER_ENCOUNTER_MUSIC_SUSPICIOUS,
+    [FACILITY_CLASS_PSYCHIC_M]              = TRAINER_ENCOUNTER_MUSIC_FEMALE,
+    [FACILITY_CLASS_PICNICKER]              = TRAINER_ENCOUNTER_MUSIC_COOL,
+    [FACILITY_CLASS_ELITE_FOUR_GLACIA]      = TRAINER_ENCOUNTER_MUSIC_COOL,
+    [FACILITY_CLASS_RS_COOLTRAINER_F]       = TRAINER_ENCOUNTER_MUSIC_COOL,
+    [FACILITY_CLASS_GUITARIST]              = TRAINER_ENCOUNTER_MUSIC_INTENSE,
+    [FACILITY_CLASS_RS_BUG_CATCHER]         = TRAINER_ENCOUNTER_MUSIC_SUSPICIOUS,
+    [FACILITY_CLASS_PKMN_TRAINER_BRENDAN_3] = TRAINER_ENCOUNTER_MUSIC_MALE,
+    [FACILITY_CLASS_RUNNING_TRIATHLETE_M]   = TRAINER_ENCOUNTER_MUSIC_MALE,
+    [FACILITY_CLASS_CAMPER]                 = TRAINER_ENCOUNTER_MUSIC_TWINS,
+    [FACILITY_CLASS_CYCLING_TRIATHLETE_F]   = TRAINER_ENCOUNTER_MUSIC_TWINS,
+    [FACILITY_CLASS_RS_TUBER_F]             = TRAINER_ENCOUNTER_MUSIC_INTERVIEWER,
+    [FACILITY_CLASS_BEAUTY]                 = TRAINER_ENCOUNTER_MUSIC_HIKER,
+    [FACILITY_CLASS_INTERVIEWER]            = TRAINER_ENCOUNTER_MUSIC_HIKER,
+    [FACILITY_CLASS_YOUNGSTER]              = TRAINER_ENCOUNTER_MUSIC_RICH,
+    [FACILITY_CLASS_RS_PSYCHIC_F]           = TRAINER_ENCOUNTER_MUSIC_RICH,
+    [FACILITY_CLASS_MAGMA_GRUNT_F]          = TRAINER_ENCOUNTER_MUSIC_SWIMMER,
+    [FACILITY_CLASS_RS_SWIMMER_M]           = TRAINER_ENCOUNTER_MUSIC_FEMALE,
+    [FACILITY_CLASS_PKMN_TRAINER_MAY_3]     = TRAINER_ENCOUNTER_MUSIC_SUSPICIOUS,
+    [FACILITY_CLASS_RS_POKEMANIAC]          = TRAINER_ENCOUNTER_MUSIC_SUSPICIOUS,
+    [FACILITY_CLASS_SUPER_NERD]             = TRAINER_ENCOUNTER_MUSIC_INTENSE,
+    [FACILITY_CLASS_ENGINEER]               = TRAINER_ENCOUNTER_MUSIC_INTENSE,
+    [FACILITY_CLASS_MAGMA_ADMIN_F]          = TRAINER_ENCOUNTER_MUSIC_INTENSE,
+    [FACILITY_CLASS_RS_BLACK_BELT]          = TRAINER_ENCOUNTER_MUSIC_INTENSE,
+    [FACILITY_CLASS_LEADER_FLANNERY]        = TRAINER_ENCOUNTER_MUSIC_SUSPICIOUS,
+    [FACILITY_CLASS_RS_SAILOR]              = TRAINER_ENCOUNTER_MUSIC_INTENSE,
+    [FACILITY_CLASS_SAILOR]                 = TRAINER_ENCOUNTER_MUSIC_SUSPICIOUS,
+    [FACILITY_CLASS_BUG_MANIAC]             = TRAINER_ENCOUNTER_MUSIC_SUSPICIOUS,
+    [FACILITY_CLASS_PKMN_TRAINER_MAY]       = TRAINER_ENCOUNTER_MUSIC_MALE,
+    [FACILITY_CLASS_RS_CAMPER]              = TRAINER_ENCOUNTER_MUSIC_MALE,
+    [FACILITY_CLASS_KINDLER]                = TRAINER_ENCOUNTER_MUSIC_HIKER,
+    [FACILITY_CLASS_BATTLE_GIRL]            = TRAINER_ENCOUNTER_MUSIC_MAGMA,
+    [FACILITY_CLASS_COLLECTOR]              = TRAINER_ENCOUNTER_MUSIC_MAGMA,
+    [FACILITY_CLASS_NINJA_BOY]              = TRAINER_ENCOUNTER_MUSIC_MAGMA,
+    [FACILITY_CLASS_PKMN_TRAINER_BRENDAN_2] = TRAINER_ENCOUNTER_MUSIC_FEMALE,
+    [FACILITY_CLASS_PARASOL_LADY]           = TRAINER_ENCOUNTER_MUSIC_FEMALE,
+    [FACILITY_CLASS_AQUA_ADMIN_F]           = TRAINER_ENCOUNTER_MUSIC_HIKER,
+    [FACILITY_CLASS_PKMN_TRAINER_BRENDAN]   = TRAINER_ENCOUNTER_MUSIC_MALE,
+    [FACILITY_CLASS_RS_SWIMMER_F]           = TRAINER_ENCOUNTER_MUSIC_MALE,
+    [FACILITY_CLASS_EXPERT_F]               = TRAINER_ENCOUNTER_MUSIC_SUSPICIOUS,
+    [FACILITY_CLASS_RICH_BOY]               = TRAINER_ENCOUNTER_MUSIC_RICH,
+    [FACILITY_CLASS_HEX_MANIAC]             = TRAINER_ENCOUNTER_MUSIC_SUSPICIOUS,
+    [FACILITY_CLASS_RS_HIKER]               = TRAINER_ENCOUNTER_MUSIC_FEMALE,
+    [FACILITY_CLASS_RS_BEAUTY]              = TRAINER_ENCOUNTER_MUSIC_FEMALE,
+    [FACILITY_CLASS_SWIMMER_F]              = TRAINER_ENCOUNTER_MUSIC_FEMALE,
+    [FACILITY_CLASS_RS_LADY]                = TRAINER_ENCOUNTER_MUSIC_FEMALE,
+    [FACILITY_CLASS_CHAMPION_STEVEN]        = TRAINER_ENCOUNTER_MUSIC_FEMALE,
+    [FACILITY_CLASS_PKMN_TRAINER_MAY_2]     = TRAINER_ENCOUNTER_MUSIC_GIRL,
+    [FACILITY_CLASS_CYCLING_TRIATHLETE_M]   = TRAINER_ENCOUNTER_MUSIC_GIRL,
+    [FACILITY_CLASS_SWIMMER_M]              = TRAINER_ENCOUNTER_MUSIC_FEMALE,
+    [FACILITY_CLASS_DRAGON_TAMER]           = TRAINER_ENCOUNTER_MUSIC_FEMALE,
+    [FACILITY_CLASS_BIKER]                  = TRAINER_ENCOUNTER_MUSIC_FEMALE,
+    [FACILITY_CLASS_SWIMMING_TRIATHLETE_M]  = TRAINER_ENCOUNTER_MUSIC_SUSPICIOUS,
+    [FACILITY_CLASS_CUE_BALL]               = TRAINER_ENCOUNTER_MUSIC_COOL,
+    [FACILITY_CLASS_RS_BIRD_KEEPER]         = TRAINER_ENCOUNTER_MUSIC_COOL,
+    [FACILITY_CLASS_SWIMMING_TRIATHLETE_F]  = TRAINER_ENCOUNTER_MUSIC_MALE,
+    [FACILITY_CLASS_POKEMANIAC]             = TRAINER_ENCOUNTER_MUSIC_GIRL,
+    [FACILITY_CLASS_RS_TWINS]               = TRAINER_ENCOUNTER_MUSIC_GIRL,
+    [FACILITY_CLASS_LEADER_WATTSON]         = TRAINER_ENCOUNTER_MUSIC_MALE,
+    [FACILITY_CLASS_BUG_CATCHER]            = TRAINER_ENCOUNTER_MUSIC_MALE,
+    [FACILITY_CLASS_RS_PKMN_BREEDER_M]      = TRAINER_ENCOUNTER_MUSIC_SUSPICIOUS,
+    [FACILITY_CLASS_LEADER_WALLACE]         = TRAINER_ENCOUNTER_MUSIC_AQUA,
+    [FACILITY_CLASS_LEADER_NORMAN]          = TRAINER_ENCOUNTER_MUSIC_AQUA,
+    [FACILITY_CLASS_OLD_COUPLE]             = TRAINER_ENCOUNTER_MUSIC_INTENSE,
+    [FACILITY_CLASS_RS_PSYCHIC_M]           = TRAINER_ENCOUNTER_MUSIC_INTENSE,
+    [FACILITY_CLASS_LEADER_ROXANNE]         = TRAINER_ENCOUNTER_MUSIC_TWINS,
+    [FACILITY_CLASS_ELITE_FOUR_DRAKE]       = TRAINER_ENCOUNTER_MUSIC_ELITE_FOUR,
+    [FACILITY_CLASS_RS_GENTLEMAN]           = TRAINER_ENCOUNTER_MUSIC_FEMALE,
+    [FACILITY_CLASS_RS_LASS]                = TRAINER_ENCOUNTER_MUSIC_SUSPICIOUS,
+    [FACILITY_CLASS_BURGLAR]                = TRAINER_ENCOUNTER_MUSIC_FEMALE,
+    [FACILITY_CLASS_PKMN_TRAINER_WALLY]     = TRAINER_ENCOUNTER_MUSIC_MALE,
+    [FACILITY_CLASS_SCHOOL_KID_M]           = TRAINER_ENCOUNTER_MUSIC_MALE,
+    [FACILITY_CLASS_LEADER_TATE_AND_LIZA]   = TRAINER_ENCOUNTER_MUSIC_INTENSE,
+    [FACILITY_CLASS_POKEFAN_M]              = TRAINER_ENCOUNTER_MUSIC_MALE,
+    [FACILITY_CLASS_MAGMA_ADMIN_M]          = TRAINER_ENCOUNTER_MUSIC_COOL,
+    [FACILITY_CLASS_EXPERT_M]               = TRAINER_ENCOUNTER_MUSIC_COOL,
+    [FACILITY_CLASS_MAGMA_GRUNT_M]          = TRAINER_ENCOUNTER_MUSIC_HIKER,
+    [FACILITY_CLASS_SR_AND_JR]              = TRAINER_ENCOUNTER_MUSIC_HIKER,
+    [FACILITY_CLASS_LASS]                   = TRAINER_ENCOUNTER_MUSIC_MALE,
+    [FACILITY_CLASS_SCHOOL_KID_F]           = TRAINER_ENCOUNTER_MUSIC_MALE,
+    [FACILITY_CLASS_RS_COOLTRAINER_M]       = TRAINER_ENCOUNTER_MUSIC_MALE,
+    [FACILITY_CLASS_FISHERMAN]              = TRAINER_ENCOUNTER_MUSIC_GIRL,
+    [FACILITY_CLASS_RS_TUBER_M]             = TRAINER_ENCOUNTER_MUSIC_GIRL,
+    [FACILITY_CLASS_HIKER]                  = TRAINER_ENCOUNTER_MUSIC_SWIMMER,
+    [FACILITY_CLASS_BOARDER_M]              = TRAINER_ENCOUNTER_MUSIC_SWIMMER,
+    [FACILITY_CLASS_RS_PKMN_BREEDER_F]      = TRAINER_ENCOUNTER_MUSIC_HIKER,
+    [FACILITY_CLASS_RS_PICNICKER]           = TRAINER_ENCOUNTER_MUSIC_HIKER,
+    [FACILITY_CLASS_LEADER_WINONA]          = TRAINER_ENCOUNTER_MUSIC_MALE,
+    [FACILITY_CLASS_ELITE_FOUR_SIDNEY]      = TRAINER_ENCOUNTER_MUSIC_FEMALE,
+    [FACILITY_CLASS_AQUA_ADMIN_M]           = TRAINER_ENCOUNTER_MUSIC_HIKER,
+    [FACILITY_CLASS_ELITE_FOUR_PHOEBE]      = TRAINER_ENCOUNTER_MUSIC_MALE,
 };
 
-static const struct WindowTemplate sTimeBoardWindowTemplate[] = {
+static const struct WindowTemplate sTimeBoardWindowTemplate[] =
+{
     {
         .bg = 0,
         .tilemapLeft = 3,
@@ -325,8 +320,6 @@ static const struct WindowTemplate sTimeBoardWindowTemplate[] = {
         .baseBlock = 0x001
     }, DUMMY_WIN_TEMPLATE
 };
-
-static const u32 sUnusedValue = 112;
 
 static const u8 sTextColors[3] = {TEXT_COLOR_TRANSPARENT, TEXT_COLOR_DARK_GRAY, TEXT_COLOR_LIGHT_GRAY};
 
@@ -355,7 +348,8 @@ static void (*const sTrainerTowerFunctions[])(void) = {
 };
 
 // - 1 excludes Mixed challenge, which just uses one of the 3 other types
-static const u16 sFloorLayouts[MAX_TRAINER_TOWER_FLOORS][NUM_TOWER_CHALLENGE_TYPES - 1] = {
+static const u16 sFloorLayouts[MAX_TRAINER_TOWER_FLOORS][NUM_TOWER_CHALLENGE_TYPES - 1] =
+{
     {LAYOUT_TRAINER_TOWER_1F, LAYOUT_TRAINER_TOWER_1F_DOUBLES, LAYOUT_TRAINER_TOWER_1F_KNOCKOUT},
     {LAYOUT_TRAINER_TOWER_2F, LAYOUT_TRAINER_TOWER_2F_DOUBLES, LAYOUT_TRAINER_TOWER_2F_KNOCKOUT},
     {LAYOUT_TRAINER_TOWER_3F, LAYOUT_TRAINER_TOWER_3F_DOUBLES, LAYOUT_TRAINER_TOWER_3F_KNOCKOUT},
@@ -366,22 +360,23 @@ static const u16 sFloorLayouts[MAX_TRAINER_TOWER_FLOORS][NUM_TOWER_CHALLENGE_TYP
     {LAYOUT_TRAINER_TOWER_8F, LAYOUT_TRAINER_TOWER_8F_DOUBLES, LAYOUT_TRAINER_TOWER_8F_KNOCKOUT}
 };
 
-static const enum Item sPrizeList[] = {
-    ITEM_HP_UP,
-    ITEM_PROTEIN,
-    ITEM_IRON,
-    ITEM_CARBOS,
-    ITEM_CALCIUM,
-    ITEM_ZINC,
-    ITEM_BRIGHT_POWDER,
-    ITEM_WHITE_HERB,
-    ITEM_MENTAL_HERB,
-    ITEM_CHOICE_BAND,
-    ITEM_KINGS_ROCK,
-    ITEM_SCOPE_LENS,
-    ITEM_METAL_COAT,
-    ITEM_DRAGON_SCALE,
-    ITEM_UP_GRADE
+static const enum Item sPrizeList[] =
+{
+    [TTPRIZE_HP_UP]         = ITEM_HP_UP,
+    [TTPRIZE_PROTEIN]       = ITEM_PROTEIN,
+    [TTPRIZE_IRON]          = ITEM_IRON,
+    [TTPRIZE_CARBOS]        = ITEM_CARBOS,
+    [TTPRIZE_CALCIUM]       = ITEM_CALCIUM,
+    [TTPRIZE_ZINC]          = ITEM_ZINC,
+    [TTPRIZE_BRIGHT_POWDER] = ITEM_BRIGHT_POWDER,
+    [TTPRIZE_WHITE_HERB]    = ITEM_WHITE_HERB,
+    [TTPRIZE_MENTAL_HERB]   = ITEM_MENTAL_HERB,
+    [TTPRIZE_CHOICE_BAND]   = ITEM_CHOICE_BAND,
+    [TTPRIZE_KINGS_ROCK]    = ITEM_KINGS_ROCK,
+    [TTPRIZE_SCOPE_LENS]    = ITEM_SCOPE_LENS,
+    [TTPRIZE_METAL_COAT]    = ITEM_METAL_COAT,
+    [TTPRIZE_DRAGON_SCALE]  = ITEM_DRAGON_SCALE,
+    [TTPRIZE_UP_GRADE]      = ITEM_UP_GRADE,
 };
 
 static const u16 sTrainerTowerEncounterMusic[] = {
@@ -447,7 +442,7 @@ void CallTrainerTowerFunc(void)
     FreeTrainerTowerDataStruct();
 }
 
-u8 GetTrainerTowerOpponentClass(void)
+enum TrainerClassID GetTrainerTowerOpponentClass(void)
 {
     return gFacilityClassToTrainerClass[sTrainerTowerOpponent->facilityClass];
 }
@@ -464,29 +459,28 @@ u8 GetTrainerTowerTrainerFrontSpriteId(void)
 
 void InitTrainerTowerBattleStruct(void)
 {
-    u16 trainerId;
-    int i;
+    u16 trainerIndex;
 
     SetUpTrainerTowerDataStruct();
     sTrainerTowerOpponent = AllocZeroed(sizeof(*sTrainerTowerOpponent));
-    trainerId = VarGet(VAR_TEMP_1);
-    StringCopyN(sTrainerTowerOpponent->name, CURR_FLOOR.trainers[trainerId].name, 11);
+    trainerIndex = VarGet(VAR_TEMP_1);
+    StringCopyN(sTrainerTowerOpponent->name, CURR_FLOOR.trainers[trainerIndex].name, TRAINER_NAME_LENGTH + 1);
 
-    for (i = 0; i < 6; i++)
+    for (u32 i = 0; i < EASY_CHAT_BATTLE_WORDS_COUNT; i++)
     {
-        sTrainerTowerOpponent->speechWin[i] = CURR_FLOOR.trainers[trainerId].speechWin[i];
-        sTrainerTowerOpponent->speechLose[i] = CURR_FLOOR.trainers[trainerId].speechLose[i];
+        sTrainerTowerOpponent->speechWin[i] = CURR_FLOOR.trainers[trainerIndex].speechWin[i];
+        sTrainerTowerOpponent->speechLose[i] = CURR_FLOOR.trainers[trainerIndex].speechLose[i];
 
         if (CURR_FLOOR.challengeType == CHALLENGE_TYPE_DOUBLE)
         {
-            sTrainerTowerOpponent->speechWin2[i] = CURR_FLOOR.trainers[trainerId + 1].speechWin[i];
-            sTrainerTowerOpponent->speechLose2[i] = CURR_FLOOR.trainers[trainerId + 1].speechLose[i];
+            sTrainerTowerOpponent->speechWin2[i] = CURR_FLOOR.trainers[trainerIndex + 1].speechWin[i];
+            sTrainerTowerOpponent->speechLose2[i] = CURR_FLOOR.trainers[trainerIndex + 1].speechLose[i];
         }
     }
 
     sTrainerTowerOpponent->battleType = CURR_FLOOR.challengeType;
-    sTrainerTowerOpponent->facilityClass = CURR_FLOOR.trainers[trainerId].facilityClass;
-    sTrainerTowerOpponent->textColor = CURR_FLOOR.trainers[trainerId].textColor;
+    sTrainerTowerOpponent->facilityClass = CURR_FLOOR.trainers[trainerIndex].facilityClass;
+    sTrainerTowerOpponent->textColor = CURR_FLOOR.trainers[trainerIndex].textColor;
 #if FREE_TRAINER_HILL == FALSE
     SetTrainerTowerVBlankCounter(&TRAINER_TOWER.timer);
 #endif //FREE_TRAINER_HILL
@@ -525,22 +519,24 @@ static void SetUpTrainerTowerDataStruct(void)
 #else
     u32 challengeType = CHALLENGE_TYPE_SINGLE;
 #endif // FREE_TRAINER_HILL
-    s32 i;
-    const struct TrainerTowerFloor *const * floors_p;
+    const struct TrainerTowerFloor *const *floors_p;
 
     sTrainerTowerState = AllocZeroed(sizeof(*sTrainerTowerState));
     sTrainerTowerState->floorIdx = gMapHeader.mapLayoutId - LAYOUT_TRAINER_TOWER_1F;
     if (ReadTrainerTowerAndValidate() == TRUE)
+    {
         CEReaderTool_LoadTrainerTower(&sTrainerTowerState->data);
+    }
     else
     {
         struct TrainerTowerState * ttstate_p = sTrainerTowerState;
-        const struct EReaderTrainerTowerSetSubstruct * header_p = &gTrainerTowerLocalHeader;
+        const struct EReaderTrainerTowerSetSubstruct *header_p = &gTrainerTowerLocalHeader;
+
         memcpy(&ttstate_p->data, header_p, sizeof(struct EReaderTrainerTowerSetSubstruct));
         floors_p = gTrainerTowerFloors[challengeType];
-        for (i = 0; i < MAX_TRAINER_TOWER_FLOORS; i++)
+        for (u32 i = 0; i < MAX_TRAINER_TOWER_FLOORS; i++)
         {
-            *(sTrainerTowerState->data.floors + i) = *(floors_p[i]); // manual pointer arithmetic needed to match
+            sTrainerTowerState->data.floors[i] = *(floors_p[i]);
         }
         sTrainerTowerState->data.checksum = CalcByteArraySum((void *)sTrainerTowerState->data.floors, sizeof(sTrainerTowerState->data.floors));
         ValidateOrResetCurTrainerTowerRecord();
@@ -569,8 +565,10 @@ static void InitTrainerTowerFloor(void)
 
 static void SetTrainerTowerNPCGraphics(void)
 {
-    s32 i, j;
-    u8 trainerGfx1, trainerGfx2, facilityClass;
+    u32 i;
+    enum ObjectEventGfx trainerGfx1, trainerGfx2;
+    enum FacilityClass facilityClass;
+
     switch (CURR_FLOOR.challengeType)
     {
     case CHALLENGE_TYPE_SINGLE:
@@ -609,7 +607,7 @@ static void SetTrainerTowerNPCGraphics(void)
         VarSet(VAR_OBJ_GFX_ID_3, trainerGfx2);
         break;
     case CHALLENGE_TYPE_KNOCKOUT:
-        for (j = 0; j < MAX_TRAINERS_PER_FLOOR; j++)
+        for (u32 j = 0; j < MAX_TRAINERS_PER_FLOOR; j++)
         {
             facilityClass = CURR_FLOOR.trainers[j].facilityClass;
             for (i = 0; i < ARRAY_COUNT(sSingleBattleTrainerInfo); i++)
@@ -643,7 +641,7 @@ static void TT_ConvertEasyChatMessageToString(u16 *ecWords, u8 *dest)
 {
     s32 i;
     ConvertEasyChatWordsToString(dest, ecWords, 3, 2);
-    if ((unsigned)GetStringWidth(FONT_NORMAL, dest, -1) > 196)
+    if (GetStringWidth(FONT_NORMAL, dest, -1) > 196)
     {
         // Has to be printed 2x3
         ConvertEasyChatWordsToString(dest, ecWords, 2, 3);
@@ -661,12 +659,12 @@ static void TT_ConvertEasyChatMessageToString(u16 *ecWords, u8 *dest)
 
 static void BufferTowerOpponentSpeech(void)
 {
-    u16 trainerId = gSpecialVar_0x8006;
-    u8 facilityClass;
+    u16 trainerIndex = gSpecialVar_0x8006;
+    enum FacilityClass facilityClass;
     u8 challengeType = CURR_FLOOR.challengeType;
 
     if (challengeType != CHALLENGE_TYPE_DOUBLE)
-        facilityClass = CURR_FLOOR.trainers[trainerId].facilityClass;
+        facilityClass = CURR_FLOOR.trainers[trainerIndex].facilityClass;
     else
         facilityClass = CURR_FLOOR.trainers[0].facilityClass;
 
@@ -674,23 +672,23 @@ static void BufferTowerOpponentSpeech(void)
     {
     case TRAINER_TOWER_TEXT_INTRO:
         TrainerTowerGetOpponentTextColor(challengeType, facilityClass);
-        TT_ConvertEasyChatMessageToString(CURR_FLOOR.trainers[trainerId].speechBefore, gStringVar4);
+        TT_ConvertEasyChatMessageToString(CURR_FLOOR.trainers[trainerIndex].speechBefore, gStringVar4);
         break;
     case TRAINER_TOWER_TEXT_PLAYER_LOST:
         TrainerTowerGetOpponentTextColor(challengeType, facilityClass);
-        TT_ConvertEasyChatMessageToString(CURR_FLOOR.trainers[trainerId].speechWin, gStringVar4);
+        TT_ConvertEasyChatMessageToString(CURR_FLOOR.trainers[trainerIndex].speechWin, gStringVar4);
         break;
     case TRAINER_TOWER_TEXT_PLAYER_WON:
         TrainerTowerGetOpponentTextColor(challengeType, facilityClass);
-        TT_ConvertEasyChatMessageToString(CURR_FLOOR.trainers[trainerId].speechLose, gStringVar4);
+        TT_ConvertEasyChatMessageToString(CURR_FLOOR.trainers[trainerIndex].speechLose, gStringVar4);
         break;
     case TRAINER_TOWER_TEXT_AFTER:
-        TT_ConvertEasyChatMessageToString(CURR_FLOOR.trainers[trainerId].speechAfter, gStringVar4);
+        TT_ConvertEasyChatMessageToString(CURR_FLOOR.trainers[trainerIndex].speechAfter, gStringVar4);
         break;
     }
 }
 
-static void TrainerTowerGetOpponentTextColor(u8 challengeType, u8 facilityClass)
+static void TrainerTowerGetOpponentTextColor(u8 challengeType, enum FacilityClass facilityClass)
 {
     u16 gender = MALE;
     int i;
@@ -732,13 +730,13 @@ static void CB2_EndTrainerTowerBattle(void)
 
 static void Task_DoTrainerTowerBattle(u8 taskId)
 {
-    if (IsBattleTransitionDone() == TRUE)
-    {
-        gMain.savedCallback = CB2_EndTrainerTowerBattle;
-        CleanupOverworldWindowsAndTilemaps();
-        SetMainCallback2(CB2_InitBattle);
-        DestroyTask(taskId);
-    }
+    if (!IsBattleTransitionDone())
+        return;
+
+    gMain.savedCallback = CB2_EndTrainerTowerBattle;
+    CleanupOverworldWindowsAndTilemaps();
+    SetMainCallback2(CB2_InitBattle);
+    DestroyTask(taskId);
 }
 
 static void DoTrainerTowerBattle(void)
@@ -848,34 +846,35 @@ static void CheckFinalTime(void)
 #if FREE_TRAINER_HILL == FALSE
     if (TRAINER_TOWER.checkedFinalTime)
     {
-        gSpecialVar_Result = 2;
+        gSpecialVar_Result = TT_RESULT_ALREADY_CHECKED;
     }
     else if (GetTrainerTowerRecordTime(&TRAINER_TOWER.bestTime) > TRAINER_TOWER.timer)
     {
         SetTrainerTowerRecordTime(&TRAINER_TOWER.bestTime, TRAINER_TOWER.timer);
-        gSpecialVar_Result = 0;
+        gSpecialVar_Result = TT_RESULT_NEW_RECORD;
     }
     else
     {
-        gSpecialVar_Result = 1;
+        gSpecialVar_Result = TT_RESULT_NO_RECORD;
     }
 
     TRAINER_TOWER.checkedFinalTime = TRUE;
 #else
-    gSpecialVar_Result = 0;
+    gSpecialVar_Result = TT_RESULT_ALREADY_CHECKED;
 #endif //FREE_TRAINER_HILL
 }
 
 static void TrainerTowerResumeTimer(void)
 {
 #if FREE_TRAINER_HILL == FALSE
-    if (!TRAINER_TOWER.spokeToOwner)
-    {
-        if (TRAINER_TOWER.timer >= TRAINER_TOWER_MAX_TIME)
-            TRAINER_TOWER.timer = TRAINER_TOWER_MAX_TIME;
-        else
-            SetTrainerTowerVBlankCounter(&TRAINER_TOWER.timer);
-    }
+    if (TRAINER_TOWER.spokeToOwner)
+        return;
+
+    if (TRAINER_TOWER.timer >= TRAINER_TOWER_MAX_TIME)
+        TRAINER_TOWER.timer = TRAINER_TOWER_MAX_TIME;
+    else
+        SetTrainerTowerVBlankCounter(&TRAINER_TOWER.timer);
+
 #endif //FREE_TRAINER_HILL
 }
 
@@ -1008,25 +1007,11 @@ static void ShouldWarpToCounter(void)
 
 static void PlayTrainerTowerEncounterMusic(void)
 {
-    s32 i;
-    u16 idx = VarGet(VAR_TEMP_1);
-    u8 facilityClass = CURR_FLOOR.trainers[idx].facilityClass;
+    u16 trainerIndex = VarGet(VAR_TEMP_1);
+    enum FacilityClass facilityClass = CURR_FLOOR.trainers[trainerIndex].facilityClass;
+    enum TrainerEncounterMusic musicId = sFacilityClassToEncounterMusic[facilityClass];
 
-    for (i = 0; i < ARRAY_COUNT(sTrainerEncounterMusicLUT); i++)
-    {
-        if (sTrainerEncounterMusicLUT[i].facilityClass == gFacilityClassToTrainerClass[facilityClass])
-            break;
-    }
-
-    if (i != ARRAY_COUNT(sTrainerEncounterMusicLUT))
-    {
-        idx = sTrainerEncounterMusicLUT[i].musicId;
-    }
-    else
-    {
-        idx = 0;
-    }
-    PlayNewMapMusic(sTrainerTowerEncounterMusic[idx]);
+    PlayNewMapMusic(sTrainerTowerEncounterMusic[musicId]);
 }
 
 static void HasSpokenToOwner(void)
@@ -1038,14 +1023,13 @@ static void HasSpokenToOwner(void)
 
 static void BuildEnemyParty(void)
 {
-    u16 trainerIdx = VarGet(VAR_TEMP_1);
+    u16 trainerIndex = VarGet(VAR_TEMP_1);
     s32 level = GetPartyMaxLevel();
 #if FREE_TRAINER_HILL == FALSE
     u8 floorIdx = TRAINER_TOWER.floorsCleared;
 #else
     u8 floorIdx = gMapHeader.mapLayoutId - LAYOUT_TRAINER_TOWER_1F;
 #endif //FREE_TRAINER_HILL
-    s32 i;
     u8 monIdx;
 
     ZeroEnemyPartyMons();
@@ -1054,11 +1038,11 @@ static void BuildEnemyParty(void)
     {
     case CHALLENGE_TYPE_SINGLE:
     default:
-        for (i = 0; i < 2; i++)
+        for (u32 i = 0; i < 2; i++)
         {
             monIdx = sSingleBattleChallengeMonIdxs[floorIdx][i];
-            CURR_FLOOR.trainers[trainerIdx].mons[monIdx].level = level;
-            CreateBattleTowerMon(&gEnemyParty[i], &CURR_FLOOR.trainers[trainerIdx].mons[monIdx]);
+            CURR_FLOOR.trainers[trainerIndex].mons[monIdx].level = level;
+            CreateBattleTowerMon(&gEnemyParty[i], &CURR_FLOOR.trainers[trainerIndex].mons[monIdx]);
         }
         break;
     case CHALLENGE_TYPE_DOUBLE:
@@ -1071,9 +1055,9 @@ static void BuildEnemyParty(void)
         CreateBattleTowerMon(&gEnemyParty[1], &CURR_FLOOR.trainers[1].mons[monIdx]);
         break;
     case CHALLENGE_TYPE_KNOCKOUT:
-        monIdx = sKnockoutChallengeMonIdxs[floorIdx][trainerIdx];
-        CURR_FLOOR.trainers[trainerIdx].mons[monIdx].level = level;
-        CreateBattleTowerMon(&gEnemyParty[0], &CURR_FLOOR.trainers[trainerIdx].mons[monIdx]);
+        monIdx = sKnockoutChallengeMonIdxs[floorIdx][trainerIndex];
+        CURR_FLOOR.trainers[trainerIndex].mons[monIdx].level = level;
+        CreateBattleTowerMon(&gEnemyParty[0], &CURR_FLOOR.trainers[trainerIndex].mons[monIdx]);
         break;
     }
 }
@@ -1081,9 +1065,8 @@ static void BuildEnemyParty(void)
 static s32 GetPartyMaxLevel(void)
 {
     s32 topLevel = 0;
-    s32 i;
 
-    for (i = 0; i < PARTY_SIZE; i++)
+    for (u32 i = 0; i < PARTY_SIZE; i++)
     {
         if (GetMonData(&gPlayerParty[i], MON_DATA_SPECIES, NULL) != 0 && GetMonData(&gPlayerParty[i], MON_DATA_SPECIES_OR_EGG, NULL) != SPECIES_EGG)
         {
@@ -1117,14 +1100,14 @@ void PrintTrainerTowerRecords(void)
     SetUpTrainerTowerDataStruct();
     FillWindowPixelRect(0, PIXEL_FILL(0), 0, 0, 216, 144);
     ValidateOrResetCurTrainerTowerRecord();
-    AddTextPrinterParameterized3(0, FONT_NORMAL, 0x4a, 0, sTextColors, 0, gText_TimeBoard);
+    AddTextPrinterParameterized3(0, FONT_NORMAL, 74, 0, sTextColors, 0, gText_TimeBoard);
 
     for (i = 0; i < NUM_TOWER_CHALLENGE_TYPES; i++)
     {
         PRINT_TOWER_TIME(GetTrainerTowerRecordTime(&gSaveBlock1Ptr->trainerTower[i].bestTime));
         StringExpandPlaceholders(gStringVar4, gText_XMinYZSec);
-        AddTextPrinterParameterized3(windowId, FONT_NORMAL, 0x18, 0x24 + 0x14 * i, sTextColors, 0, gTrainerTowerChallengeTypeTexts[i]);
-        AddTextPrinterParameterized3(windowId, FONT_NORMAL, 0x60, 0x24 + 0x14 * i, sTextColors, 0, gStringVar4);
+        AddTextPrinterParameterized3(windowId, FONT_NORMAL, 24, 36 + 20 * i, sTextColors, 0, gTrainerTowerChallengeTypeTexts[i]);
+        AddTextPrinterParameterized3(windowId, FONT_NORMAL, 96, 36 + 20 * i, sTextColors, 0, gStringVar4);
     }
 
     PutWindowTilemap(windowId);
@@ -1148,11 +1131,9 @@ static void SetTrainerTowerRecordTime(u32 *counter, u32 value)
 void ResetTrainerTowerResults(void)
 {
 #if FREE_TRAINER_HILL == FALSE
-    s32 i;
 
-    for (i = 0; i < NUM_TOWER_CHALLENGE_TYPES; i++)
-    {
+    for (u32 i = 0; i < NUM_TOWER_CHALLENGE_TYPES; i++)
         SetTrainerTowerRecordTime(&gSaveBlock1Ptr->trainerTower[i].bestTime, TRAINER_TOWER_MAX_TIME);
-    }
+
 #endif //FREE_TRAINER_HILL
 }
