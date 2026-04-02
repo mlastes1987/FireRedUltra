@@ -5,6 +5,7 @@ extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_RedFieldMov
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_RedFish;
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_RedVSSeeker;
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_RedVSSeekerBike;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_RedWatering;
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_GreenNormal;
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_GreenBike;
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_GreenSurf;
@@ -12,6 +13,7 @@ extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_GreenFieldM
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_GreenFish;
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_GreenVSSeeker;
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_GreenVSSeekerBike;
+extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_GreenWatering;
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_RSBrendan;
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_RSMay;
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_LittleBoy;
@@ -390,4 +392,6 @@ const struct ObjectEventGraphicsInfo *const gObjectEventGraphicsInfoPointers[NUM
     [OBJ_EVENT_GFX_NOLAND] =                   &gObjectEventGraphicsInfo_Noland,
     [OBJ_EVENT_GFX_SPENSER] =                  &gObjectEventGraphicsInfo_Spenser,
     [OBJ_EVENT_GFX_TUCKER] =                   &gObjectEventGraphicsInfo_Tucker,
+    [OBJ_EVENT_GFX_RED_WATERING]             = &gObjectEventGraphicsInfo_RedWatering,
+    [OBJ_EVENT_GFX_GREEN_WATERING]           = &gObjectEventGraphicsInfo_GreenWatering,
 };
