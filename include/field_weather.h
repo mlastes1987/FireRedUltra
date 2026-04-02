@@ -3,6 +3,7 @@
 
 #include "global.h"
 #include "constants/field_weather.h"
+#include "constants/weather.h"
 
 
 enum
@@ -29,7 +30,7 @@ enum {
 
 #define NUM_WEATHER_COLOR_MAPS 19
 
-struct Weather
+struct FieldWeather
 {
     union
     {
@@ -63,8 +64,8 @@ struct Weather
     u8 fadeInTimer;
     u16 initStep;
     u16 finishStep;
-    u8 currWeather;
-    u8 nextWeather;
+    enum Weather currWeather;
+    enum Weather nextWeather;
     u8 weatherGfxLoaded;
     bool8 weatherChangeComplete;
     u8 weatherPicSpritePalIndex;
@@ -143,46 +144,43 @@ struct Weather
     u8 loadDroughtPalsOffset;
 };
 
-extern struct Weather *const gWeatherPtr;
+extern struct FieldWeather *const gWeatherPtr;
 
-void FadeScreen(u8 mode, s8 delay);
-u32 FadeScreenHardware(u32 mode, s32 delay);
-
-void SetSavedWeather(u32);
-u8 GetSavedWeather(void);
-
-void DoCurrentWeather(void);
-void SetSavedWeatherFromCurrMapHeader(void);
-void SlightlyDarkenPalsInWeather(u16 *, u16 *, u32);
-void PlayRainStoppingSoundEffect(void);
-bool8 IsWeatherNotFadingIn(void);
-void SetWeatherScreenFadeOut(void);
-void SetWeatherPalStateIdle(void);
-u8 GetCurrentWeather(void);
-void delay(u8, u8, u32);
-void UpdateSpritePaletteWithWeather(u8 palIdx, bool32 allowFog);
-void ResetPreservedPalettesInWeather(void);
-const u8* SetPaletteColorMapType(u8 paletteIndex, u8 colorMapType);
-void PreservePaletteInWeather(u8 palIdx);
 bool32 IsWeatherAlphaBlend(void);
-
-void SetNextWeather(u8 weather);
-void SetCurrentAndNextWeather(u8 weather);
-void Weather_SetBlendCoeffs(u8 eva, u8 evb);
-void Weather_SetTargetBlendCoeffs(u8 eva, u8 evb, int delay);
-bool8 Weather_UpdateBlend(void);
-void LoadCustomWeatherSpritePalette(const u16 *palette);
-void ResetDroughtWeatherPaletteLoading(void);
+bool8 IsWeatherNotFadingIn(void);
 bool8 LoadDroughtWeatherPalettes(void);
+bool8 Weather_UpdateBlend(void);
+const u8* SetPaletteColorMapType(u8 paletteIndex, u8 colorMapType);
+enum Weather GetSavedWeather(void);
+u32 FadeScreenHardware(u32 mode, s32 delay);
+enum Weather GetCurrentWeather(void);
+void ApplyWeatherColorMapIfIdle_Gradual(u8 colorMapIndex, u8 targetColorMapIndex, u8 colorMapStepDelay);
+void ApplyWeatherColorMapIfIdle(s8 colorMapIndex);
+void ApplyWeatherColorMapToPals(u8 startPalIndex, u8 numPalettes);
+void delay(u8, u8, u32);
+void DoCurrentWeather(void);
 void DroughtStateInit(void);
 void DroughtStateRun(void);
-void SetRainStrengthFromSoundEffect(u16 soundEffect);
-void ApplyWeatherColorMapIfIdle(s8 colorMapIndex);
-void ApplyWeatherColorMapIfIdle_Gradual(u8 colorMapIndex, u8 targetColorMapIndex, u8 colorMapStepDelay);
-void ApplyWeatherColorMapToPals(u8 startPalIndex, u8 numPalettes);
-void StartWeather(void);
-void SetWeather(u32 weather);
+void FadeScreen(u8 mode, s8 delay);
+void LoadCustomWeatherSpritePalette(const u16 *palette);
+void PlayRainStoppingSoundEffect(void);
+void PreservePaletteInWeather(u8 palIdx);
+void ResetDroughtWeatherPaletteLoading(void);
+void ResetPreservedPalettesInWeather(void);
 void ResumePausedWeather(void);
+void SetCurrentAndNextWeather(enum Weather weather);
+void SetNextWeather(enum Weather weather);
+void SetRainStrengthFromSoundEffect(u16 soundEffect);
+void SetSavedWeather(enum Weather weather);
+void SetSavedWeatherFromCurrMapHeader(void);
+void SetWeather(enum Weather weather);
+void SetWeatherPalStateIdle(void);
+void SetWeatherScreenFadeOut(void);
+void SlightlyDarkenPalsInWeather(u16 *, u16 *, u32);
+void StartWeather(void);
+void UpdateSpritePaletteWithWeather(u8 palIdx, bool32 allowFog);
+void Weather_SetBlendCoeffs(u8 eva, u8 evb);
+void Weather_SetTargetBlendCoeffs(u8 eva, u8 evb, int delay);
 void FadeSelectedPals(u8 mode, s8 delay, u32 selectedPalettes);
 u8 UpdateShadowColor(u16 color);
 

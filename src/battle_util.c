@@ -2935,6 +2935,8 @@ bool32 TryFieldEffects(enum FieldEffectCases caseId)
                     effect = TRUE;
                 }
                 break;
+            default:
+                break;
             }
         }
         if (effect)

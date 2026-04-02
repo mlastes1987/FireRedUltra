@@ -16,7 +16,7 @@
 #include "constants/songs.h"
 #include "constants/weather.h"
 
-EWRAM_DATA static u8 sCurrentAbnormalWeather = 0;
+EWRAM_DATA static enum Weather sCurrentAbnormalWeather = 0;
 
 const u16 gCloudsWeatherPalette[] = INCBIN_U16("graphics/weather/cloud.gbapal");
 const u16 gSandstormWeatherPalette[] = INCBIN_U16("graphics/weather/sandstorm.gbapal");
@@ -2447,7 +2447,7 @@ static void UpdateBubbleSprite(struct Sprite *sprite)
 
 //------------------------------------------------------------------------------
 
-static void UNUSED UnusedSetCurrentAbnormalWeather(u32 weather, u32 unknown)
+static void UNUSED UnusedSetCurrentAbnormalWeather(enum Weather weather, u32 unknown)
 {
     sCurrentAbnormalWeather = weather;
     // sUnusedWeatherRelated = unknown;
@@ -2517,17 +2517,17 @@ static void CreateAbnormalWeatherTask(void)
 #undef tWeatherB
 #undef tDelay
 
-static u8 TranslateWeatherNum(u8 weather);
-static void UpdateRainCounter(u8 newWeather, u8 oldWeather);
+static enum Weather TranslateWeatherNum(enum Weather weather);
+static void UpdateRainCounter(enum Weather newWeather, enum Weather oldWeather);
 
-void SetSavedWeather(u32 weather)
+void SetSavedWeather(enum Weather weather)
 {
-    u8 oldWeather = gSaveBlock1Ptr->weather;
+    enum Weather oldWeather = gSaveBlock1Ptr->weather;
     gSaveBlock1Ptr->weather = TranslateWeatherNum(weather);
     UpdateRainCounter(gSaveBlock1Ptr->weather, oldWeather);
 }
 
-u8 GetSavedWeather(void)
+enum Weather GetSavedWeather(void)
 {
     return gSaveBlock1Ptr->weather;
 }
@@ -2539,7 +2539,7 @@ void SetSavedWeatherFromCurrMapHeader(void)
     UpdateRainCounter(gSaveBlock1Ptr->weather, oldWeather);
 }
 
-void SetWeather(u32 weather)
+void SetWeather(enum Weather weather)
 {
     SetSavedWeather(weather);
     SetNextWeather(GetSavedWeather());
@@ -2547,7 +2547,7 @@ void SetWeather(u32 weather)
 
 void DoCurrentWeather(void)
 {
-    u8 weather = GetSavedWeather();
+    enum Weather weather = GetSavedWeather();
 
     if (weather == WEATHER_ABNORMAL)
     {
@@ -2566,7 +2566,7 @@ void DoCurrentWeather(void)
 
 void ResumePausedWeather(void)
 {
-    u8 weather = GetSavedWeather();
+    enum Weather weather = GetSavedWeather();
 
     if (weather == WEATHER_ABNORMAL)
     {
@@ -2585,7 +2585,7 @@ void ResumePausedWeather(void)
 
 #define WEATHER_CYCLE_LENGTH  4
 
-static const u8 sWeatherCycleRoute119[WEATHER_CYCLE_LENGTH] =
+static const enum Weather sWeatherCycleRoute119[WEATHER_CYCLE_LENGTH] =
 {
     WEATHER_SUNNY,
     WEATHER_RAIN,
@@ -2593,7 +2593,7 @@ static const u8 sWeatherCycleRoute119[WEATHER_CYCLE_LENGTH] =
     WEATHER_RAIN,
 };
 
-static const u8 sWeatherCycleRoute123[WEATHER_CYCLE_LENGTH] =
+static const enum Weather sWeatherCycleRoute123[WEATHER_CYCLE_LENGTH] =
 {
     WEATHER_SUNNY,
     WEATHER_SUNNY,
@@ -2601,7 +2601,7 @@ static const u8 sWeatherCycleRoute123[WEATHER_CYCLE_LENGTH] =
     WEATHER_SUNNY,
 };
 
-static u8 TranslateWeatherNum(u8 weather)
+static enum Weather TranslateWeatherNum(enum Weather weather)
 {
     switch (weather)
     {
@@ -2634,7 +2634,7 @@ void UpdateWeatherPerDay(u16 increment)
     gSaveBlock1Ptr->weatherCycleStage = weatherStage;
 }
 
-static void UpdateRainCounter(u8 newWeather, u8 oldWeather)
+static void UpdateRainCounter(enum Weather newWeather, enum Weather oldWeather)
 {
     if (newWeather != oldWeather
      && (newWeather == WEATHER_RAIN || newWeather == WEATHER_RAIN_THUNDERSTORM))
