@@ -7,6 +7,7 @@
 #include "event_scripts.h"
 #include "field_player_avatar.h"
 #include "fieldmap.h"
+#include "fishing.h"
 #include "follower_npc.h"
 #include "link.h"
 #include "metatile_behavior.h"
@@ -48,10 +49,9 @@ static EWRAM_DATA struct WildEncounterData sWildEncounterData = {};
 static EWRAM_DATA bool8 sWildEncountersDisabled = FALSE;
 EWRAM_DATA bool8 gIsFishingEncounter = 0;
 EWRAM_DATA bool8 gIsSurfingEncounter = 0;
-EWRAM_DATA u16 gChainFishingDexNavStreak = 0;
+EWRAM_DATA u8 gChainFishingDexNavStreak = 0;
 
 static bool8 UnlockedTanobyOrAreNotInTanoby(void);
-static void UpdateChainFishingStreak();
 static bool8 IsWildLevelAllowedByRepel(u8 level);
 static void ApplyFluteEncounterRateMod(u32 *rate);
 static u8 GetMaxLevelOfSpeciesInWildTable(const struct WildPokemon *wildMon, enum Species species, u8 area);
@@ -791,17 +791,6 @@ bool8 DoesCurrentMapHaveFishingMons(void)
     if (gWildMonHeaders[headerId].encounterTypes[season][timeOfDay].fishingMonsInfo == NULL)
         return FALSE;
     return TRUE;
-}
-
-static void UpdateChainFishingStreak()
-{
-    if (!I_FISHING_CHAIN)
-        return;
-
-    if (gChainFishingDexNavStreak >= FISHING_CHAIN_LENGTH_MAX)
-        return;
-
-    gChainFishingDexNavStreak++;
 }
 
 void FishingWildEncounter(u8 rod)

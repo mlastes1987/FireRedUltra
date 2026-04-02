@@ -1,13 +1,14 @@
 #include "global.h"
 #include "bike.h"
+#include "event_object_movement.h"
+#include "field_effect_helpers.h"
+#include "field_effect.h"
+#include "field_player_avatar.h"
+#include "fishing.h"
+#include "quest_log_player.h"
+#include "quest_log.h"
 #include "script.h"
 #include "task.h"
-#include "field_player_avatar.h"
-#include "event_object_movement.h"
-#include "field_effect.h"
-#include "field_effect_helpers.h"
-#include "quest_log.h"
-#include "quest_log_player.h"
 
 static void QL_GfxTransition_Normal(void);
 static void QL_GfxTransition_Bike(void);

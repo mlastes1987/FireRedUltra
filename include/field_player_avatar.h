@@ -20,7 +20,6 @@ void StopPlayerAvatar(void);
 void GetXYCoordsOneStepInFrontOfPlayer(s16 *xPtr, s16 *yPtr);
 u8 GetPlayerAvatarGraphicsIdByStateId(u8);
 void SetPlayerAvatarStateMask(u8 mask);
-void AlignFishingAnimationFrames();
 void CreateStopSurfingTask_NoMusicChange(u8 direction);
 void SavePlayerFacingDirectionForTeleport(u8 direction);
 void SetPlayerAvatarTransitionFlags(u16 flags);
