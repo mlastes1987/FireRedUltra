@@ -549,7 +549,8 @@ void StartMonSummaryAnimation(struct Sprite *sprite, enum AnimFunctionIDs frontA
 
 void LaunchAnimationTaskForBackSprite(struct Sprite *sprite, enum BackAnim backAnimSet)
 {
-    u8 nature, taskId, animId, battlerId;
+    enum Nature nature;
+    u8 taskId, animId, battlerId;
 
     taskId = CreateTask(Task_HandleMonAnimation, 128);
     gTasks[taskId].tPtrHi = (u32)(sprite) >> 16;

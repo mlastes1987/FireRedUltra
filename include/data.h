@@ -71,7 +71,7 @@ struct TrainerMon
     u8 lvl;
     u8 ball;
     u8 friendship;
-    u8 nature:5;
+    enum Nature nature:5;
     bool8 gender:2;
     bool8 isShiny:1;
     enum Type teraType:5;

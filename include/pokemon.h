@@ -412,7 +412,7 @@ struct SpeciesInfo /*0xC4*/
     u8 eggCycles;
     u8 friendship;
     u8 growthRate;
-    u8 eggGroups[2];
+    enum EggGroup eggGroups[2];
     enum Ability abilities[NUM_ABILITY_SLOTS]; // 3 abilities, no longer u8 because we have over 255 abilities now.
     u8 safariZoneFleeRate;
 
@@ -729,7 +729,7 @@ void ZeroBoxMonData(struct BoxPokemon *boxMon);
 void ZeroMonData(struct Pokemon *mon);
 void ZeroPlayerPartyMons(void);
 void ZeroEnemyPartyMons(void);
-u32 GetMonPersonality(enum Species species, u8 gender, u8 nature, u8 unownLetter);
+u32 GetMonPersonality(enum Species species, u8 gender, enum Nature nature, u8 unownLetter);
 void CreateMon(struct Pokemon *mon, enum Species species, u8 level, u32 personality, struct OriginalTrainerId);
 void CreateRandomMon(struct Pokemon *mon, enum Species species, u8 level);
 void CreateRandomMonWithIVs(struct Pokemon *mon, enum Species species, u8 level, u8 fixedIv);
@@ -834,8 +834,8 @@ bool8 PokemonUseItemEffects(struct Pokemon *mon, enum Item item, u8 partyIndex, 
 bool8 HealStatusConditions(struct Pokemon *mon, u32 healMask, enum BattlerId battler);
 u8 GetItemEffectParamOffset(enum BattlerId battler, enum Item itemId, u8 effectByte, u8 effectBit);
 u8 *UseStatIncreaseItem(enum Item itemId);
-u8 GetNature(struct Pokemon *mon);
-u8 GetNatureFromPersonality(u32 personality);
+enum Nature GetNature(struct Pokemon *mon);
+enum Nature GetNatureFromPersonality(u32 personality);
 u32 GetGMaxTargetSpecies(u32 species);
 bool32 DoesMonMeetAdditionalConditions(struct Pokemon *mon, const struct EvolutionParam *params, struct Pokemon *tradePartner, u32 partyId, bool32 *canStopEvo, enum EvoState evoState);
 u32 GetEvolutionTargetSpecies(struct Pokemon *mon, enum EvolutionMode mode, u16 evolutionItem, struct Pokemon *tradePartner, bool32 *canStopEvo, enum EvoState evoState);
@@ -861,7 +861,7 @@ u8 GetPlayerFlankId(void);
 u16 GetLinkTrainerFlankId(u8 linkPlayerId);
 s32 GetBattlerMultiplayerId(u16 id);
 enum TrainerEncounterMusic GetTrainerEncounterMusicId(enum TrainerID trainerId);
-u16 ModifyStatByNature(u8 nature, u16 stat, enum Stat statIndex);
+u16 ModifyStatByNature(enum Nature nature, u16 stat, enum Stat statIndex);
 void AdjustFriendship(struct Pokemon *mon, u8 event);
 u8 CalculateFriendshipBonuses(struct Pokemon *mon, u32 modifier, enum HoldEffect itemHoldEffect);
 void MonGainEVs(struct Pokemon *mon, u16 defeatedSpecies);

@@ -1473,7 +1473,7 @@ static bool32 IsValidGender(u32 gender)
     }
 }
 
-u32 GetMonPersonality(enum Species species, u8 gender, u8 nature, u8 unownLetter)
+u32 GetMonPersonality(enum Species species, u8 gender, enum Nature nature, u8 unownLetter)
 {
     u32 personality, actualLetter;
 
@@ -1805,7 +1805,7 @@ void CalculateMonStats(struct Pokemon *mon)
     s32 level = GetLevelFromMonExp(mon);
     s32 newMaxHP;
 
-    u8 nature = GetMonData(mon, MON_DATA_HIDDEN_NATURE);
+    enum Nature nature = GetMonData(mon, MON_DATA_HIDDEN_NATURE);
 
     SetMonData(mon, MON_DATA_LEVEL, &level);
 
@@ -2955,7 +2955,7 @@ u32 GetBoxMonData3(struct BoxPokemon *boxMon, s32 field, u8 *data)
         }
         case MON_DATA_HIDDEN_NATURE:
         {
-            u32 nature = GetNatureFromPersonality(boxMon->personality);
+            enum Nature nature = GetNatureFromPersonality(boxMon->personality);
             retVal = nature ^ boxMon->hiddenNatureModifier;
             break;
         }
@@ -3387,8 +3387,8 @@ void SetBoxMonData(struct BoxPokemon *boxMon, s32 field, const void *dataArg)
         }
         case MON_DATA_HIDDEN_NATURE:
         {
-            u32 nature = GetNatureFromPersonality(boxMon->personality);
-            u32 hiddenNature;
+            enum Nature nature = GetNatureFromPersonality(boxMon->personality);
+            enum Nature hiddenNature;
             SET8(hiddenNature);
             boxMon->hiddenNatureModifier = nature ^ hiddenNature;
             break;
@@ -4592,12 +4592,12 @@ u8 *UseStatIncreaseItem(enum Item itemId)
     return gDisplayedStringBattle;
 }
 
-u8 GetNature(struct Pokemon *mon)
+enum Nature GetNature(struct Pokemon *mon)
 {
     return GetMonData(mon, MON_DATA_PERSONALITY, 0) % NUM_NATURES;
 }
 
-u8 GetNatureFromPersonality(u32 personality)
+enum Nature GetNatureFromPersonality(u32 personality)
 {
     return personality % NUM_NATURES;
 }
@@ -4617,7 +4617,7 @@ u32 GetGMaxTargetSpecies(u32 species)
 bool32 DoesMonMeetAdditionalConditions(struct Pokemon *mon, const struct EvolutionParam *params, struct Pokemon *tradePartner, u32 partyId, bool32 *canStopEvo, enum EvoState evoState)
 {
     u32 i, j;
-    u32 heldItem = GetMonData(mon, MON_DATA_HELD_ITEM);
+    enum Item heldItem = GetMonData(mon, MON_DATA_HELD_ITEM);
     u32 gender = GetMonGender(mon);
     u32 friendship = GetMonData(mon, MON_DATA_FRIENDSHIP, 0);
     u32 attack = GetMonData(mon, MON_DATA_ATK, 0);
@@ -4625,9 +4625,9 @@ bool32 DoesMonMeetAdditionalConditions(struct Pokemon *mon, const struct Evoluti
     u32 personality = GetMonData(mon, MON_DATA_PERSONALITY, 0);
     u16 upperPersonality = personality >> 16;
     u32 weather = GetCurrentWeather();
-    u32 nature = GetNature(mon);
+    enum Nature nature = GetNature(mon);
     bool32 removeHoldItem = FALSE;
-    u32 removeBagItem = ITEM_NONE;
+    enum Item removeBagItem = ITEM_NONE;
     u32 removeBagItemCount = 0;
     u32 evolutionTracker = GetMonData(mon, MON_DATA_EVOLUTION_TRACKER, 0);
     u32 partnerSpecies, partnerHeldItem;
@@ -4839,6 +4839,8 @@ bool32 DoesMonMeetAdditionalConditions(struct Pokemon *mon, const struct Evoluti
             case NATURE_QUIRKY:
                 currentCondition = TRUE;
                 break;
+            default:
+                break;
             }
             break;
         case IF_LOW_KEY_NATURE:
@@ -4857,6 +4859,8 @@ bool32 DoesMonMeetAdditionalConditions(struct Pokemon *mon, const struct Evoluti
             case NATURE_GENTLE:
             case NATURE_CAREFUL:
                 currentCondition = TRUE;
+                break;
+            default:
                 break;
             }
             break;
@@ -4927,7 +4931,7 @@ bool32 DoesMonMeetAdditionalConditions(struct Pokemon *mon, const struct Evoluti
         {
             if (removeHoldItem)
             {
-                u32 heldItem = ITEM_NONE;
+                enum Item heldItem = ITEM_NONE;
                 SetMonData(mon, MON_DATA_HELD_ITEM, &heldItem);
             }
 
@@ -5442,7 +5446,7 @@ enum TrainerEncounterMusic GetTrainerEncounterMusicId(enum TrainerID trainerId)
         return gTrainers[difficulty][sanitizedTrainerId].encounterMusic;
 }
 
-u16 ModifyStatByNature(u8 nature, u16 stat, enum Stat statIndex)
+u16 ModifyStatByNature(enum Nature nature, u16 stat, enum Stat statIndex)
 {
     // Don't modify HP, Accuracy, or Evasion by nature
     if (statIndex <= STAT_HP || statIndex > NUM_NATURE_STATS || gNaturesInfo[nature].statUp == gNaturesInfo[nature].statDown)
@@ -5941,13 +5945,13 @@ bool8 IsMonSpriteNotFlipped(enum Species species)
 
 s8 GetMonFlavorRelation(struct Pokemon *mon, enum Flavor flavor)
 {
-    u8 nature = GetNature(mon);
+    enum Nature nature = GetNature(mon);
     return gPokeblockFlavorCompatibilityTable[nature * FLAVOR_COUNT + flavor];
 }
 
 s8 GetFlavorRelationByPersonality(u32 personality, enum Flavor flavor)
 {
-    u8 nature = GetNatureFromPersonality(personality);
+    enum Nature nature = GetNatureFromPersonality(personality);
     return gPokeblockFlavorCompatibilityTable[nature * FLAVOR_COUNT + flavor];
 }
 

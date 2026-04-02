@@ -34,11 +34,11 @@ struct PokedudeTextScriptHeader
 
 struct PokedudeBattlePartyInfo
 {
-    u8 side;
+    enum BattleSide side;
     u8 level;
-    u16 species;
-    u16 moves[MAX_MON_MOVES];
-    u8 nature;
+    enum Species species;
+    enum Move moves[MAX_MON_MOVES];
+    enum Nature nature;
     u8 gender;
 };
 
@@ -1208,7 +1208,7 @@ void InitPokedudePartyAndOpponent(void)
         personality = GetMonPersonality(data[i].species, data[i].gender, data[i].nature, RANDOM_UNOWN_LETTER);
         CreateMonWithIVsPersonality(mon, data[i].species, data[i].level, 0, personality);
 
-        for (j = 0; j < 4; ++j)
+        for (j = 0; j < MAX_MON_MOVES; ++j)
             SetMonMoveSlot(mon, data[i].moves[j], j);
     } while (data[++i].side != 0xFF);
 }

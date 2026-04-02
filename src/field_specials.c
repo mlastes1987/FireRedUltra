@@ -3439,7 +3439,7 @@ static void Task_LinkRetireStatusWithBattleTowerPartner(u8 taskId)
 
 void ShowNatureGirlMessage(void)
 {
-    u32 nature;
+    enum Nature nature;
     u32 personality;
 
     struct BoxPokemon *boxmon = GetSelectedBoxMonFromPcOrParty();

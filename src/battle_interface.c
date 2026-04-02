@@ -1062,7 +1062,8 @@ static void PrintSafariMonInfo(u8 healthboxSpriteId, struct Pokemon *mon)
     u8 text[23];
     s32 j, spriteTileNum;
     u8 *barFontGfx;
-    u8 i, var, nature, healthBarSpriteId;
+    enum Nature nature;
+    u8 i, var, healthBarSpriteId;
 
     memcpy(text, sEmptyWhiteText_GrayHighlight, sizeof(sEmptyWhiteText_GrayHighlight));
     barFontGfx = &gMonSpritesGfxPtr->barFontGfx[0x520 + (GetBattlerPosition(gSprites[healthboxSpriteId].hMain_Battler) * 384)];

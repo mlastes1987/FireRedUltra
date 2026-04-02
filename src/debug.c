@@ -212,7 +212,7 @@ struct DebugMonData
     enum Species species;
     u8 level;
     bool8 isShiny:1;
-    u8 nature:5;
+    enum Nature nature:5;
     u8 abilityNum:2;
     u8 monIVs[NUM_STATS];
     u16 monMoves[MAX_MON_MOVES];
@@ -3483,7 +3483,7 @@ static void DebugAction_Give_Pokemon_ComplexCreateMon(u8 taskId) //https://githu
     enum Species species = sDebugMonData->species;
     u8 level        = sDebugMonData->level;
     bool8 isShiny   = sDebugMonData->isShiny;
-    u8 nature       = sDebugMonData->nature;
+    enum Nature nature = sDebugMonData->nature;
     u8 abilityNum   = sDebugMonData->abilityNum;
     u32 teraType    = sDebugMonData->teraType;
     u32 dmaxLevel   = sDebugMonData->dynamaxLevel;
