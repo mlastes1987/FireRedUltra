@@ -7,7 +7,7 @@
 #include "international_string_util.h"
 #include "main.h"
 #include "menu.h"
-#include "map_name_popup_expansion.h"
+#include "map_name_popup_emerald.h"
 #include "palette.h"
 #include "region_map.h"
 #include "rtc.h"
@@ -30,11 +30,6 @@ enum MapPopUp_Themes
     MAPPOPUP_THEME_BRICK,
     MAPPOPUP_THEME_UNDERWATER,
     MAPPOPUP_THEME_STONE2,
-};
-
-enum MapPopUp_Themes_BW
-{
-    MAPPOPUP_THEME_BW_DEFAULT,
 };
 
 // static functions
@@ -284,7 +279,7 @@ static const u8 sRegionMapSectionId_To_PopUpThemeIdMapping[MAPSEC_COUNT] =
 static bool8 UNUSED StartMenu_ShowMapNamePopup(void)
 {
     HideStartMenu();
-    ShowMapNamePopupExpansion();
+    ShowMapNamePopupEmerald();
     return TRUE;
 }
 
@@ -308,25 +303,25 @@ enum {
 #define tIncomingPopUp data[3]
 #define tPrintTimer    data[4]
 
-void ShowMapNamePopupExpansion(void)
+void ShowMapNamePopupEmerald(void)
 {
-    if (FlagGet(FLAG_DONT_SHOW_MAP_NAME_POPUP) != TRUE)
+    if (FlagGet(FLAG_DONT_SHOW_MAP_NAME_POPUP))
+        return;
+
+    if (!FuncIsActiveTask(Task_MapNamePopUpWindow))
     {
-        if (!FuncIsActiveTask(Task_MapNamePopUpWindow))
-        {
-            gPopupTaskId = CreateTask(Task_MapNamePopUpWindow, 90);
-            SetGpuReg(REG_OFFSET_BG0VOFS, POPUP_OFFSCREEN_Y);
-            gTasks[gPopupTaskId].tState = STATE_PRINT;
-            gTasks[gPopupTaskId].tYOffset = POPUP_OFFSCREEN_Y;
-        }
-        else
-        {
-            // There's already a pop up window running.
-            // Hurry the old pop up offscreen so the new one can appear.
-            if (gTasks[gPopupTaskId].tState != STATE_SLIDE_OUT)
-                gTasks[gPopupTaskId].tState = STATE_SLIDE_OUT;
-            gTasks[gPopupTaskId].tIncomingPopUp = TRUE;
-        }
+        gPopupTaskId = CreateTask(Task_MapNamePopUpWindow, 90);
+        SetGpuReg(REG_OFFSET_BG0VOFS, POPUP_OFFSCREEN_Y);
+        gTasks[gPopupTaskId].tState = STATE_PRINT;
+        gTasks[gPopupTaskId].tYOffset = POPUP_OFFSCREEN_Y;
+    }
+    else
+    {
+        // There's already a pop up window running.
+        // Hurry the old pop up offscreen so the new one can appear.
+        if (gTasks[gPopupTaskId].tState != STATE_SLIDE_OUT)
+            gTasks[gPopupTaskId].tState = STATE_SLIDE_OUT;
+        gTasks[gPopupTaskId].tIncomingPopUp = TRUE;
     }
 }
 
@@ -389,13 +384,13 @@ static void Task_MapNamePopUpWindow(u8 taskId)
         task->tState = STATE_END;
         break;
     case STATE_END:
-        HideMapNamePopUpExpansionWindow();
+        HideMapNamePopUpEmeraldWindow();
         return;
     }
     SetGpuReg(REG_OFFSET_BG0VOFS, task->tYOffset);
 }
 
-void HideMapNamePopUpExpansionWindow(void)
+void HideMapNamePopUpEmeraldWindow(void)
 {
     if (FuncIsActiveTask(Task_MapNamePopUpWindow))
     {

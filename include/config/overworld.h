@@ -135,6 +135,6 @@
 #define OW_FIELD_MOVES_WITHOUT_HMS  TRUE    // If TRUE, field moves can be used without having a Pokémon with the required move.
 #define OW_BATTLE_FRONTIER          TRUE    // If TRUE, enables the Battle Frontier.
 #define OW_HOF_EVENT_TICKETS        FALSE   // If TRUE, enables event tickets after hall of fame.
-#define OW_MAP_POPUP_EMERALD        TRUE   // If TRUE, emerald-style map popups are used.
+#define OW_MAP_POPUP_EMERALD        FALSE   // If TRUE, emerald-style map popups are used.
 
 #endif // GUARD_CONFIG_OVERWORLD_H

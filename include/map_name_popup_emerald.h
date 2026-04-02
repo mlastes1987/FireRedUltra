@@ -6,6 +6,6 @@
 // Exported RAM declarations
 
 // Exported ROM declarations
-void HideMapNamePopUpExpansionWindow(void);
-void ShowMapNamePopupExpansion(void);
+void HideMapNamePopUpEmeraldWindow(void);
+void ShowMapNamePopupEmerald(void);
 #endif //GUARD_MAP_NAME_POPUP_H
