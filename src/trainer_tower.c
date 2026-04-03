@@ -452,7 +452,7 @@ void GetTrainerTowerOpponentName(u8 *dest)
     StringCopyN(dest, sTrainerTowerOpponent->name, 11);
 }
 
-u8 GetTrainerTowerTrainerFrontSpriteId(void)
+enum TrainerPicID GetTrainerTowerTrainerFrontSpriteId(void)
 {
     return gFacilityClassToPicIndex[sTrainerTowerOpponent->facilityClass];
 }

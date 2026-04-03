@@ -4,14 +4,14 @@
 
 extern u32 *gTrainerTowerVBlankCounter;
 
-void PrintTrainerTowerRecords(void);
-void InitTrainerTowerBattleStruct(void);
+enum TrainerClassID GetTrainerTowerOpponentClass(void);
+enum TrainerPicID GetTrainerTowerTrainerFrontSpriteId(void);
 void FreeTrainerTowerBattleStruct(void);
-u8 GetTrainerTowerTrainerFrontSpriteId(void);
-void ResetTrainerTowerResults(void);
-void GetTrainerTowerOpponentWinText(u8 *dest, u8 opponentIdx);
 void GetTrainerTowerOpponentLoseText(u8 *dest, u8 opponentIdx);
 void GetTrainerTowerOpponentName(u8 *text);
-u8 GetTrainerTowerOpponentClass(void);
+void GetTrainerTowerOpponentWinText(u8 *dest, u8 opponentIdx);
+void InitTrainerTowerBattleStruct(void);
+void PrintTrainerTowerRecords(void);
+void ResetTrainerTowerResults(void);
 
 #endif //GUARD_TRAINER_TOWER_H

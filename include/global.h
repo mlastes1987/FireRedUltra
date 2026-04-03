@@ -172,7 +172,7 @@ extern u8 gStringVar4[1000];
 
 #define READ_OTID_FROM_SAVE T1_READ_32(gSaveBlock2Ptr->playerTrainerId)
 
-#ifndef NDEBUG
+// NOTE: This uses hardware timers 2 and 3; this will not work during active link connections or with the eReader
 static inline void CycleCountStart()
 {
     REG_TM2CNT_H = 0;
@@ -195,7 +195,6 @@ static inline u32 CycleCountEnd()
     // return result
     return REG_TM2CNT_L | (REG_TM3CNT_L << 16u);
 }
-#endif
 
 struct Coords8
 {

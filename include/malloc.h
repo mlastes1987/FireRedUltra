@@ -56,6 +56,7 @@ extern u8 gHeap[];
 
 #define Alloc(size) Alloc_(size, NULL)
 #define AllocZeroed(size) AllocZeroed_(size, NULL)
+#define Free(ptr) Free_(ptr, NULL)
 
 #endif
 
