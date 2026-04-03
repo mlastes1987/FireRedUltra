@@ -446,7 +446,7 @@ static void AddSearchWindow(u8 width)
 #define WINDOW_COL_0        (SPECIES_ICON_X + 4)
 #define WINDOW_COL_1        (WINDOW_COL_0 + (GetFontAttribute(FONT_SMALL, FONTATTR_MAX_LETTER_WIDTH) * (POKEMON_NAME_LENGTH)))
 #define WINDOW_MOVE_NAME_X  (WINDOW_COL_1 + (GetFontAttribute(FONT_SMALL, FONTATTR_MAX_LETTER_WIDTH) * 6))
-#define SEARCH_ARROW_X      (WINDOW_MOVE_NAME_X + 90)
+#define SEARCH_ARROW_X      212
 #define SEARCH_ARROW_Y      0
 
 static void AddSearchWindowText(enum Species species, u8 proximity, u8 searchLevel, bool8 hidden)
@@ -897,6 +897,8 @@ static void DexNavUpdateDirectionArrow(void)
     u16 deltaY = abs(tileY - playerY);
     const u8 *str;
     u8 windowId = sDexNavSearchDataPtr->windowId;
+    u32 arrowX = SEARCH_ARROW_X;
+    u32 arrowY = SEARCH_ARROW_Y;
 
     FillWindowPixelRect(windowId, PIXEL_FILL(1), SEARCH_ARROW_X, SEARCH_ARROW_Y, 12, 12);
     if (deltaX <= 1 && deltaY <= 1)
@@ -918,7 +920,9 @@ static void DexNavUpdateDirectionArrow(void)
             str = sText_ArrowDown;  //player above
     }
 
-    AddTextPrinterParameterized3(windowId, FONT_NORMAL, SEARCH_ARROW_X, SEARCH_ARROW_Y, sSearchFontColor, TEXT_SKIP_DRAW, str);
+    DebugPrintfLevel(MGBA_LOG_ERROR, "Arrow x: %u", arrowX);
+    DebugPrintfLevel(MGBA_LOG_ERROR, "Arrow y: %u", arrowY);
+    AddTextPrinterParameterized3(windowId, FONT_NORMAL, arrowX, arrowY, sSearchFontColor, TEXT_SKIP_DRAW, str);
     CopyWindowToVram(windowId, 2);
 }
 
@@ -1095,6 +1099,7 @@ bool32 OnStep_DexNavSearch(void)
         return FALSE;
     }
 
+    DebugPrintfLevel(MGBA_LOG_ERROR, "prox: %d", sDexNavSearchDataPtr->proximity);
     if (sDexNavSearchDataPtr->proximity < 1)
     {
         gDexNavSpecies = sDexNavSearchDataPtr->species;
@@ -1186,6 +1191,7 @@ static void CreateDexNavWildMon(enum Species species, u8 potential, u8 level, u8
     u8 i;
     u8 perfectIv = 31;
 
+    DebugPrintfLevel(MGBA_LOG_ERROR, "create");
     CreateWildMon(species, level, 0);  // shiny rate bonus handled in CreateBoxMon
 
     // Pick random, unique IVs to set to 31. The number of perfect IVs that are assigned is equal to the potential
