@@ -43,6 +43,7 @@
 #include "money.h"
 #include "new_game.h"
 #include "overworld.h"
+#include "oras_dowse.h"
 #include "palette.h"
 #include "play_time.h"
 #include "quest_log_objects.h"
@@ -2178,6 +2179,7 @@ static bool32 ReturnToFieldLocal(u8 *state)
     case 2:
         InitViewGraphics();
         FollowerNPC_BindToSurfBlobOnReloadScreen();
+        ResumeORASDowseFieldEffect();
         SetHelpContextForMap();
         (*state)++;
         break;

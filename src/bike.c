@@ -5,6 +5,7 @@
 #include "event_object_movement.h"
 #include "fieldmap.h"
 #include "field_camera.h"
+#include "oras_dowse.h"
 #include "overworld.h"
 #include "constants/map_types.h"
 #include "constants/songs.h"
@@ -332,6 +333,7 @@ void GetOnOffBike(u8 flags)
     }
     else
     {
+        EndORASDowsing();
         SetPlayerAvatarTransitionFlags(flags);
         if (Overworld_MusicCanOverrideMapMusic(MUS_CYCLING))
         {

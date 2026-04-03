@@ -166,5 +166,6 @@ u32 FldEff_SnowTracksSpot(void);
 u32 FldEff_CaveDust(void);
 u32 FldEff_UseRockClimb(void);
 u32 FldEff_RockClimbDust(void);
+u32 FldEff_ORASDowsing(void);
 
 #endif //GUARD_FIELD_EFFECTS_H

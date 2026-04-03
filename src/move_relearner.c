@@ -496,6 +496,18 @@ static void PrintMessageWithPlaceholders(const u8 *str)
     MoveRelearnerPrintMessage(gStringVar4, GetPlayerTextSpeedDelay());
 }
 
+// If reusable TMs is off, remove the TM from the bag
+static void RemoveRelearnerTMFromBag(enum Move move)
+{
+    enum Item item = GetTMHMItemIdFromMoveId(move);
+
+    if (!I_REUSABLE_TMS && !P_ENABLE_ALL_TM_MOVES
+     && gMoveRelearnerState == MOVE_RELEARNER_TM_MOVES && GetItemTMHMIndex(item) <= NUM_TECHNICAL_MACHINES)
+    {
+        RemoveBagItem(item, 1);
+    }
+}
+
 static void DoMoveRelearnerMain(void)
 {
     switch (sMoveRelearnerStruct->state)
@@ -717,6 +729,7 @@ static void DoMoveRelearnerMain(void)
         break;
     case MENU_STATE_DOUBLE_FANFARE_FORGOT_MOVE:
         PrintMessageWithPlaceholders(gText_MonForgotOldMoveAndMonLearnedNewMove);
+        RemoveRelearnerTMFromBag(GetCurrentSelectedMove());
         sMoveRelearnerStruct->state = MENU_STATE_PRINT_TEXT_THEN_FANFARE;
         PlayFanfare(MUS_LEVEL_UP);
         break;
