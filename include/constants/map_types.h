@@ -1,16 +1,19 @@
 #ifndef GUARD_CONSTANTS_MAP_TYPES_H
 #define GUARD_CONSTANTS_MAP_TYPES_H
 
-#define MAP_TYPE_NONE        0
-#define MAP_TYPE_TOWN        1
-#define MAP_TYPE_CITY        2 // Not used by any map. RSE use this map type to distinguish Town and City. FRLG make no distinction
-#define MAP_TYPE_ROUTE       3
-#define MAP_TYPE_UNDERGROUND 4
-#define MAP_TYPE_UNDERWATER  5 // Not used by any map.
-#define MAP_TYPE_OCEAN_ROUTE 6 // Not used by any map.
-#define MAP_TYPE_UNKNOWN     7 // Not used by any map.
-#define MAP_TYPE_INDOOR      8
-#define MAP_TYPE_SECRET_BASE 9 // Not used by any map.
+enum MapType
+{
+    MAP_TYPE_NONE,
+    MAP_TYPE_TOWN,
+    MAP_TYPE_CITY,        // Not used by any map. RSE use this map type to distinguish Town and City. FRLG make no distinction
+    MAP_TYPE_ROUTE,
+    MAP_TYPE_UNDERGROUND,
+    MAP_TYPE_UNDERWATER,  // Not used by any map.
+    MAP_TYPE_OCEAN_ROUTE, // Not used by any map.
+    MAP_TYPE_UNKNOWN,     // Not used by any map.
+    MAP_TYPE_INDOOR,
+    MAP_TYPE_SECRET_BASE, // Not used by any map.
+};
 
 
 //Battle backgrounds
