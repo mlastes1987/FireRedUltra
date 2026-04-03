@@ -2605,7 +2605,9 @@ void BufferStringBattle(enum StringID stringID, enum BattlerId battler)
         }
         break;
     case STRINGID_INTROSENDOUT: // poke first send-out
-        if (IsOnPlayerSide(battler))
+        if (BattlerIsPlayer(battler) || BattlerIsPlayer(BATTLE_PARTNER(battler))
+         || BattlerIsOldMan(battler) || BattlerIsOldMan(BATTLE_PARTNER(battler))
+         || BattlerIsPokedude(battler) || BattlerIsPokedude(BATTLE_PARTNER(battler)))
         {
             if (IsDoubleBattle() && IsValidForBattle(GetBattlerMon(BATTLE_PARTNER(battler))))
             {
@@ -2668,7 +2670,7 @@ void BufferStringBattle(enum StringID stringID, enum BattlerId battler)
     case STRINGID_RETURNMON: // sending poke to ball msg
         if ((GetBattlerPosition(battler) & BIT_FLANK) == B_FLANK_LEFT) // battler 0 and 1
         {
-            if (BattlerIsPlayer(battler) || BattlerIsOldMan(battler)) // Player
+            if (BattlerIsPlayer(battler) || BattlerIsOldMan(battler) || BattlerIsPokedude(battler)) // Player
             {
                 if (*(&gBattleStruct->hpScale) == 0)
                     stringPtr = sText_PkmnThatsEnough;

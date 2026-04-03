@@ -100,6 +100,11 @@ bool32 BattlerIsOldMan(enum BattlerId battlerId)
     return (gBattlerBattleController[battlerId] == BATTLE_CONTROLLER_OAK_OLD_MAN);
 }
 
+bool32 BattlerIsPokedude(enum BattlerId battlerId)
+{
+    return (gBattlerBattleController[battlerId] == BATTLE_CONTROLLER_POKEDUDE);
+}
+
 bool32 BattlerHasAi(enum BattlerId battlerId)
 {
     switch (gBattlerBattleController[battlerId])
@@ -108,6 +113,7 @@ bool32 BattlerHasAi(enum BattlerId battlerId)
     case BATTLE_CONTROLLER_PLAYER_PARTNER:
     case BATTLE_CONTROLLER_SAFARI:
     case BATTLE_CONTROLLER_OAK_OLD_MAN:
+    case BATTLE_CONTROLLER_POKEDUDE:
         return TRUE;
     default:
         break;

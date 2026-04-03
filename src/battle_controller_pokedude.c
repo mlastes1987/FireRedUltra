@@ -133,6 +133,7 @@ static void (*const sPokedudeBufferCommands[CONTROLLER_CMDS_COUNT])(enum Battler
 
 void SetControllerToPokedude(enum BattlerId battler)
 {
+    gBattlerBattleController[battler] = BATTLE_CONTROLLER_POKEDUDE;
     gBattlerControllerEndFuncs[battler] = PokedudeBufferExecCompleted;
     gBattlerControllerFuncs[battler] = PokedudeBufferRunCommand;
     *(&gBattleStruct->pdScriptNum) = gSpecialVar_0x8004;
