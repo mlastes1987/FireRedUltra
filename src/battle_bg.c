@@ -916,7 +916,7 @@ static u8 GetBattleEnvironmentOverride(void)
         return gBattleEnvironment;
     }
 
-    if (gBattleTypeFlags & (BATTLE_TYPE_TRAINER_TOWER | BATTLE_TYPE_LINK | BATTLE_TYPE_BATTLE_TOWER | BATTLE_TYPE_EREADER_TRAINER | BATTLE_TYPE_RECORDED_LINK))
+    if (gBattleTypeFlags & (BATTLE_TYPE_TRAINER_TOWER | BATTLE_TYPE_FRONTIER | BATTLE_TYPE_LINK | BATTLE_TYPE_RECORDED_LINK | BATTLE_TYPE_EREADER_TRAINER))
     {
         return BATTLE_ENVIRONMENT_LINK;
     }
@@ -1308,11 +1308,7 @@ void DrawBattleEntryBackground(void)
     {
         LoadBattleEnvironmentEntryGfx(BATTLE_ENVIRONMENT_GRASS);
     }
-    else if (gBattleTypeFlags & (BATTLE_TYPE_TRAINER_TOWER | BATTLE_TYPE_LINK | BATTLE_TYPE_BATTLE_TOWER | BATTLE_TYPE_EREADER_TRAINER | BATTLE_TYPE_RECORDED_LINK))
-    {
-        LoadBattleEnvironmentEntryGfx(BATTLE_ENVIRONMENT_BUILDING);
-    }
-    else if (gBattleTypeFlags & (BATTLE_TYPE_FRONTIER | BATTLE_TYPE_LINK | BATTLE_TYPE_RECORDED_LINK | BATTLE_TYPE_EREADER_TRAINER))
+    else if (gBattleTypeFlags & (BATTLE_TYPE_TRAINER_TOWER | BATTLE_TYPE_FRONTIER | BATTLE_TYPE_LINK | BATTLE_TYPE_RECORDED_LINK | BATTLE_TYPE_EREADER_TRAINER))
     {
         if (TestRunner_Battle_GetForcedEnvironment()
          && gBattleEnvironmentInfo[gBattleEnvironment].background.tilemap
