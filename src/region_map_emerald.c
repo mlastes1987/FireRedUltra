@@ -133,6 +133,8 @@ extern const u32 gPlayerIcon_Leaf[];
 extern const u16 gPlayerIcon_RedPal[];
 extern const u16 gPlayerIcon_LeafPal[];
 
+const u8 sText_FlyToWhere[] = _("FLY to where?");
+
 #include "data/region_map/region_map_layout.h"
 // #include "data/region_map/region_map_entries.h"
 extern const struct RegionMapLocation gRegionMapEntries[];
@@ -1854,61 +1856,6 @@ void TrySetPlayerIconBlink(void)
 #undef sVisible
 #undef sTimer
 
-// u8 *GetMapName(u8 *dest, mapsec_u16_t regionMapId, u16 padLength)
-// {
-//     u8 *str;
-//     u16 i;
-
-//     if (regionMapId == MAPSEC_SECRET_BASE)
-//     {
-//         str = GetSecretBaseMapName(dest);
-//     }
-//     else
-//     if (regionMapId < MAPSEC_NONE)
-//     {
-//         str = StringCopy(dest, gRegionMapEntries[regionMapId].name);
-//     }
-//     else
-//     {
-//         if (padLength == 0)
-//         {
-//             padLength = 18;
-//         }
-//         return StringFill(dest, CHAR_SPACE, padLength);
-//     }
-//     if (padLength != 0)
-//     {
-//         for (i = str - dest; i < padLength; i++)
-//         {
-//             *str++ = CHAR_SPACE;
-//         }
-//         *str = EOS;
-//     }
-//     return str;
-// }
-
-// TODO: probably needs a better name
-// u8 *GetMapNameGeneric(u8 *dest, mapsec_u16_t mapSecId)
-// {
-//     switch (mapSecId)
-//     {
-//     case MAPSEC_DYNAMIC:
-//         return StringCopy(dest, gText_Ferry);
-//     case MAPSEC_SECRET_BASE:
-//         return StringCopy(dest, gText_SecretBase);
-//     default:
-//         return GetMapName(dest, mapSecId, 0);
-//     }
-// }
-
-u8 *GetMapNameHandleAquaHideout(u8 *dest, mapsec_u16_t mapSecId)
-{
-    if (mapSecId == MAPSEC_AQUA_HIDEOUT_OLD)
-        return StringCopy(dest, gText_Hideout);
-    else
-        return GetMapNameGeneric(dest, mapSecId);
-}
-
 static void GetMapSecDimensions(mapsec_u16_t mapSecId, u16 *x, u16 *y, u16 *width, u16 *height)
 {
     *x = gRegionMapEntries[mapSecId].x;
@@ -2000,7 +1947,7 @@ void CB2_OpenFlyMapEmerald(void)
         LoadPalette(sRegionMapFramePal, BG_PLTT_ID(1), sizeof(sRegionMapFramePal));
         PutWindowTilemap(WIN_FLY_TO_WHERE);
         FillWindowPixelBuffer(WIN_FLY_TO_WHERE, PIXEL_FILL(0));
-        AddTextPrinterParameterized(WIN_FLY_TO_WHERE, FONT_NORMAL, gText_FlyToWhere, 0, 1, 0, NULL);
+        AddTextPrinterParameterized(WIN_FLY_TO_WHERE, FONT_NORMAL, sText_FlyToWhere, 0, 1, 0, NULL);
         ScheduleBgCopyTilemapToVram(0);
         gMain.state++;
         break;
