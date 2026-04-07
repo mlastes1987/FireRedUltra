@@ -61,12 +61,6 @@ const u32 gMetatileAttributes_ViridianGym[] = INCBIN_U32("data/tilesets/secondar
 const u16 gMetatiles_Building[] = INCBIN_U16("data/tilesets/primary/building/metatiles.bin");
 const u32 gMetatileAttributes_Building[] = INCBIN_U32("data/tilesets/primary/building/metatile_attributes.bin");
 
-const u16 gMetatiles_Dummy1[] = INCBIN_U16("data/tilesets/secondary/dummy_1/metatiles.bin");
-const u32 gMetatileAttributes_Dummy1[] = INCBIN_U32("data/tilesets/secondary/dummy_1/metatile_attributes.bin");
-
-const u16 gMetatiles_HoennBuilding[] = INCBIN_U16("data/tilesets/secondary/hoenn_building/metatiles.bin");
-const u32 gMetatileAttributes_HoennBuilding[] = INCBIN_U32("data/tilesets/secondary/hoenn_building/metatile_attributes.bin");
-
 const u16 gMetatiles_BikeShop[] = INCBIN_U16("data/tilesets/secondary/bike_shop/metatiles.bin");
 const u32 gMetatileAttributes_BikeShop[] = INCBIN_U32("data/tilesets/secondary/bike_shop/metatile_attributes.bin");
 
@@ -91,14 +85,8 @@ const u32 gMetatileAttributes_Lab[] = INCBIN_U32("data/tilesets/secondary/lab/me
 const u16 gMetatiles_SSAnne[] = INCBIN_U16("data/tilesets/secondary/ss_anne/metatiles.bin");
 const u32 gMetatileAttributes_SSAnne[] = INCBIN_U32("data/tilesets/secondary/ss_anne/metatile_attributes.bin");
 
-const u16 gMetatiles_Dummy2[] = INCBIN_U16("data/tilesets/secondary/dummy_2/metatiles.bin");
-const u32 gMetatileAttributes_Dummy2[] = INCBIN_U32("data/tilesets/secondary/dummy_2/metatile_attributes.bin");
-
 const u16 gMetatiles_ViridianForest[] = INCBIN_U16("data/tilesets/secondary/viridian_forest/metatiles.bin");
 const u32 gMetatileAttributes_ViridianForest[] = INCBIN_U32("data/tilesets/secondary/viridian_forest/metatile_attributes.bin");
-
-const u16 gMetatiles_UnusedGatehouse1[] = INCBIN_U16("data/tilesets/secondary/unused_gatehouse_1/metatiles.bin");
-const u32 gMetatileAttributes_UnusedGatehouse1[] = INCBIN_U32("data/tilesets/secondary/unused_gatehouse_1/metatile_attributes.bin");
 
 const u16 gMetatiles_RockTunnel[] = INCBIN_U16("data/tilesets/secondary/rock_tunnel/metatiles.bin");
 const u32 gMetatileAttributes_RockTunnel[] = INCBIN_U32("data/tilesets/secondary/rock_tunnel/metatile_attributes.bin");
@@ -108,9 +96,6 @@ const u32 gMetatileAttributes_DiglettsCave[] = INCBIN_U32("data/tilesets/seconda
 
 const u16 gMetatiles_SeafoamIslands[] = INCBIN_U16("data/tilesets/secondary/seafoam_islands/metatiles.bin");
 const u32 gMetatileAttributes_SeafoamIslands[] = INCBIN_U32("data/tilesets/secondary/seafoam_islands/metatile_attributes.bin");
-
-const u16 gMetatiles_UnusedGatehouse2[] = INCBIN_U16("data/tilesets/secondary/unused_gatehouse_2/metatiles.bin");
-const u32 gMetatileAttributes_UnusedGatehouse2[] = INCBIN_U32("data/tilesets/secondary/unused_gatehouse_2/metatile_attributes.bin");
 
 const u16 gMetatiles_CeruleanCave[] = INCBIN_U16("data/tilesets/secondary/cerulean_cave/metatiles.bin");
 const u32 gMetatileAttributes_CeruleanCave[] = INCBIN_U32("data/tilesets/secondary/cerulean_cave/metatile_attributes.bin");
@@ -162,12 +147,6 @@ const u32 gMetatileAttributes_Condominiums[] = INCBIN_U32("data/tilesets/seconda
 
 const u16 gMetatiles_BurgledHouse[] = INCBIN_U16("data/tilesets/secondary/burgled_house/metatiles.bin");
 const u32 gMetatileAttributes_BurgledHouse[] = INCBIN_U32("data/tilesets/secondary/burgled_house/metatile_attributes.bin");
-
-const u16 gMetatiles_Dummy3[] = INCBIN_U16("data/tilesets/secondary/dummy_3/metatiles.bin");
-const u32 gMetatileAttributes_Dummy3[] = INCBIN_U32("data/tilesets/secondary/dummy_3/metatile_attributes.bin");
-
-const u16 gMetatiles_Dummy4[] = INCBIN_U16("data/tilesets/secondary/dummy_4/metatiles.bin");
-const u32 gMetatileAttributes_Dummy4[] = INCBIN_U32("data/tilesets/secondary/dummy_4/metatile_attributes.bin");
 
 const u16 gMetatiles_MtEmber[] = INCBIN_U16("data/tilesets/secondary/mt_ember/metatiles.bin");
 const u32 gMetatileAttributes_MtEmber[] = INCBIN_U32("data/tilesets/secondary/mt_ember/metatile_attributes.bin");
