@@ -18,12 +18,7 @@
 #define DEPRECATED(msg) __attribute__((deprecated(msg)))
 
 #define ARM_FUNC __attribute__((target("arm")))
-
-#if MODERN
 #define NOINLINE __attribute__((noinline))
-#else
-#define NOINLINE
-#endif
 
 #define ALIGNED(n) __attribute__((aligned(n)))
 #define PACKED __attribute__((packed))

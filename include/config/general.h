@@ -41,6 +41,7 @@
 
 // Uncomment to fix some identified minor bugs
 #define BUGFIX
+#define UBFIX
 
 // Define the game version for use elsewhere
 #if defined(FIRERED)
@@ -52,14 +53,6 @@
 // rev1 renamed the source folder for reasons
 #define CODE_ROOT "C:/WORK/POKeFRLG/Src/pm_lgfr_ose/source/"
 #define ABSPATH(x) (CODE_ROOT x)
-
-// Various undefined behavior bugs may or may not prevent compilation with
-// newer compilers. So always fix them when using a modern compiler.
-#if MODERN || defined(BUGFIX)
-#ifndef UBFIX
-#define UBFIX
-#endif
-#endif
 
 // Generation constants used in configs to define behavior.
 #define GEN_1 0

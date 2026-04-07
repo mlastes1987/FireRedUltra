@@ -599,12 +599,7 @@ static void CreateApprenticeMenu(u8 menu)
         strings[1] = gText_No;
         break;
     default:
-        left = 0;
-        top = 0;
-#ifdef UBFIX
         return;
-#endif
-        break;
     }
 
     pixelWidth = 0;

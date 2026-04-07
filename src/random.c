@@ -1,8 +1,6 @@
 #include "global.h"
 #include "random.h"
-#if MODERN
 #include <alloca.h>
-#endif
 
 // IWRAM common
 COMMON_DATA rng_value_t gRngValue = {0};
