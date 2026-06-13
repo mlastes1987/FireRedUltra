@@ -53,5 +53,12 @@ EventScript_ResetAllMapFlags::
 	setflag FLAG_HIDE_FAME_CHECKER_LT_SURGE_JOURNAL
 	setflag FLAG_HIDE_SAFFRON_CITY_POKECENTER_SABRINA_JOURNALS
 	setvar VAR_MASSAGE_COOLDOWN_STEP_COUNTER, 500
+	setflag FLAG_0x30C
+	setflag FLAG_0x30D
+	setflag FLAG_0x30E
+	setflag FLAG_0x310
+	setflag FLAG_0x311
+	setvar VAR_0x4092, 0
+	setvar VAR_0x4093, 0
 	call EventScript_ResetAllBerries
 	end

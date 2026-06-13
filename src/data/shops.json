@@ -10,7 +10,6 @@
                 "ITEM_HYPER_POTION",
                 "ITEM_REVIVE",
                 "ITEM_FULL_HEAL",
-                "ITEM_ESCAPE_ROPE",
                 "ITEM_MAX_REPEL"
             ]
         }
@@ -40,7 +39,6 @@
 	                    "ITEM_PARALYZE_HEAL",
 	                    "ITEM_AWAKENING",
 	                    "ITEM_BURN_HEAL",
-	                    "ITEM_ESCAPE_ROPE",
 	                    "ITEM_REPEL"
                     ]
                 }
@@ -58,7 +56,6 @@
                         "ITEM_PARALYZE_HEAL",
                         "ITEM_AWAKENING",
                         "ITEM_BURN_HEAL",
-                        "ITEM_ESCAPE_ROPE",
                         "ITEM_REPEL"
                     ]
                 }
@@ -92,7 +89,6 @@
                         "ITEM_PARALYZE_HEAL",
                         "ITEM_BURN_HEAL",
                         "ITEM_ICE_HEAL",
-                        "ITEM_ESCAPE_ROPE",
                         "ITEM_SUPER_REPEL"
                     ]
                 }
@@ -141,7 +137,8 @@
 	                    "ITEM_FIRE_STONE",
 	                    "ITEM_THUNDER_STONE",
 	                    "ITEM_WATER_STONE",
-	                    "ITEM_LEAF_STONE"
+	                    "ITEM_LEAF_STONE",
+                        "ITEM_LINKING_CORD"
                     ]
                 }
             ]
@@ -201,7 +198,6 @@
                         "ITEM_HYPER_POTION",
                         "ITEM_REVIVE",
                         "ITEM_FULL_HEAL",
-                        "ITEM_ESCAPE_ROPE",
                         "ITEM_MAX_REPEL"
                     ]
                 }
@@ -217,7 +213,6 @@
                         "ITEM_HYPER_POTION",
                         "ITEM_REVIVE",
                         "ITEM_FULL_HEAL",
-                        "ITEM_ESCAPE_ROPE",
                         "ITEM_MAX_REPEL"
                     ]
                 }
@@ -292,7 +287,6 @@
                         "ITEM_HYPER_POTION",
                         "ITEM_REVIVE",
                         "ITEM_FULL_HEAL",
-                        "ITEM_ESCAPE_ROPE",
                         "ITEM_MAX_REPEL"
                     ]
                 }
@@ -309,7 +303,6 @@
                         "ITEM_REVIVE",
                         "ITEM_ICE_HEAL",
                         "ITEM_FULL_HEAL",
-                        "ITEM_ESCAPE_ROPE",
                         "ITEM_MAX_REPEL"
                     ]
                 }
@@ -325,7 +318,6 @@
                         "ITEM_MAX_POTION",
                         "ITEM_REVIVE",
                         "ITEM_FULL_HEAL",
-                        "ITEM_ESCAPE_ROPE",
                         "ITEM_MAX_REPEL",
                         "ITEM_DREAM_MAIL"
                     ]

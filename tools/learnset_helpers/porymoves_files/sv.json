@@ -5228,14 +5228,28 @@
     "TutorMoves": []
   },
   "KADABRA": {
-    "LevelMoves": [],
+    "LevelMoves": [
+      {
+        "Level": 17,
+        "Move": "MOVE_SHOCK_WAVE"
+      },
+      {
+        "Level": 22,
+        "Move": "MOVE_SPARK"
+      }
+    ],
     "PreEvoMoves": [],
     "TMMoves": [],
     "EggMoves": [],
     "TutorMoves": []
   },
   "ALAKAZAM": {
-    "LevelMoves": [],
+    "LevelMoves": [
+      {
+        "Level": 38,
+        "Move": "MOVE_THUNDERBOLT"
+      }
+    ],
     "PreEvoMoves": [],
     "TMMoves": [],
     "EggMoves": [],
@@ -13646,7 +13660,7 @@
         "Move": "MOVE_LEER"
       },
       {
-        "Level": 6,
+        "Level": 1,
         "Move": "MOVE_WATER_GUN"
       },
       {
@@ -23258,7 +23272,7 @@
         "Move": "MOVE_LEER"
       },
       {
-        "Level": 3,
+        "Level": 1,
         "Move": "MOVE_LEAFAGE"
       },
       {
@@ -68197,7 +68211,7 @@
         "Move": "MOVE_GROWL"
       },
       {
-        "Level": 6,
+        "Level": 1,
         "Move": "MOVE_EMBER"
       },
       {
@@ -68418,6 +68432,10 @@
         "Level": 30,
         "Move": "MOVE_HEADBUTT"
       },
+      {
+        "Level": 32,
+        "Move": "MOVE_FLAMETHROWER"
+      }
       {
         "Level": 38,
         "Move": "MOVE_COUNTER"

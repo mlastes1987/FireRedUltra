@@ -140,7 +140,7 @@ void NewGameInitData(void)
     InitEventData();
     InitTimeBasedEvents(); // remove if wallclock
     ResetFameChecker();
-    SetMoney(&gSaveBlock1Ptr->money, 3000);
+    SetMoney(&gSaveBlock1Ptr->money, 35000);
     ResetGameStats();
     ClearPlayerLinkBattleRecords();
     InitHeracrossSizeRecord();

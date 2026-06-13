@@ -3,12 +3,12 @@ GAME_VERSION ?= FIRERED
 ifeq ($(GAME_VERSION),FIRERED)
 TITLE       := POKEMON FIRE
 GAME_CODE   := BPRE
-BUILD_NAME  := firered
+BUILD_NAME  := FireRedUltra
 else
 ifeq ($(GAME_VERSION),LEAFGREEN)
 TITLE       := POKEMON LEAF
 GAME_CODE   := BPGE
-BUILD_NAME  := leafgreen
+BUILD_NAME  := LeafGreenUltra
 else
 $(error unknown version $(GAME_VERSION))
 endif
@@ -20,7 +20,7 @@ REVISION    := 0
 KEEP_TEMPS  ?= 0
 
 # `File name`.gba
-FILE_NAME := poke$(BUILD_NAME)
+FILE_NAME := $(BUILD_NAME)
 BUILD_DIR := build
 
 # Compares the ROM to a checksum of the original - only makes sense using when non-modern
